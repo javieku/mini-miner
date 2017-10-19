@@ -63,10 +63,10 @@
     <ClCompile Include="..\src\GenerateGemsCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BreakGemsCommand.cpp">
+    <ClCompile Include="..\src\MoveCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MoveCommand.cpp">
+    <ClCompile Include="..\src\RemoveGemsCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -119,7 +119,7 @@
     <ClInclude Include="..\src\GenerateGemsCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BreakGemsCommand.h">
+    <ClInclude Include="..\src\RemoveGemsCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

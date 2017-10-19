@@ -56,8 +56,8 @@ struct Cell : public Entity
     CellType type;
 };
 
-using Row = std::vector< Cell >;
-using Board = std::vector< Row >;
+using Colum = std::vector< Cell >;
+using Board = std::vector< Colum >;
 
 class Gameplay
 {

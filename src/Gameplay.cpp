@@ -23,27 +23,27 @@ Gameplay::Gameplay( )
 }
 
 King::Engine::Texture
-Gameplay::generate_texture_type( int row, int col )
+Gameplay::generate_texture_type( int col, int row )
 {
     std::set< King::Engine::Texture > black_listed_cell_types;
     if ( row > 0 )
     {
-        black_listed_cell_types.insert( m_board[ row - 1 ][ col ].texture );
+        black_listed_cell_types.insert( m_board[ col ][ row - 1 ].texture );
     }
 
     if ( row + 1 < NROW )
     {
-        black_listed_cell_types.insert( m_board[ row + 1 ][ col ].texture );
+        black_listed_cell_types.insert( m_board[ col ][ row + 1 ].texture );
     }
 
     if ( col > 0 )
     {
-        black_listed_cell_types.insert( m_board[ row ][ col - 1 ].texture );
+        black_listed_cell_types.insert( m_board[ col - 1 ][ row ].texture );
     }
 
     if ( col + 1 < NCOL )
     {
-        black_listed_cell_types.insert( m_board[ row ][ col + 1 ].texture );
+        black_listed_cell_types.insert( m_board[ col + 1 ][ row ].texture );
     }
 
     std::set< King::Engine::Texture > supported_cell_types
@@ -69,13 +69,13 @@ Gameplay::init_board( float width, float height )
     float base_row = height / NROW;
     float base_col = width / NCOL;
 
-    for ( int32_t row = 0; row < NROW; ++row )
+    for ( int32_t col = 0; col < NCOL; ++col )
     {
-        m_board[ row ].resize( NCOL );
+        m_board[ col ].resize( NCOL );
 
-        for ( int32_t col = 0; col < NCOL; ++col )
+        for ( int32_t row = 0; row < NROW; ++row )
         {
-            Cell& cell = m_board[ row ][ col ];
+            Cell& cell = m_board[ col ][ row ];
             cell.texture = King::Engine::TEXTURE_MAX;
 
             cell.x = x_board + base_col * col + ( base_col / 4 );
@@ -83,12 +83,12 @@ Gameplay::init_board( float width, float height )
         }
     }
 
-    for ( int32_t row = 0; row < NROW; ++row )
+    for ( int32_t col = 0; col < NCOL; ++col )
     {
-        for ( int32_t col = 0; col < NCOL; ++col )
+        for ( int32_t row = 0; row < NROW; ++row )
         {
-            Cell& cell = m_board[ row ][ col ];
-            cell.texture = generate_texture_type( row, col );
+            Cell& cell = m_board[ col ][ row ];
+            cell.texture = generate_texture_type( col, row );
         }
     }
 }
@@ -118,7 +118,7 @@ Gameplay::timer( ) const
 const Cell&
 Gameplay::cell( int32_t row, int32_t col ) const
 {
-    return m_board[ row ][ col ];
+    return m_board[ col ][ row ];
 };
 
 Cell&
@@ -126,7 +126,7 @@ Gameplay::cell( float x, float y )
 {
     const auto& pos = cell_position( x, y );
 
-    return m_board[ pos.row ][ pos.col ];
+    return m_board[ pos.col ][ pos.row ];
 }
 
 Cell
@@ -134,7 +134,7 @@ Gameplay::copy_cell( float x, float y )
 {
     const auto& pos = cell_position( x, y );
 
-    return m_board[ pos.row ][ pos.col ];
+    return m_board[ pos.col ][ pos.row ];
 }
 
 const CellPosition&
@@ -200,9 +200,9 @@ to_string( const King::Engine::Texture& texture )
 void
 Gameplay::print( )
 {
-    for ( int row = 0; row < m_board.size( ); ++row )
+    for ( int col = 0; col < m_board.size( ); ++col )
     {
-        for ( int col = 0; col < m_board[ row ].size( ); ++col )
+        for ( int row = 0; row < m_board[ col ].size( ); ++row )
         {
             std::cout << to_string( m_board[ row ][ col ].texture ) << " ";
         }
@@ -214,7 +214,7 @@ Gameplay::print( )
 bool
 Gameplay::is_finished( ) const
 {
-    return m_timer.elapsed( ) == 60;
+    return m_timer.elapsed( ) == 111160;
 }
 
 void

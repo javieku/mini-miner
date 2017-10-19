@@ -3,6 +3,7 @@
 #include "MoveCommand.h"
 
 #include <iostream>
+
 namespace Game
 {
 namespace
@@ -69,8 +70,8 @@ SwapCommand::move( Gameplay& gameplay,
 {
     Board& board = gameplay.board( );
 
-    Cell& one_cell = board[ one_position.row ][ one_position.col ];
-    Cell& other_cell = board[ another_position.row ][ another_position.col ];
+    Cell& one_cell = board[ one_position.col ][ one_position.row ];
+    Cell& other_cell = board[ another_position.col ][ another_position.row ];
 
     if ( one_position.col == another_position.col )
     {
@@ -131,11 +132,14 @@ SwapCommand::apply( Gameplay& gameplay )
         m_one_position = gameplay.cell_position( m_one_coordinate.x, m_one_coordinate.y );
         m_another_position = gameplay.cell_position( m_other_coordinate.x, m_other_coordinate.y );
 
-        Cell aux = board[ m_one_position.row ][ m_one_position.col ];
-        board[ m_one_position.row ][ m_one_position.col ]
-            = board[ m_another_position.row ][ m_another_position.col ];
-        board[ m_another_position.row ][ m_another_position.col ] = aux;
+        std::cout << "SwapCommand" << std::endl;
+        gameplay.print( );
 
+        Cell aux = board[ m_one_position.col ][ m_one_position.row ];
+        board[ m_one_position.col ][ m_one_position.row ]
+            = board[ m_another_position.col ][ m_another_position.row ];
+        board[ m_another_position.col ][ m_another_position.row ] = aux;
+        gameplay.print();
         first_time = false;
     }
 
@@ -150,9 +154,9 @@ SwapCommand::undo( Gameplay& gameplay )
     Board& board = gameplay.board( );
 
     first_time = true;
-	Coordinates aux = m_one_coordinate;
-	m_one_coordinate = m_other_coordinate;
-	m_other_coordinate = aux;
+    Coordinates aux = m_one_coordinate;
+    m_one_coordinate = m_other_coordinate;
+    m_other_coordinate = aux;
 
     return apply( gameplay );
 }

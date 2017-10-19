@@ -8,8 +8,8 @@ namespace
 {
 const int32_t DELTA = 5;
 }
-MoveCommand::MoveCommand( const CellPosition& from, const CellPosition& to )
-    : m_from( from )
+MoveCommand::MoveCommand( const Cell& cell, const CellPosition& to )
+    : m_cell( cell )
     , m_to( to )
     , m_store_for_undo( true )
 {
@@ -18,12 +18,12 @@ MoveCommand::MoveCommand( const CellPosition& from, const CellPosition& to )
 bool
 MoveCommand::is_valid( Gameplay& gameplay ) const
 {
-    if ( !m_from.is_valid( ) || !m_to.is_valid( ) )
+    if ( !m_to.is_valid( ) )
     {
         return false;
     }
 
-    return ( m_from.col == m_to.col && std::abs( m_from.row - m_to.row ) <= 1 );
+    return true;
 };
 
 bool
@@ -33,16 +33,15 @@ MoveCommand::is_finished( Gameplay& gameplay ) const
     {
         return true;
     }
+    Board& board = gameplay.board( );
+    Cell& cell = board[ m_to.col ][ m_to.row ];
+    std::cout << "std::abs( m_previous_cell.x - cell.x ) " << std::abs( m_previous_cell.x - cell.x )
+              << std::endl;
+    std::cout << "std::abs( m_previous_cell.y - cell.y ) " << std::abs( m_previous_cell.y - cell.y )
+              << std::endl;
 
-    Cell& one_cell = gameplay.board( )[ m_from.row ][ m_from.col ];
-
-    std::cout << "std::abs( m_previous_cell_one.x - one_cell.x ) "
-              << std::abs( m_previous_cell.x - one_cell.x ) << std::endl;
-    std::cout << "std::abs( m_previous_cell_one.y - one_cell.y ) "
-              << std::abs( m_previous_cell.y - one_cell.y ) << std::endl;
-
-    return ( std::abs( m_previous_cell.x - one_cell.x ) <= 1 )
-           && ( std::abs( m_previous_cell.y - one_cell.y ) <= 1 );
+    return ( std::abs( m_previous_cell.x - cell.x ) <= 1 )
+           && ( std::abs( m_previous_cell.y - cell.y ) <= 1 );
 };
 
 bool
@@ -51,49 +50,39 @@ MoveCommand::apply( Gameplay& gameplay )
     Board& board = gameplay.board( );
     if ( m_store_for_undo )
     {
-        m_previous_cell = board[ m_from.row ][ m_from.col ];
+        m_previous_cell = board[ m_to.col ][ m_to.row ];
         m_store_for_undo = false;
-
-        board[ m_to.row ][ m_to.col ] = board[ m_from.row ][ m_from.col ];
+        std::cout << "MoveCommand" << std::endl;
+        gameplay.print( );
+        board[ m_to.col ][ m_to.row ] = m_cell;
+        gameplay.print( );
     }
 
-    Cell& from_cell = board[ m_from.row ][ m_from.col ];
-    Cell& to_cell = board[ m_from.row ][ m_from.col ];
-    if ( m_from.col == m_to.col )
+    Cell& cell = board[ m_to.col ][ m_to.row ];
+
+    if ( cell.y < m_previous_cell.y )
     {
-        if ( from_cell.y < to_cell.y )
-        {
-            from_cell.y += DELTA;
-        }
-        else if ( from_cell.y > to_cell.y )
-        {
-            from_cell.y -= DELTA;
-        }
+        cell.y += ( m_previous_cell.y - cell.y ) > DELTA ? DELTA : ( m_previous_cell.y - cell.y );
     }
-    else if ( m_from.row == m_to.row )
+    else if ( cell.y > m_previous_cell.y )
     {
-        if ( from_cell.x < to_cell.x )
-        {
-            from_cell.x += DELTA;
-        }
-        else if ( from_cell.x > to_cell.x )
-        {
-            from_cell.x -= DELTA;
-        }
+        cell.y -= ( cell.y - m_previous_cell.y ) > DELTA ? DELTA : ( cell.y - m_previous_cell.y );
     }
-	return true;
+
+    if ( cell.x < m_previous_cell.x )
+    {
+        cell.x += DELTA;
+    }
+    else if ( cell.x > m_previous_cell.x )
+    {
+        cell.x -= DELTA;
+    }
+    return true;
 };
 
 bool
 MoveCommand::undo( Gameplay& gameplay )
 {
-    Board& board = gameplay.board( );
-
-    m_store_for_undo = true;
-    CellPosition aux = m_from;
-    m_from = m_to;
-    m_to = aux;
-
-    return apply( gameplay );
+    return false;
 }
 }

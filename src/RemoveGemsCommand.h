@@ -4,11 +4,11 @@
 
 namespace Game
 {
-class BreakGemsCommand : public CommandInterface
+class RemoveGemsCommand : public CommandInterface
 {
 public:
-    BreakGemsCommand( );
-    ~BreakGemsCommand( ) = default;
+    RemoveGemsCommand( );
+    ~RemoveGemsCommand( ) = default;
 
     bool is_valid( Gameplay& gameplay ) const override;
     bool is_finished( Gameplay& gameplay ) const override;
@@ -19,5 +19,5 @@ private:
     bool m_done;
 };
 
-using BreakGemsCommandSharedPtr = std::shared_ptr< BreakGemsCommand >;
+using RemoveGemsCommandSharedPtr = std::shared_ptr< RemoveGemsCommand >;
 }

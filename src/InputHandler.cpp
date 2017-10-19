@@ -1,7 +1,7 @@
 #include "InputHandler.h"
 
-#include "BreakGemsCommand.h"
 #include "GenerateGemsCommand.h"
+#include "RemoveGemsCommand.h"
 #include "SwapCommand.h"
 
 #include <king/Engine.h>
@@ -62,7 +62,7 @@ InputHandler::handle_event( )
 
         actions.push_back( std::make_shared< SwapCommand >( Coordinates( {start_x, start_y} ),
                                                             Coordinates( {end_x, end_y} ) ) );
-        actions.push_back( std::make_shared< BreakGemsCommand >( ) );
+        actions.push_back( std::make_shared< RemoveGemsCommand >( ) );
         actions.push_back( std::make_shared< GenerateGemsCommand >( ) );
     }
     return actions;

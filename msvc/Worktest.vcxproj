@@ -81,7 +81,7 @@
     <ClCompile Include="..\external\include\king\Sdl.cpp" />
     <ClCompile Include="..\external\include\king\SdlSurface.cpp" />
     <ClCompile Include="..\external\include\king\SdlWindow.cpp" />
-    <ClCompile Include="..\src\BreakGemsCommand.cpp" />
+    <ClCompile Include="..\src\RemoveGemsCommand.cpp" />
     <ClCompile Include="..\src\Gameplay.cpp" />
     <ClCompile Include="..\src\GameplayController.cpp" />
     <ClCompile Include="..\src\GameplayView.cpp" />
@@ -100,7 +100,7 @@
     <ClInclude Include="..\external\include\king\SdlSurface.h" />
     <ClInclude Include="..\external\include\king\SdlWindow.h" />
     <ClInclude Include="..\external\include\king\Updater.h" />
-    <ClInclude Include="..\src\BreakGemsCommand.h" />
+    <ClInclude Include="..\src\RemoveGemsCommand.h" />
     <ClInclude Include="..\src\CommandInterface.h" />
     <ClInclude Include="..\src\Gameplay.h" />
     <ClInclude Include="..\src\GameplayController.h" />

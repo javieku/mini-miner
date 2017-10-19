@@ -18,9 +18,9 @@ GameplayView::render( const Gameplay& gameplay )
 {
     m_engine.Render( gameplay.background( ).texture, 0, 0 );
 
-    for ( const Row& row : gameplay.board( ) )
+    for ( const Colum& col : gameplay.board( ) )
     {
-        for ( const Cell& cell : row )
+        for ( const Cell& cell : col )
         {
             m_engine.Render( cell.texture, cell.x, cell.y );
         }

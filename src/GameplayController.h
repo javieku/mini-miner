@@ -3,8 +3,8 @@
 #include "Gameplay.h"
 #include "InputHandler.h"
 
-#include "BreakGemsCommand.h"
 #include "CommandInterface.h"
+#include "RemoveGemsCommand.h"
 #include "SwapCommand.h"
 
 #include <deque>
@@ -75,7 +75,7 @@ public:
 
 private:
     SwapCommandSharedPtr m_swap_command;
-    BreakGemsCommandSharedPtr m_collapse_command;
+    RemoveGemsCommandSharedPtr m_collapse_command;
 };
 
 using UserSwapCommandListSharedPtr = std::shared_ptr< UserSwapCommandList >;

@@ -8,7 +8,7 @@ namespace Game
 class MoveCommand : public CommandInterface
 {
 public:
-    MoveCommand( const CellPosition& from, const CellPosition& to );
+    MoveCommand( const Cell& cell, const CellPosition& to );
     ~MoveCommand( ) = default;
 
     bool is_valid( Gameplay& gameplay ) const override;
@@ -17,7 +17,7 @@ public:
     bool undo( Gameplay& gameplay ) override;
 
 private:
-    CellPosition m_from;
+    Cell m_cell;
     CellPosition m_to;
 
     // Undo
