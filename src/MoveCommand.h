@@ -8,31 +8,21 @@ namespace Game
 class MoveCommand : public CommandInterface
 {
 public:
-    enum Direction
-    {
-        LEFT,
-        RIGHT,
-        UP,
-        DOWN
-    };
+    MoveCommand( const CellPosition& from, const CellPosition& to );
+    ~MoveCommand( ) = default;
 
-    MoveCommand( const CellPosition& position, const Coordinates& to )
-    {
-    }
-
-    bool is_valid( Gameplay& gameplay ) const {};
-
-    bool is_finished( Gameplay& gameplay ) const {};
-
-    bool
-    apply( Gameplay& gameplay ) const
-    {
-
-    };
+    bool is_valid( Gameplay& gameplay ) const override;
+    bool is_finished( Gameplay& gameplay ) const override;
+    bool apply( Gameplay& gameplay ) override;
+    bool undo( Gameplay& gameplay ) override;
 
 private:
-    Direction direction;
-    CellPosition position;
-    float tox, toy;
+    CellPosition m_from;
+    CellPosition m_to;
+
+    // Undo
+    Cell m_previous_cell;
+    bool m_store_for_undo;
 };
+using MoveCommandSharedPtr = std::shared_ptr< MoveCommand >;
 }

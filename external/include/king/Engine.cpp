@@ -75,6 +75,7 @@ namespace King {
 		std::string purple = assets; purple += "/Purple.png";
 		std::string red = assets; red += "/Red.png";
 		std::string yellow = assets; yellow += "/Yellow.png";
+		std::string broken = assets; broken += "/Broken.png";
 		std::string font = assets; font += "/berlin_sans_demi_72_0.png";
 
 		mPimpl->mSdlSurfaceContainer[Engine::TEXTURE_BACKGROUND].reset(new SdlSurface(background.c_str()));
@@ -83,6 +84,7 @@ namespace King {
 		mPimpl->mSdlSurfaceContainer[Engine::TEXTURE_PURPLE].reset(new SdlSurface(purple.c_str()));
 		mPimpl->mSdlSurfaceContainer[Engine::TEXTURE_RED].reset(new SdlSurface(red.c_str()));
 		mPimpl->mSdlSurfaceContainer[Engine::TEXTURE_YELLOW].reset(new SdlSurface(yellow.c_str()));
+		mPimpl->mSdlSurfaceContainer[Engine::TEXTURE_BROKEN].reset(new SdlSurface(broken.c_str()));
 		mPimpl->mFontSdlSurface.reset(new SdlSurface(font.c_str()));
 
 		glMatrixMode(GL_PROJECTION);

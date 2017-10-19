@@ -83,6 +83,8 @@ public:
 
     void print( );
 
+    void increase_score( );
+
 private:
     void init_board( float width, float height );
     King::Engine::Texture generate_texture_type( int row, int col );

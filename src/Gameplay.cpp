@@ -177,8 +177,6 @@ to_string( const Cell& cell )
 std::string
 to_string( const King::Engine::Texture& texture )
 {
-    std::ostringstream oss;
-
     switch ( texture )
 
     {
@@ -192,11 +190,11 @@ to_string( const King::Engine::Texture& texture )
         return "R";
     case King::Engine::TEXTURE_YELLOW:
         return "Y";
-    case King::Engine::TEXTURE_MAX:
+    case King::Engine::TEXTURE_BROKEN:
         return "X";
+    case King::Engine::TEXTURE_MAX:
+        return "?";
     }
-
-    oss.str( );
 }
 
 void
@@ -217,5 +215,11 @@ bool
 Gameplay::is_finished( ) const
 {
     return m_timer.elapsed( ) == 60;
+}
+
+void
+Gameplay::increase_score( )
+{
+    m_score.score += 50;
 }
 }

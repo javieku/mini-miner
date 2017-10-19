@@ -39,7 +39,6 @@ SwapCommand::is_valid( Gameplay& gameplay ) const
 bool
 SwapCommand::is_finished( Gameplay& gameplay ) const
 {
-    std::cout << "is_finished" << std::endl;
     if ( !is_valid( gameplay ) )
     {
         return true;
@@ -61,6 +60,58 @@ SwapCommand::is_finished( Gameplay& gameplay ) const
            && ( std::abs( m_previous_cell_one.y - one_cell.y ) <= 1 )
            && ( std::abs( m_previous_cell_other.x - other_cell.x ) <= 1 )
            && ( std::abs( m_previous_cell_other.y - other_cell.y ) <= 1 );
+}
+
+void
+SwapCommand::move( Gameplay& gameplay,
+                   const CellPosition& one_position,
+                   const CellPosition& another_position )
+{
+    Board& board = gameplay.board( );
+
+    Cell& one_cell = board[ one_position.row ][ one_position.col ];
+    Cell& other_cell = board[ another_position.row ][ another_position.col ];
+
+    if ( one_position.col == another_position.col )
+    {
+        if ( one_cell.y < m_previous_cell_one.y )
+        {
+            one_cell.y += DELTA;
+        }
+        else if ( one_cell.y > m_previous_cell_one.y )
+        {
+            one_cell.y -= DELTA;
+        }
+
+        if ( other_cell.y < m_previous_cell_other.y )
+        {
+            other_cell.y += DELTA;
+        }
+        else if ( other_cell.y > m_previous_cell_other.y )
+        {
+            other_cell.y -= DELTA;
+        }
+    }
+    else if ( one_position.row == another_position.row )
+    {
+        if ( one_cell.x < m_previous_cell_one.x )
+        {
+            one_cell.x += DELTA;
+        }
+        else if ( one_cell.x > m_previous_cell_one.x )
+        {
+            one_cell.x -= DELTA;
+        }
+
+        if ( other_cell.x < m_previous_cell_other.x )
+        {
+            other_cell.x += DELTA;
+        }
+        else if ( other_cell.x > m_previous_cell_other.x )
+        {
+            other_cell.x -= DELTA;
+        }
+    }
 }
 
 bool
@@ -88,49 +139,7 @@ SwapCommand::apply( Gameplay& gameplay )
         first_time = false;
     }
 
-    Cell& one_cell = board[ m_one_position.row ][ m_one_position.col ];
-    Cell& other_cell = board[ m_another_position.row ][ m_another_position.col ];
-
-    if ( m_one_position.col == m_another_position.col )
-    {
-        if ( one_cell.y < m_previous_cell_one.y )
-        {
-            one_cell.y += DELTA;
-        }
-        else if ( one_cell.y > m_previous_cell_one.y )
-        {
-            one_cell.y -= DELTA;
-        }
-
-        if ( other_cell.y < m_previous_cell_other.y )
-        {
-            other_cell.y += DELTA;
-        }
-        else if ( other_cell.y > m_previous_cell_other.y )
-        {
-            other_cell.y -= DELTA;
-        }
-    }
-    else if ( m_one_position.row == m_another_position.row )
-    {
-        if ( one_cell.x < m_previous_cell_one.x )
-        {
-            one_cell.x += DELTA;
-        }
-        else if ( one_cell.x > m_previous_cell_one.x )
-        {
-            one_cell.x -= DELTA;
-        }
-
-        if ( other_cell.x < m_previous_cell_other.x )
-        {
-            other_cell.x += DELTA;
-        }
-        else if ( other_cell.x > m_previous_cell_other.x )
-        {
-            other_cell.x -= DELTA;
-        }
-    }
+    move( gameplay, m_one_position, m_another_position );
 
     return true;
 }
@@ -138,6 +147,13 @@ SwapCommand::apply( Gameplay& gameplay )
 bool
 SwapCommand::undo( Gameplay& gameplay )
 {
-    return true;
+    Board& board = gameplay.board( );
+
+    first_time = true;
+	Coordinates aux = m_one_coordinate;
+	m_one_coordinate = m_other_coordinate;
+	m_other_coordinate = aux;
+
+    return apply( gameplay );
 }
 }

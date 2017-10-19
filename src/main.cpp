@@ -117,8 +117,5 @@ main( int argc, char* argv[] )
     MiniCrush game;
     game.Start( );
 
-    // ExampleGame g;
-    // g.Start( );
-
     return 0;
 }

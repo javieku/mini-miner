@@ -1,5 +1,7 @@
 #include "InputHandler.h"
 
+#include "BreakGemsCommand.h"
+#include "GenerateGemsCommand.h"
 #include "SwapCommand.h"
 
 #include <king/Engine.h>
@@ -40,5 +42,29 @@ InputHandler::handle_events( )
                                                    Coordinates( {end_x, end_y} ) );
     }
     return command;
+}
+
+std::deque< CommandInterfaceSharedPtr >
+InputHandler::handle_event( )
+{
+    std::deque< CommandInterfaceSharedPtr > actions;
+    if ( !m_drag_started && m_engine.GetMouseButtonDown( ) )
+    {
+        m_drag_started = true;
+        start_x = m_engine.GetMouseX( );
+        start_y = m_engine.GetMouseY( );
+    }
+    if ( m_drag_started && !m_engine.GetMouseButtonDown( ) )
+    {
+        m_drag_started = false;
+        end_x = m_engine.GetMouseX( );
+        end_y = m_engine.GetMouseY( );
+
+        actions.push_back( std::make_shared< SwapCommand >( Coordinates( {start_x, start_y} ),
+                                                            Coordinates( {end_x, end_y} ) ) );
+        actions.push_back( std::make_shared< BreakGemsCommand >( ) );
+        actions.push_back( std::make_shared< GenerateGemsCommand >( ) );
+    }
+    return actions;
 }
 }
