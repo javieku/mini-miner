@@ -8,9 +8,10 @@ namespace
 {
 const int32_t DELTA = 5;
 }
-MoveCommand::MoveCommand( const Cell& cell, const CellPosition& to )
+
+MoveCommand::MoveCommand( const Cell& cell, const Coordinates& to )
     : m_cell( cell )
-    , m_to( to )
+    , m_to_coordinates( to )
     , m_store_for_undo( true )
 {
 }
@@ -18,11 +19,6 @@ MoveCommand::MoveCommand( const Cell& cell, const CellPosition& to )
 bool
 MoveCommand::is_valid( const Gameplay& gameplay ) const
 {
-    if ( !m_to.is_valid( ) )
-    {
-        return false;
-    }
-
     return true;
 };
 
@@ -33,8 +29,11 @@ MoveCommand::is_finished( const Gameplay& gameplay ) const
     {
         return true;
     }
+
     const Board& board = gameplay.board( );
-    const Cell& cell = board[ m_to.col ][ m_to.row ];
+    CellPosition position = gameplay.cell_position( m_to_coordinates.x, m_to_coordinates.y );
+    const Cell& cell = board[ position.col ][ position.row ];
+
     std::cout << "std::abs( m_previous_cell.x - cell.x ) " << std::abs( m_previous_cell.x - cell.x )
               << std::endl;
     std::cout << "std::abs( m_previous_cell.y - cell.y ) " << std::abs( m_previous_cell.y - cell.y )
@@ -48,17 +47,21 @@ bool
 MoveCommand::apply( Gameplay& gameplay )
 {
     Board& board = gameplay.board( );
+
     if ( m_store_for_undo )
     {
-        m_previous_cell = board[ m_to.col ][ m_to.row ];
+        m_previous_cell = gameplay.copy_cell( m_to_coordinates.x, m_to_coordinates.y );
         m_store_for_undo = false;
+
         std::cout << "MoveCommand" << std::endl;
+        CellPosition position = gameplay.cell_position( m_to_coordinates.x, m_to_coordinates.y );
         gameplay.print( );
-        board[ m_to.col ][ m_to.row ] = m_cell;
+        board[ position.col ][ position.row ] = m_cell;
         gameplay.print( );
     }
 
-    Cell& cell = board[ m_to.col ][ m_to.row ];
+    CellPosition position = gameplay.cell_position( m_to_coordinates.x, m_to_coordinates.y );
+    Cell& cell = board[ position.col ][ position.row ];
 
     if ( cell.y < m_previous_cell.y )
     {
@@ -71,12 +74,13 @@ MoveCommand::apply( Gameplay& gameplay )
 
     if ( cell.x < m_previous_cell.x )
     {
-        cell.x += DELTA;
+        cell.x += ( m_previous_cell.x - cell.x ) > DELTA ? DELTA : ( m_previous_cell.x - cell.x );
     }
     else if ( cell.x > m_previous_cell.x )
     {
-        cell.x -= DELTA;
+        cell.x -= ( cell.x - m_previous_cell.x ) > DELTA ? DELTA : ( cell.x - m_previous_cell.x );
     }
+
     return true;
 };
 

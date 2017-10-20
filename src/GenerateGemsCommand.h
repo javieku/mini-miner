@@ -17,6 +17,9 @@ public:
     bool undo( Gameplay& gameplay ) override;
 
 private:
+    bool has_broken_cell( const Colum& colum );
+
+private:
     std::vector< MoveCommandSharedPtr > m_falling_gems;
     bool first_time = true;
 };

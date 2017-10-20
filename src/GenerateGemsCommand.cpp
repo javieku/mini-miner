@@ -50,30 +50,29 @@ GenerateGemsCommand::apply( Gameplay& gameplay )
 
         for ( auto col = 0; col < board.size( ); ++col )
         {
-            std::stable_partition(
-                board[ col ].begin( ), board[ col ].end( ),
-                []( const Cell& cell ) { return cell.texture == King::Engine::TEXTURE_BROKEN; } );
-
-            gameplay.print( );
-
-            for ( auto row = 0; row < board[ col ].size( ); ++row )
+            // Find last broken cell in colum
+            if ( has_broken_cell( board[ col ] ) )
             {
-                if ( board[ col ][ row ].texture == King::Engine::TEXTURE_BROKEN )
+                // If found create move commands
+                Colum column( board[ col ].size( ) );
+                std::copy( board[ col ].begin( ), board[ col ].end( ), column.begin( ) );
+
+                auto bound = std::stable_partition(
+                    column.begin( ), column.end( ), []( const Cell& cell ) {
+                        return cell.texture == King::Engine::TEXTURE_BROKEN;
+                    } );
+
+                gameplay.print( );
+
+                for ( auto row = 0; row < column.size( ); ++row )
                 {
-                    std::vector< King::Engine::Texture > supported_cell_types
-                        = {King::Engine::TEXTURE_BLUE, King::Engine::TEXTURE_YELLOW,
-                           King::Engine::TEXTURE_RED, King::Engine::TEXTURE_GREEN,
-                           King::Engine::TEXTURE_PURPLE};
+                    Cell cell = ( column[ row ].texture == King::Engine::TEXTURE_BROKEN )
+                                    ? Cell::create_random( 40 * row, column[ row ].x )
+                                    : column[ row ];
 
-                    Cell new_cell;
-                    new_cell.texture
-                        = supported_cell_types[ std::rand( ) % supported_cell_types.size( ) ];
-                    new_cell.y = 40 * row;
-                    new_cell.x = board[ col ][ row ].x;
-                    auto command
-                        = std::make_shared< MoveCommand >( new_cell, CellPosition( {row, col} ) );
-
-                    m_falling_gems.push_back( command );
+                    const Cell& cell_to_be_replaced = board[ col ][ row ];
+                    m_falling_gems.push_back( std::make_shared< MoveCommand >(
+                        cell, Coordinates( {cell_to_be_replaced.x, cell_to_be_replaced.y} ) ) );
                 }
             }
         }
@@ -94,5 +93,15 @@ GenerateGemsCommand::undo( Gameplay& gameplay )
 {
     // TODO
     return true;
+}
+
+bool
+GenerateGemsCommand::has_broken_cell( const Colum& colum )
+{
+    auto it = std::find_if( colum.rbegin( ), colum.rend( ), []( const Cell& cell ) {
+        return cell.texture == King::Engine::TEXTURE_BROKEN;
+    } );
+
+    return it != colum.rend( );
 }
 }

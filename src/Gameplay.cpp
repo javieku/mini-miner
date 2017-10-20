@@ -200,9 +200,9 @@ to_string( const King::Engine::Texture& texture )
 void
 Gameplay::print( ) const
 {
-    for ( int col = 0; col < m_board.size( ); ++col )
+    for ( size_t col = 0; col < m_board.size( ); ++col )
     {
-        for ( int row = 0; row < m_board[ col ].size( ); ++row )
+        for ( size_t row = 0; row < m_board[ col ].size( ); ++row )
         {
             std::cout << to_string( m_board[ row ][ col ].texture ) << " ";
         }

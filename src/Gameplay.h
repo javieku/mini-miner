@@ -54,6 +54,20 @@ struct Background : public Entity
 struct Cell : public Entity
 {
     CellType type;
+
+    static Cell
+    create_random( float x, float y )
+    {
+        std::vector< King::Engine::Texture > supported_cell_types
+            = {King::Engine::TEXTURE_BLUE, King::Engine::TEXTURE_YELLOW, King::Engine::TEXTURE_RED,
+               King::Engine::TEXTURE_GREEN, King::Engine::TEXTURE_PURPLE};
+
+        Cell new_cell;
+        new_cell.texture = supported_cell_types[ std::rand( ) % supported_cell_types.size( ) ];
+        new_cell.y = x;
+        new_cell.x = y;
+        return new_cell;
+    }
 };
 
 using Colum = std::vector< Cell >;
