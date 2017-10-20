@@ -30,8 +30,9 @@ MoveCommand::is_finished( const Gameplay& gameplay ) const
         return true;
     }
 
-    const Board& board = gameplay.board( );
-    CellPosition position = gameplay.cell_position( m_to_coordinates.x, m_to_coordinates.y );
+    const auto& board = gameplay.board_tiles( );
+    CellPosition position
+        = gameplay.board( ).cell_position( m_to_coordinates.x, m_to_coordinates.y );
     const Cell& cell = board[ position.col ][ position.row ];
 
     std::cout << "std::abs( m_previous_cell.x - cell.x ) " << std::abs( m_previous_cell.x - cell.x )
@@ -46,21 +47,23 @@ MoveCommand::is_finished( const Gameplay& gameplay ) const
 bool
 MoveCommand::apply( Gameplay& gameplay )
 {
-    Board& board = gameplay.board( );
+    auto& board = gameplay.board_tiles( );
 
     if ( m_store_for_undo )
     {
-        m_previous_cell = gameplay.copy_cell( m_to_coordinates.x, m_to_coordinates.y );
+        m_previous_cell = gameplay.board( ).copy_cell( m_to_coordinates.x, m_to_coordinates.y );
         m_store_for_undo = false;
 
         std::cout << "MoveCommand" << std::endl;
-        CellPosition position = gameplay.cell_position( m_to_coordinates.x, m_to_coordinates.y );
+        CellPosition position
+            = gameplay.board( ).cell_position( m_to_coordinates.x, m_to_coordinates.y );
         gameplay.print( );
         board[ position.col ][ position.row ] = m_cell;
         gameplay.print( );
     }
 
-    CellPosition position = gameplay.cell_position( m_to_coordinates.x, m_to_coordinates.y );
+    CellPosition position
+        = gameplay.board( ).cell_position( m_to_coordinates.x, m_to_coordinates.y );
     Cell& cell = board[ position.col ][ position.row ];
 
     if ( cell.y < m_previous_cell.y )

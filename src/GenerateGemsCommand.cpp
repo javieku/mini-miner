@@ -17,7 +17,7 @@ GenerateGemsCommand::is_valid( const Gameplay& gameplay ) const
 bool
 GenerateGemsCommand::is_finished( const Gameplay& gameplay ) const
 {
-    const Board& board = gameplay.board( );
+    const auto& board = gameplay.board_tiles( );
     bool is_finished = true;
     for ( auto col = 0; col < board.size( ); ++col )
     {
@@ -41,7 +41,7 @@ GenerateGemsCommand::is_finished( const Gameplay& gameplay ) const
 bool
 GenerateGemsCommand::apply( Gameplay& gameplay )
 {
-    Board& board = gameplay.board( );
+    auto& board = gameplay.board_tiles( );
 
     if ( first_time )
     {

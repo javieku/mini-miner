@@ -6,6 +6,7 @@
 #include "CommandInterface.h"
 #include "RemoveGemsCommand.h"
 #include "SwapCommand.h"
+#include "GenerateGemsCommand.h"
 
 #include <deque>
 
@@ -36,13 +37,13 @@ public:
     ~UserSwapCommandList( ){};
 
     bool
-    is_valid( const Gameplay & gameplay ) const override
+    is_valid( const Gameplay& gameplay ) const override
     {
         return true;
     };
 
     bool
-    is_finished( const Gameplay & gameplay ) const override
+    is_finished( const Gameplay& gameplay ) const override
     {
         return m_swap_command->is_finished( gameplay )
                && m_collapse_command->is_finished( gameplay );
@@ -79,4 +80,25 @@ private:
 };
 
 using UserSwapCommandListSharedPtr = std::shared_ptr< UserSwapCommandList >;
+/*
+template < class CommandType >
+class And
+{
+    CommandType c1;
+    CommandType c2;
+};
+
+template < class CommandType >
+bool
+And< CommandType >::is_valid( const Gameplay& gameplay ) const
+{
+    return c1->is_valid( gameplay ) && c2->is_valid( gameplay );
+}
+
+template < class CommandType >
+bool
+And< CommandType >::is_finished( const Gameplay& gameplay ) const
+{
+    return c1->is_finished( gameplay ) && c2->is_finished( gameplay );
+}*/
 }

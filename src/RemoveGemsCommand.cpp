@@ -14,9 +14,7 @@ RemoveGemsCommand::RemoveGemsCommand( )
 bool
 RemoveGemsCommand::is_valid( const Gameplay& gameplay ) const
 {
-    const Board& board = gameplay.board( );
-    std::cout << "RemoveCommand" << std::endl;
-    gameplay.print( );
+    const auto& board = gameplay.board_tiles( );
     bool removable = false;
     for ( size_t col = 0; col < board.size( ); ++col )
     {
@@ -47,15 +45,15 @@ RemoveGemsCommand::is_valid( const Gameplay& gameplay ) const
             }
         }
     }
-    gameplay.print( );
     return removable;
 };
 
 bool
 RemoveGemsCommand::apply( Gameplay& gameplay )
 {
-    Board& board = gameplay.board( );
-
+    auto& board = gameplay.board_tiles( );
+    std::cout << "RemoveCommand" << std::endl;
+    gameplay.print( );
     for ( size_t col = 0; col < board.size( ); ++col )
     {
         for ( size_t row = 0; row < board[ col ].size( ); ++row )
@@ -119,7 +117,7 @@ RemoveGemsCommand::apply( Gameplay& gameplay )
             }
         }
     };
-
+    gameplay.print( );
     return true;
 }
 

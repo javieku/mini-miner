@@ -1,7 +1,6 @@
 #define GLM_FORCE_RADIANS
 
 // Game
-#include "CommandInterface.h"
 #include "Gameplay.h"
 #include "GameplayController.h"
 #include "GameplayView.h"
@@ -67,14 +66,15 @@ private:
 };
 
 //**********************************************************************
+
 class MiniCrush : public King::Updater
 {
 public:
     MiniCrush( )
         : m_engine( "./assets" )
+        , m_input( m_engine )
         , m_view( m_engine )
         , m_gameplay( )
-        , m_input( m_engine )
         , m_controller( m_input )
     {
     }
@@ -100,11 +100,11 @@ public:
 
 private:
     King::Engine m_engine;
+    Game::InputHandler m_input;
 
     Game::GameplayController m_controller;
     Game::Gameplay m_gameplay;
     Game::GameplayView m_view;
-    Game::InputHandler m_input;
 };
 
 //**********************************************************************
@@ -112,7 +112,7 @@ private:
 int
 main( int argc, char* argv[] )
 {
-    std::srand( std::time( 0 ) );
+    std::srand( std::time( 0u ) );
 
     MiniCrush game;
     game.Start( );

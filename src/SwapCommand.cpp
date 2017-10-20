@@ -25,8 +25,9 @@ SwapCommand::~SwapCommand( )
 bool
 SwapCommand::is_valid( const Gameplay& gameplay ) const
 {
-    const auto& one = gameplay.cell_position( m_one_coordinate.x, m_one_coordinate.y );
-    const auto& other = gameplay.cell_position( m_other_coordinate.x, m_other_coordinate.y );
+    const auto& one = gameplay.board( ).cell_position( m_one_coordinate.x, m_one_coordinate.y );
+    const auto& other
+        = gameplay.board( ).cell_position( m_other_coordinate.x, m_other_coordinate.y );
 
     if ( !one.is_valid( ) || !other.is_valid( ) )
     {
@@ -47,8 +48,8 @@ SwapCommand::is_finished( const Gameplay& gameplay ) const
 
     gameplay.print( );
 
-    const Cell& one_cell = gameplay.cell( m_one_coordinate.x, m_one_coordinate.y );
-    const Cell& other_cell = gameplay.cell( m_other_coordinate.x, m_other_coordinate.y );
+    const Cell& one_cell = gameplay.board( ).cell( m_one_coordinate.x, m_one_coordinate.y );
+    const Cell& other_cell = gameplay.board( ).cell( m_other_coordinate.x, m_other_coordinate.y );
 
     std::cout << "std::abs( m_previous_cell_one.x - one_cell.x ) "
               << std::abs( m_previous_cell_one.x - one_cell.x ) << std::endl;
@@ -70,7 +71,7 @@ SwapCommand::move( Gameplay& gameplay,
                    const CellPosition& one_position,
                    const CellPosition& another_position )
 {
-    Board& board = gameplay.board( );
+    auto& board = gameplay.board_tiles( );
 
     Cell& one_cell = board[ one_position.col ][ one_position.row ];
     Cell& other_cell = board[ another_position.col ][ another_position.row ];
@@ -125,14 +126,16 @@ SwapCommand::apply( Gameplay& gameplay )
         return false;
     }
 
-    Board& board = gameplay.board( );
+    auto& board = gameplay.board_tiles( );
     if ( first_time )
     {
-        m_previous_cell_one = gameplay.copy_cell( m_one_coordinate.x, m_one_coordinate.y );
-        m_previous_cell_other = gameplay.copy_cell( m_other_coordinate.x, m_other_coordinate.y );
+        m_previous_cell_one = gameplay.board( ).copy_cell( m_one_coordinate.x, m_one_coordinate.y );
+        m_previous_cell_other
+            = gameplay.board( ).copy_cell( m_other_coordinate.x, m_other_coordinate.y );
 
-        m_one_position = gameplay.cell_position( m_one_coordinate.x, m_one_coordinate.y );
-        m_another_position = gameplay.cell_position( m_other_coordinate.x, m_other_coordinate.y );
+        m_one_position = gameplay.board( ).cell_position( m_one_coordinate.x, m_one_coordinate.y );
+        m_another_position
+            = gameplay.board( ).cell_position( m_other_coordinate.x, m_other_coordinate.y );
 
         std::cout << "SwapCommand" << std::endl;
         gameplay.print( );

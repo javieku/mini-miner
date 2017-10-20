@@ -18,7 +18,7 @@ GameplayView::render( const Gameplay& gameplay )
 {
     m_engine.Render( gameplay.background( ).texture, 0, 0 );
 
-    for ( const Colum& col : gameplay.board( ) )
+    for ( const Colum& col : gameplay.board( ).tiles( ) )
     {
         for ( const Cell& cell : col )
         {
@@ -29,7 +29,7 @@ GameplayView::render( const Gameplay& gameplay )
     std::string title = gameplay.score( ).text + std::to_string( gameplay.score( ).score );
     m_engine.Write( title.c_str( ), gameplay.score( ).x, gameplay.score( ).y );
 
-    title = gameplay.timer( ).text + std::to_string( gameplay.timer( ).elapsed( ) );
+    title = gameplay.timer( ).text + std::to_string( gameplay.timer( ).countdown( ) );
     m_engine.Write( title.c_str( ), gameplay.timer( ).x, gameplay.timer( ).y );
 }
 }
