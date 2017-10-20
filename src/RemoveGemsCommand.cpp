@@ -1,6 +1,6 @@
 #include "RemoveGemsCommand.h"
 
-#include "Gameplay.h"
+#include "GameState.h"
 
 #include <iostream>
 
@@ -12,54 +12,54 @@ RemoveGemsCommand::RemoveGemsCommand( )
 }
 
 bool
-RemoveGemsCommand::is_valid( const GameState& gameplay ) const
+RemoveGemsCommand::is_valid( const GameState& state ) const
 {
-    const auto& board = gameplay.board_tiles( );
-    bool removable = false;
+    const auto& board = state.board_tiles( );
+    bool can_remove = false;
     for ( size_t col = 0; col < board.size( ); ++col )
     {
         for ( size_t row = 0; row < board[ col ].size( ); ++row )
         {
             if ( row > 1 )
             {
-                removable |= board[ col ][ row - 1 ].texture == board[ col ][ row - 2 ].texture
-                             && board[ col ][ row - 1 ].texture == board[ col ][ row ].texture;
+                can_remove |= board[ col ][ row - 1 ].texture == board[ col ][ row - 2 ].texture
+                              && board[ col ][ row - 1 ].texture == board[ col ][ row ].texture;
             }
 
             if ( row + 2 < NROW )
             {
-                removable |= board[ col ][ row + 1 ].texture == board[ col ][ row + 2 ].texture
-                             && board[ col ][ row + 1 ].texture == board[ col ][ row ].texture;
+                can_remove |= board[ col ][ row + 1 ].texture == board[ col ][ row + 2 ].texture
+                              && board[ col ][ row + 1 ].texture == board[ col ][ row ].texture;
             }
 
             if ( col > 1 )
             {
-                removable |= board[ col - 1 ][ row ].texture == board[ col - 2 ][ row ].texture
-                             && board[ col - 1 ][ row ].texture == board[ col ][ row ].texture;
+                can_remove |= board[ col - 1 ][ row ].texture == board[ col - 2 ][ row ].texture
+                              && board[ col - 1 ][ row ].texture == board[ col ][ row ].texture;
             }
 
             if ( col + 2 < NCOL )
             {
-                removable |= board[ col + 1 ][ row ].texture == board[ col + 2 ][ row ].texture
-                             && board[ col + 1 ][ row ].texture == board[ col ][ row ].texture;
+                can_remove |= board[ col + 1 ][ row ].texture == board[ col + 2 ][ row ].texture
+                              && board[ col + 1 ][ row ].texture == board[ col ][ row ].texture;
             }
         }
     }
-    return removable;
+    return can_remove;
 };
 
-bool
-RemoveGemsCommand::apply( GameState& gameplay )
+void
+RemoveGemsCommand::apply( GameState& state )
 {
-    if ( !is_valid( gameplay ) )
+    if ( !is_valid( state ) )
     {
         m_done = true;
-        return false;
+        return;
     }
 
-    auto& board = gameplay.board_tiles( );
+    auto& board = state.board_tiles( );
     std::cout << "RemoveCommand" << std::endl;
-    gameplay.print( );
+    state.print( );
 
     bool has_removed_cell = false;
     for ( size_t col = 0; col < board.size( ); ++col )
@@ -75,7 +75,7 @@ RemoveGemsCommand::apply( GameState& gameplay )
                     board[ col ][ row - 1 ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row - 2 ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row ].texture = King::Engine::TEXTURE_BROKEN;
-                    gameplay.increase_score( );
+                    state.increase_score( );
                     has_removed_cell = true;
                 }
             }
@@ -89,7 +89,7 @@ RemoveGemsCommand::apply( GameState& gameplay )
                     board[ col ][ row + 1 ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row + 2 ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row ].texture = King::Engine::TEXTURE_BROKEN;
-                    gameplay.increase_score( );
+                    state.increase_score( );
                     has_removed_cell = true;
                 }
             }
@@ -103,7 +103,7 @@ RemoveGemsCommand::apply( GameState& gameplay )
                     board[ col - 1 ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col - 2 ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row ].texture = King::Engine::TEXTURE_BROKEN;
-                    gameplay.increase_score( );
+                    state.increase_score( );
                     has_removed_cell = true;
                 }
             }
@@ -117,26 +117,24 @@ RemoveGemsCommand::apply( GameState& gameplay )
                     board[ col + 1 ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col + 2 ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row ].texture = King::Engine::TEXTURE_BROKEN;
-                    gameplay.increase_score( );
+                    state.increase_score( );
                     has_removed_cell = true;
                 }
             }
         }
     }
     m_done = has_removed_cell;
-    gameplay.print( );
-    return true;
+    state.print( );
 }
 
 bool
-RemoveGemsCommand::is_finished( const GameState& gameplay ) const
+RemoveGemsCommand::is_finished( const GameState& state ) const
 {
     return m_done;
 };
 
-bool
-RemoveGemsCommand::undo( GameState& gameplay )
+void
+RemoveGemsCommand::undo( GameState& state )
 {
-    return false;
 }
 }

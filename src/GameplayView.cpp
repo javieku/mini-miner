@@ -14,11 +14,11 @@ GameplayView::~GameplayView( )
 }
 
 void
-GameplayView::render( const GameState& gameplay )
+GameplayView::render( const GameState& state )
 {
-    m_engine.Render( gameplay.background( ).texture, 0, 0 );
+    m_engine.Render( state.background( ).texture, 0, 0 );
 
-    for ( const Colum& col : gameplay.board( ).tiles( ) )
+    for ( const Colum& col : state.board( ).tiles( ) )
     {
         for ( const Cell& cell : col )
         {
@@ -26,10 +26,10 @@ GameplayView::render( const GameState& gameplay )
         }
     }
 
-    std::string title = gameplay.score( ).text + std::to_string( gameplay.score( ).score );
-    m_engine.Write( title.c_str( ), gameplay.score( ).x, gameplay.score( ).y );
+    std::string title = state.score( ).text + std::to_string( state.score( ).score );
+    m_engine.Write( title.c_str( ), state.score( ).x, state.score( ).y );
 
-    title = gameplay.timer( ).text + std::to_string( gameplay.timer( ).countdown( ) );
-    m_engine.Write( title.c_str( ), gameplay.timer( ).x, gameplay.timer( ).y );
+    title = state.timer( ).text + std::to_string( state.timer( ).countdown( ) );
+    m_engine.Write( title.c_str( ), state.timer( ).x, state.timer( ).y );
 }
 }

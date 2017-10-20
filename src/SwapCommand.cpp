@@ -23,11 +23,10 @@ SwapCommand::~SwapCommand( )
 }
 
 bool
-SwapCommand::is_valid( const GameState& gameplay ) const
+SwapCommand::is_valid( const GameState& state ) const
 {
-    const auto& one = gameplay.board( ).cell_position( m_one_coordinate.x, m_one_coordinate.y );
-    const auto& other
-        = gameplay.board( ).cell_position( m_other_coordinate.x, m_other_coordinate.y );
+    const auto& one = state.board( ).cell_position( m_one_coordinate.x, m_one_coordinate.y );
+    const auto& other = state.board( ).cell_position( m_other_coordinate.x, m_other_coordinate.y );
 
     if ( !one.is_valid( ) || !other.is_valid( ) )
     {
@@ -39,17 +38,17 @@ SwapCommand::is_valid( const GameState& gameplay ) const
 }
 
 bool
-SwapCommand::is_finished( const GameState& gameplay ) const
+SwapCommand::is_finished( const GameState& state ) const
 {
-    if ( !is_valid( gameplay ) )
+    if ( !is_valid( state ) )
     {
         return true;
     }
 
-    gameplay.print( );
+    state.print( );
 
-    const Cell& one_cell = gameplay.board( ).cell( m_one_coordinate.x, m_one_coordinate.y );
-    const Cell& other_cell = gameplay.board( ).cell( m_other_coordinate.x, m_other_coordinate.y );
+    const Cell& one_cell = state.board( ).cell( m_one_coordinate.x, m_one_coordinate.y );
+    const Cell& other_cell = state.board( ).cell( m_other_coordinate.x, m_other_coordinate.y );
 
     std::cout << "std::abs( m_previous_cell_one.x - one_cell.x ) "
               << std::abs( m_previous_cell_one.x - one_cell.x ) << std::endl;
@@ -67,11 +66,11 @@ SwapCommand::is_finished( const GameState& gameplay ) const
 }
 
 void
-SwapCommand::move( GameState& gameplay,
+SwapCommand::move( GameState& state,
                    const CellPosition& one_position,
                    const CellPosition& another_position )
 {
-    auto& board = gameplay.board_tiles( );
+    auto& board = state.board_tiles( );
 
     Cell& one_cell = board[ one_position.col ][ one_position.row ];
     Cell& other_cell = board[ another_position.col ][ another_position.row ];
@@ -118,51 +117,49 @@ SwapCommand::move( GameState& gameplay,
     }
 }
 
-bool
-SwapCommand::apply( GameState& gameplay )
+void
+SwapCommand::apply( GameState& state )
 {
-    if ( !is_valid( gameplay ) )
+    if ( !is_valid( state ) )
     {
-        return false;
+        return;
     }
 
-    auto& board = gameplay.board_tiles( );
+    auto& board = state.board_tiles( );
     if ( first_time )
     {
-        m_previous_cell_one = gameplay.board( ).copy_cell( m_one_coordinate.x, m_one_coordinate.y );
+        m_previous_cell_one = state.board( ).copy_cell( m_one_coordinate.x, m_one_coordinate.y );
         m_previous_cell_other
-            = gameplay.board( ).copy_cell( m_other_coordinate.x, m_other_coordinate.y );
+            = state.board( ).copy_cell( m_other_coordinate.x, m_other_coordinate.y );
 
-        m_one_position = gameplay.board( ).cell_position( m_one_coordinate.x, m_one_coordinate.y );
+        m_one_position = state.board( ).cell_position( m_one_coordinate.x, m_one_coordinate.y );
         m_another_position
-            = gameplay.board( ).cell_position( m_other_coordinate.x, m_other_coordinate.y );
+            = state.board( ).cell_position( m_other_coordinate.x, m_other_coordinate.y );
 
         std::cout << "SwapCommand" << std::endl;
-        gameplay.print( );
+        state.print( );
 
         Cell aux = board[ m_one_position.col ][ m_one_position.row ];
         board[ m_one_position.col ][ m_one_position.row ]
             = board[ m_another_position.col ][ m_another_position.row ];
         board[ m_another_position.col ][ m_another_position.row ] = aux;
-        gameplay.print( );
+        state.print( );
         first_time = false;
     }
 
-    move( gameplay, m_one_position, m_another_position );
-
-    return true;
+    move( state, m_one_position, m_another_position );
 }
 
-bool
-SwapCommand::undo( GameState& gameplay )
+void
+SwapCommand::undo( GameState& state )
 {
-    Board& board = gameplay.board( );
+    Board& board = state.board( );
 
     first_time = true;
     Coordinates aux = m_one_coordinate;
     m_one_coordinate = m_other_coordinate;
     m_other_coordinate = aux;
 
-    return apply( gameplay );
+    return apply( state );
 }
 }

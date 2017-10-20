@@ -13,16 +13,16 @@ public:
     SwapCommand( const Coordinates& one, const Coordinates& other );
     ~SwapCommand( );
 
-    bool is_valid( const GameState& gameplay ) const override;
+    bool is_valid( const GameState& state ) const override;
 
-    bool is_finished( const GameState& gameplay ) const override;
+    bool is_finished( const GameState& state ) const override;
 
-    bool apply( GameState& gameplay ) override;
+    void apply( GameState& state ) override;
 
-    bool undo( GameState& gameplay ) override;
+    void undo( GameState& state ) override;
 
 private:
-    void move( GameState& gameplay,
+    void move( GameState& state,
                const CellPosition& one_position,
                const CellPosition& another_position );
 

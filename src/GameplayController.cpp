@@ -12,7 +12,7 @@ GameplayController::~GameplayController( )
 }
 
 void
-GameplayController::update( GameState& gameplay )
+GameplayController::update( GameState& state )
 {
     if ( !m_current_action )
     {
@@ -20,9 +20,9 @@ GameplayController::update( GameState& gameplay )
         {
             m_current_action = m_actions.front( );
             m_actions.pop_front( );
-            if ( !m_current_action->is_valid( gameplay ) && m_last_action )
+            if ( !m_current_action->is_valid( state ) && m_last_action )
             {
-                m_last_action->undo( gameplay );
+                m_last_action->undo( state );
                 m_current_action = m_last_action;
                 m_actions.clear( );
             }
@@ -34,9 +34,9 @@ GameplayController::update( GameState& gameplay )
     }
     else
     {
-        if ( !m_current_action->is_finished( gameplay ) )
+        if ( !m_current_action->is_finished( state ) )
         {
-            m_current_action->apply( gameplay );
+            m_current_action->apply( state );
         }
         else
         {

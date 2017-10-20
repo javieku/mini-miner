@@ -12,10 +12,10 @@ public:
     MoveCommand( const Cell& cell, const Coordinates& to );
     ~MoveCommand( ) = default;
 
-    bool is_valid( const GameState& gameplay ) const override;
-    bool is_finished( const GameState& gameplay ) const override;
-    bool apply( GameState& gameplay ) override;
-    bool undo( GameState& gameplay ) override;
+    bool is_valid( const GameState& state ) const override;
+    bool is_finished( const GameState& state ) const override;
+    void apply( GameState& state ) override;
+    void undo( GameState& state ) override;
 
 private:
     Cell m_cell;

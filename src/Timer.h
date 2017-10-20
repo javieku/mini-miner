@@ -14,7 +14,7 @@ class Timer : public Entity
 public:
     Timer( )
     {
-        // TODO Inject from Gameplay
+        // TODO Inject from Gamestate
         this->x = 75u;
         this->y = 175u;
     }
@@ -40,7 +40,7 @@ public:
     }
 
 public:
-    // TODO Inject from Gameplay
+    // TODO Inject from Gamestate
     std::string text = "Time: ";
     int duration = 60;
 

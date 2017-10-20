@@ -1,5 +1,6 @@
 #pragma once
 
+// Game
 #include "CommandInterface.h"
 #include "GenerateGemsCommand.h"
 #include "RemoveGemsCommand.h"
@@ -17,45 +18,42 @@ public:
     ~CollapseCommand( ) = default;
 
     bool
-    is_valid( const GameState& gameplay ) const override
+    is_valid( const GameState& state ) const override
     {
-        return generate_comand->is_valid( gameplay ) && remove_comand->is_valid( gameplay );
+        return generate_comand->is_valid( state ) && remove_comand->is_valid( state );
     }
 
     bool
-    is_finished( const GameState& gameplay ) const override
+    is_finished( const GameState& state ) const override
     {
-        return generate_comand->is_finished( gameplay ) && remove_comand->is_finished( gameplay );
+        return generate_comand->is_finished( state ) && remove_comand->is_finished( state );
     }
 
-    bool
-    apply( GameState& gameplay ) override
+    void
+    apply( GameState& state ) override
     {
-        if ( generate_comand->is_finished( gameplay ) )
+        if ( generate_comand->is_finished( state ) )
         {
             generate_comand = std::make_shared< GenerateGemsCommand >( );
-            remove_comand->apply( gameplay );
+            remove_comand->apply( state );
         }
         else
         {
             remove_comand = std::make_shared< RemoveGemsCommand >( );
-            generate_comand->apply( gameplay );
+            generate_comand->apply( state );
         }
-        return true;
     }
-    bool
-    undo( GameState& gameplay ) override
+    void
+    undo( GameState& state ) override
     {
-        generate_comand->undo( gameplay );
-        remove_comand->undo( gameplay );
-        return true;
+        generate_comand->undo( state );
+        remove_comand->undo( state );
     }
 
 private:
     CreateGemsCommandSharedPtr generate_comand;
     RemoveGemsCommandSharedPtr remove_comand;
 
-    bool first_time = true;
 };
 using CollapseCommandSharedPtr = std::shared_ptr< CollapseCommand >;
 }

@@ -1,5 +1,6 @@
 #include "MoveCommand.h"
 
+// Standard
 #include <iostream>
 
 namespace Game
@@ -17,22 +18,21 @@ MoveCommand::MoveCommand( const Cell& cell, const Coordinates& to )
 }
 
 bool
-MoveCommand::is_valid( const GameState& gameplay ) const
+MoveCommand::is_valid( const GameState& state ) const
 {
     return true;
 };
 
 bool
-MoveCommand::is_finished( const GameState& gameplay ) const
+MoveCommand::is_finished( const GameState& state ) const
 {
-    if ( !is_valid( gameplay ) )
+    if ( !is_valid( state ) )
     {
         return true;
     }
 
-    const auto& board = gameplay.board_tiles( );
-    CellPosition position
-        = gameplay.board( ).cell_position( m_to_coordinates.x, m_to_coordinates.y );
+    const auto& board = state.board_tiles( );
+    CellPosition position = state.board( ).cell_position( m_to_coordinates.x, m_to_coordinates.y );
     const Cell& cell = board[ position.col ][ position.row ];
 
     std::cout << "std::abs( m_previous_cell.x - cell.x ) " << std::abs( m_previous_cell.x - cell.x )
@@ -44,26 +44,25 @@ MoveCommand::is_finished( const GameState& gameplay ) const
            && ( std::abs( m_previous_cell.y - cell.y ) <= 1 );
 };
 
-bool
-MoveCommand::apply( GameState& gameplay )
+void
+MoveCommand::apply( GameState& state )
 {
-    auto& board = gameplay.board_tiles( );
+    auto& board = state.board_tiles( );
 
     if ( m_store_for_undo )
     {
-        m_previous_cell = gameplay.board( ).copy_cell( m_to_coordinates.x, m_to_coordinates.y );
+        m_previous_cell = state.board( ).copy_cell( m_to_coordinates.x, m_to_coordinates.y );
         m_store_for_undo = false;
 
         std::cout << "MoveCommand" << std::endl;
         CellPosition position
-            = gameplay.board( ).cell_position( m_to_coordinates.x, m_to_coordinates.y );
-        gameplay.print( );
+            = state.board( ).cell_position( m_to_coordinates.x, m_to_coordinates.y );
+        state.print( );
         board[ position.col ][ position.row ] = m_cell;
-        gameplay.print( );
+        state.print( );
     }
 
-    CellPosition position
-        = gameplay.board( ).cell_position( m_to_coordinates.x, m_to_coordinates.y );
+    CellPosition position = state.board( ).cell_position( m_to_coordinates.x, m_to_coordinates.y );
     Cell& cell = board[ position.col ][ position.row ];
 
     if ( cell.y < m_previous_cell.y )
@@ -83,13 +82,10 @@ MoveCommand::apply( GameState& gameplay )
     {
         cell.x -= ( cell.x - m_previous_cell.x ) > DELTA ? DELTA : ( cell.x - m_previous_cell.x );
     }
-
-    return true;
 };
 
-bool
-MoveCommand::undo( GameState& gameplay )
+void
+MoveCommand::undo( GameState& state )
 {
-    return false;
 }
 }

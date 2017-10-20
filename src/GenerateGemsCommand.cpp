@@ -11,20 +11,20 @@
 namespace Game
 {
 bool
-GenerateGemsCommand::is_valid( const GameState& gameplay ) const
+GenerateGemsCommand::is_valid( const GameState& state ) const
 {
     // Always executable
     return true;
 };
 
 bool
-GenerateGemsCommand::is_finished( const GameState& gameplay ) const
+GenerateGemsCommand::is_finished( const GameState& state ) const
 {
-    const auto& board = gameplay.board_tiles( );
+    const auto& board = state.board_tiles( );
     bool is_finished = true;
-    for ( auto col = 0; col < board.size( ); ++col )
+    for ( size_t col = 0; col < board.size( ); ++col )
     {
-        for ( auto row = 0; row < board[ col ].size( ); ++row )
+        for ( size_t row = 0; row < board[ col ].size( ); ++row )
         {
             if ( board[ col ][ row ].texture == King::Engine::TEXTURE_BROKEN )
             {
@@ -35,23 +35,23 @@ GenerateGemsCommand::is_finished( const GameState& gameplay ) const
 
     for ( auto& move_command : m_falling_gems )
     {
-        is_finished = is_finished && move_command->is_finished( gameplay );
+        is_finished = is_finished && move_command->is_finished( state );
     }
 
     return is_finished;
 };
 
-bool
-GenerateGemsCommand::apply( GameState& gameplay )
+void
+GenerateGemsCommand::apply( GameState& state )
 {
-    auto& board = gameplay.board_tiles( );
+    auto& board = state.board_tiles( );
 
     if ( first_time )
     {
         std::cout << "GenerateGemsCommand" << std::endl;
-        gameplay.print( );
+        state.print( );
 
-        for ( auto col = 0; col < board.size( ); ++col )
+        for ( size_t col = 0; col < board.size( ); ++col )
         {
             // Find last broken cell in colum
             if ( has_broken_cell( board[ col ] ) )
@@ -65,12 +65,12 @@ GenerateGemsCommand::apply( GameState& gameplay )
                         return cell.texture == King::Engine::TEXTURE_BROKEN;
                     } );
 
-                gameplay.print( );
+                state.print( );
 
-                for ( auto row = 0; row < column.size( ); ++row )
+                for ( size_t row = 0; row < column.size( ); ++row )
                 {
                     Cell cell = ( column[ row ].texture == King::Engine::TEXTURE_BROKEN )
-                                    ? Cell::create_random( 40 * row, column[ row ].x )
+                                    ? Cell::create_random( 40.0f * row, column[ row ].x )
                                     : column[ row ];
 
                     const Cell& cell_to_be_replaced = board[ col ][ row ];
@@ -80,22 +80,19 @@ GenerateGemsCommand::apply( GameState& gameplay )
             }
         }
         first_time = false;
-        gameplay.print( );
+        state.print( );
     }
 
     for ( auto& move_command : m_falling_gems )
     {
-        move_command->apply( gameplay );
+        move_command->apply( state );
     }
-
-    return true;
 }
 
-bool
-GenerateGemsCommand::undo( GameState& gameplay )
+void
+GenerateGemsCommand::undo( GameState& state )
 {
     // TODO
-    return true;
 }
 
 bool

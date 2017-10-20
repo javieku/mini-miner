@@ -74,7 +74,7 @@ public:
         : m_engine( "./assets" )
         , m_input( m_engine )
         , m_view( m_engine )
-        , m_gameplay( )
+        , m_model( )
         , m_controller( m_input )
     {
     }
@@ -88,11 +88,11 @@ public:
     void
     Update( )
     {
-        m_view.render( m_gameplay );
+        m_view.render( m_model );
 
-        m_controller.update( m_gameplay );
+        m_controller.update( m_model );
 
-        if ( m_gameplay.is_finished( ) )
+        if ( m_model.is_finished( ) )
         {
             m_engine.Quit( );
         }
@@ -103,7 +103,7 @@ private:
     Game::InputHandler m_input;
 
     Game::GameplayController m_controller;
-    Game::GameState m_gameplay;
+    Game::GameState m_model;
     Game::GameplayView m_view;
 };
 
