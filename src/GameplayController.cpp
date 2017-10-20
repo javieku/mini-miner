@@ -2,17 +2,17 @@
 
 namespace Game
 {
-GameplayController::GameplayController( InputHandler& input_handler )
+GameController::GameController( InputHandler& input_handler )
     : m_input_handler( input_handler )
 {
 }
 
-GameplayController::~GameplayController( )
+GameController::~GameController( )
 {
 }
 
 void
-GameplayController::update( GameState& state )
+GameController::update( GameState& state )
 {
     if ( !m_current_action )
     {
@@ -44,5 +44,11 @@ GameplayController::update( GameState& state )
             m_current_action = nullptr;
         }
     }
+}
+
+bool
+GameController::is_finished( const GameState& state ) const
+{
+    return state.is_finished( );
 }
 }

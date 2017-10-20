@@ -13,12 +13,12 @@ class Engine;
 
 namespace Game
 {
-class GameplayView
+class GameView
 {
 public:
-    GameplayView( ) = delete;
-    explicit GameplayView( King::Engine& engine );
-    ~GameplayView( );
+    GameView( ) = delete;
+    explicit GameView( King::Engine& engine );
+    ~GameView( );
 
     void render( const GameState& model );
 

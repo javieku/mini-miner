@@ -4,17 +4,17 @@
 
 namespace Game
 {
-GameplayView::GameplayView( King::Engine& engine )
+GameView::GameView( King::Engine& engine )
     : m_engine( engine )
 {
 }
 
-GameplayView::~GameplayView( )
+GameView::~GameView( )
 {
 }
 
 void
-GameplayView::render( const GameState& state )
+GameView::render( const GameState& state )
 {
     m_engine.Render( state.background( ).texture, 0, 0 );
 

@@ -12,13 +12,15 @@
 
 namespace Game
 {
-class GameplayController
+class GameController
 {
 public:
-    GameplayController( InputHandler& input_handler );
-    ~GameplayController( );
+    GameController( InputHandler& input_handler );
+    ~GameController( );
 
     void update( GameState& state );
+
+    bool is_finished( const GameState& state ) const;
 
 private:
     InputHandler& m_input_handler;
