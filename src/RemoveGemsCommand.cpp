@@ -61,7 +61,7 @@ RemoveGemsCommand::apply( GameState& state )
     std::cout << "RemoveCommand" << std::endl;
     state.print( );
 
-    bool has_removed_cell = false;
+    bool has_removed_gem = false;
     for ( size_t col = 0; col < board.size( ); ++col )
     {
         for ( size_t row = 0; row < board[ col ].size( ); ++row )
@@ -76,7 +76,7 @@ RemoveGemsCommand::apply( GameState& state )
                     board[ col ][ row - 2 ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     state.increase_score( );
-                    has_removed_cell = true;
+                    has_removed_gem = true;
                 }
             }
 
@@ -90,7 +90,7 @@ RemoveGemsCommand::apply( GameState& state )
                     board[ col ][ row + 2 ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     state.increase_score( );
-                    has_removed_cell = true;
+                    has_removed_gem = true;
                 }
             }
 
@@ -104,7 +104,7 @@ RemoveGemsCommand::apply( GameState& state )
                     board[ col - 2 ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     state.increase_score( );
-                    has_removed_cell = true;
+                    has_removed_gem = true;
                 }
             }
 
@@ -118,12 +118,12 @@ RemoveGemsCommand::apply( GameState& state )
                     board[ col + 2 ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     state.increase_score( );
-                    has_removed_cell = true;
+                    has_removed_gem = true;
                 }
             }
         }
     }
-    m_done = has_removed_cell;
+    m_done = has_removed_gem;
     state.print( );
 }
 

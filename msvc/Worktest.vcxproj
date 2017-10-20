@@ -82,6 +82,7 @@
     <ClCompile Include="..\external\include\king\SdlSurface.cpp" />
     <ClCompile Include="..\external\include\king\SdlWindow.cpp" />
     <ClCompile Include="..\src\Board.cpp" />
+    <ClCompile Include="..\src\Gem.cpp" />
     <ClCompile Include="..\src\CollapseCommand.cpp" />
     <ClCompile Include="..\src\RemoveGemsCommand.cpp" />
     <ClCompile Include="..\src\GameState.cpp" />
@@ -102,13 +103,14 @@
     <ClInclude Include="..\external\include\king\SdlWindow.h" />
     <ClInclude Include="..\external\include\king\Updater.h" />
     <ClInclude Include="..\src\Board.h" />
+    <ClInclude Include="..\src\Gem.h" />
     <ClInclude Include="..\src\CollapseCommand.h" />
     <ClInclude Include="..\src\Entity.h" />
     <ClInclude Include="..\src\RemoveGemsCommand.h" />
     <ClInclude Include="..\src\CommandInterface.h" />
     <ClInclude Include="..\src\GameState.h" />
-    <ClInclude Include="..\src\GameplayController.h" />
-    <ClInclude Include="..\src\GameplayView.h" />
+    <ClInclude Include="..\src\GameController.h" />
+    <ClInclude Include="..\src\GameView.h" />
     <ClInclude Include="..\src\GenerateGemsCommand.h" />
     <ClInclude Include="..\src\Score.h" />
     <ClInclude Include="..\src\InputHandler.h" />

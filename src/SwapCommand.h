@@ -23,18 +23,18 @@ public:
 
 private:
     void move( GameState& state,
-               const CellPosition& one_position,
-               const CellPosition& another_position );
+               const GemPosition& one_position,
+               const GemPosition& another_position );
 
 private:
     Coordinates m_one_coordinate;
     Coordinates m_other_coordinate;
 
-    Cell m_previous_cell_one;
-    Cell m_previous_cell_other;
+    Gem m_previous_one_gem;
+    Gem m_previous_other_gem;
 
-    CellPosition m_one_position;
-    CellPosition m_another_position;
+    GemPosition m_one_position;
+    GemPosition m_another_position;
 
     bool first_time;
 

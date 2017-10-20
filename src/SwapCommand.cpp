@@ -25,8 +25,9 @@ SwapCommand::~SwapCommand( )
 bool
 SwapCommand::is_valid( const GameState& state ) const
 {
-    const auto& one = state.board( ).cell_position( m_one_coordinate.x, m_one_coordinate.y );
-    const auto& other = state.board( ).cell_position( m_other_coordinate.x, m_other_coordinate.y );
+    const auto& one = state.board( ).position_of_gem( m_one_coordinate.x, m_one_coordinate.y );
+    const auto& other
+        = state.board( ).position_of_gem( m_other_coordinate.x, m_other_coordinate.y );
 
     if ( !one.is_valid( ) || !other.is_valid( ) )
     {
@@ -47,72 +48,72 @@ SwapCommand::is_finished( const GameState& state ) const
 
     state.print( );
 
-    const Cell& one_cell = state.board( ).cell( m_one_coordinate.x, m_one_coordinate.y );
-    const Cell& other_cell = state.board( ).cell( m_other_coordinate.x, m_other_coordinate.y );
+    const Gem& one_gem = state.board( ).gem( m_one_coordinate.x, m_one_coordinate.y );
+    const Gem& other_gem = state.board( ).gem( m_other_coordinate.x, m_other_coordinate.y );
 
-    std::cout << "std::abs( m_previous_cell_one.x - one_cell.x ) "
-              << std::abs( m_previous_cell_one.x - one_cell.x ) << std::endl;
-    std::cout << "std::abs( m_previous_cell_one.y - one_cell.y ) "
-              << std::abs( m_previous_cell_one.y - one_cell.y ) << std::endl;
-    std::cout << "std::abs( m_previous_cell_other.x - other_cell.x ) "
-              << std::abs( m_previous_cell_other.x - other_cell.x ) << std::endl;
-    std::cout << "std::abs( m_previous_cell_other.y - other_cell.y  "
-              << std::abs( m_previous_cell_other.y - other_cell.y ) << std::endl;
+    std::cout << "std::abs( m_previous_gem_one.x - one_gem.x ) "
+              << std::abs( m_previous_one_gem.x - one_gem.x ) << std::endl;
+    std::cout << "std::abs( m_previous_gem_one.y - one_gem.y ) "
+              << std::abs( m_previous_one_gem.y - one_gem.y ) << std::endl;
+    std::cout << "std::abs( m_previous_gem_other.x - other_gem.x ) "
+              << std::abs( m_previous_other_gem.x - other_gem.x ) << std::endl;
+    std::cout << "std::abs( m_previous_gem_other.y - other_gem.y  "
+              << std::abs( m_previous_other_gem.y - other_gem.y ) << std::endl;
 
-    return ( std::abs( m_previous_cell_one.x - one_cell.x ) <= 1 )
-           && ( std::abs( m_previous_cell_one.y - one_cell.y ) <= 1 )
-           && ( std::abs( m_previous_cell_other.x - other_cell.x ) <= 1 )
-           && ( std::abs( m_previous_cell_other.y - other_cell.y ) <= 1 );
+    return ( std::abs( m_previous_one_gem.x - one_gem.x ) <= 1 )
+           && ( std::abs( m_previous_one_gem.y - one_gem.y ) <= 1 )
+           && ( std::abs( m_previous_other_gem.x - other_gem.x ) <= 1 )
+           && ( std::abs( m_previous_other_gem.y - other_gem.y ) <= 1 );
 }
 
 void
 SwapCommand::move( GameState& state,
-                   const CellPosition& one_position,
-                   const CellPosition& another_position )
+                   const GemPosition& one_position,
+                   const GemPosition& another_position )
 {
     auto& board = state.board_tiles( );
 
-    Cell& one_cell = board[ one_position.col ][ one_position.row ];
-    Cell& other_cell = board[ another_position.col ][ another_position.row ];
+    Gem& one_gem = board[ one_position.col ][ one_position.row ];
+    Gem& other_gem = board[ another_position.col ][ another_position.row ];
 
     if ( one_position.col == another_position.col )
     {
-        if ( one_cell.y < m_previous_cell_one.y )
+        if ( one_gem.y < m_previous_one_gem.y )
         {
-            one_cell.y += DELTA;
+            one_gem.y += DELTA;
         }
-        else if ( one_cell.y > m_previous_cell_one.y )
+        else if ( one_gem.y > m_previous_one_gem.y )
         {
-            one_cell.y -= DELTA;
+            one_gem.y -= DELTA;
         }
 
-        if ( other_cell.y < m_previous_cell_other.y )
+        if ( other_gem.y < m_previous_other_gem.y )
         {
-            other_cell.y += DELTA;
+            other_gem.y += DELTA;
         }
-        else if ( other_cell.y > m_previous_cell_other.y )
+        else if ( other_gem.y > m_previous_other_gem.y )
         {
-            other_cell.y -= DELTA;
+            other_gem.y -= DELTA;
         }
     }
     else if ( one_position.row == another_position.row )
     {
-        if ( one_cell.x < m_previous_cell_one.x )
+        if ( one_gem.x < m_previous_one_gem.x )
         {
-            one_cell.x += DELTA;
+            one_gem.x += DELTA;
         }
-        else if ( one_cell.x > m_previous_cell_one.x )
+        else if ( one_gem.x > m_previous_one_gem.x )
         {
-            one_cell.x -= DELTA;
+            one_gem.x -= DELTA;
         }
 
-        if ( other_cell.x < m_previous_cell_other.x )
+        if ( other_gem.x < m_previous_other_gem.x )
         {
-            other_cell.x += DELTA;
+            other_gem.x += DELTA;
         }
-        else if ( other_cell.x > m_previous_cell_other.x )
+        else if ( other_gem.x > m_previous_other_gem.x )
         {
-            other_cell.x -= DELTA;
+            other_gem.x -= DELTA;
         }
     }
 }
@@ -128,18 +129,18 @@ SwapCommand::apply( GameState& state )
     auto& board = state.board_tiles( );
     if ( first_time )
     {
-        m_previous_cell_one = state.board( ).copy_cell( m_one_coordinate.x, m_one_coordinate.y );
-        m_previous_cell_other
-            = state.board( ).copy_cell( m_other_coordinate.x, m_other_coordinate.y );
+        m_previous_one_gem = state.board( ).copy_gem( m_one_coordinate.x, m_one_coordinate.y );
+        m_previous_other_gem
+            = state.board( ).copy_gem( m_other_coordinate.x, m_other_coordinate.y );
 
-        m_one_position = state.board( ).cell_position( m_one_coordinate.x, m_one_coordinate.y );
+        m_one_position = state.board( ).position_of_gem( m_one_coordinate.x, m_one_coordinate.y );
         m_another_position
-            = state.board( ).cell_position( m_other_coordinate.x, m_other_coordinate.y );
+            = state.board( ).position_of_gem( m_other_coordinate.x, m_other_coordinate.y );
 
         std::cout << "SwapCommand" << std::endl;
         state.print( );
 
-        Cell aux = board[ m_one_position.col ][ m_one_position.row ];
+        Gem aux = board[ m_one_position.col ][ m_one_position.row ];
         board[ m_one_position.col ][ m_one_position.row ]
             = board[ m_another_position.col ][ m_another_position.row ];
         board[ m_another_position.col ][ m_another_position.row ] = aux;

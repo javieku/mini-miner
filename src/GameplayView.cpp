@@ -1,4 +1,4 @@
-#include "GameplayView.h"
+#include "GameView.h"
 
 #include <king/Engine.h>
 
@@ -20,9 +20,9 @@ GameView::render( const GameState& state )
 
     for ( const Colum& col : state.board( ).tiles( ) )
     {
-        for ( const Cell& cell : col )
+        for ( const Gem& gem : col )
         {
-            m_engine.Render( cell.texture, cell.x, cell.y );
+            m_engine.Render( gem.texture, gem.x, gem.y );
         }
     }
 

@@ -1,4 +1,4 @@
-#include "GameplayController.h"
+#include "GameController.h"
 
 namespace Game
 {

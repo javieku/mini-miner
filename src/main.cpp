@@ -2,8 +2,8 @@
 
 // Game
 #include "GameState.h"
-#include "GameplayController.h"
-#include "GameplayView.h"
+#include "GameController.h"
+#include "GameView.h"
 #include "InputHandler.h"
 
 // Engine

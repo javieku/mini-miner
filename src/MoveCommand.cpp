@@ -10,8 +10,8 @@ namespace
 const int32_t DELTA = 1;
 }
 
-MoveCommand::MoveCommand( const Cell& cell, const Coordinates& to )
-    : m_cell( cell )
+MoveCommand::MoveCommand( const Gem& gem, const Coordinates& to )
+    : m_gem( gem )
     , m_to_coordinates( to )
     , m_store_for_undo( true )
 {
@@ -32,16 +32,16 @@ MoveCommand::is_finished( const GameState& state ) const
     }
 
     const auto& board = state.board_tiles( );
-    CellPosition position = state.board( ).cell_position( m_to_coordinates.x, m_to_coordinates.y );
-    const Cell& cell = board[ position.col ][ position.row ];
+    GemPosition position = state.board( ).position_of_gem( m_to_coordinates.x, m_to_coordinates.y );
+    const Gem& gem = board[ position.col ][ position.row ];
 
-    std::cout << "std::abs( m_previous_cell.x - cell.x ) " << std::abs( m_previous_cell.x - cell.x )
+    std::cout << "std::abs( m_previous_gem.x - gem.x ) " << std::abs( m_previous_gem.x - gem.x )
               << std::endl;
-    std::cout << "std::abs( m_previous_cell.y - cell.y ) " << std::abs( m_previous_cell.y - cell.y )
+    std::cout << "std::abs( m_previous_gem.y - gem.y ) " << std::abs( m_previous_gem.y - gem.y )
               << std::endl;
 
-    return ( std::abs( m_previous_cell.x - cell.x ) <= 1 )
-           && ( std::abs( m_previous_cell.y - cell.y ) <= 1 );
+    return ( std::abs( m_previous_gem.x - gem.x ) <= 1 )
+           && ( std::abs( m_previous_gem.y - gem.y ) <= 1 );
 };
 
 void
@@ -51,36 +51,36 @@ MoveCommand::apply( GameState& state )
 
     if ( m_store_for_undo )
     {
-        m_previous_cell = state.board( ).copy_cell( m_to_coordinates.x, m_to_coordinates.y );
+        m_previous_gem = state.board( ).copy_gem( m_to_coordinates.x, m_to_coordinates.y );
         m_store_for_undo = false;
 
         std::cout << "MoveCommand" << std::endl;
-        CellPosition position
-            = state.board( ).cell_position( m_to_coordinates.x, m_to_coordinates.y );
+        GemPosition position
+            = state.board( ).position_of_gem( m_to_coordinates.x, m_to_coordinates.y );
         state.print( );
-        board[ position.col ][ position.row ] = m_cell;
+        board[ position.col ][ position.row ] = m_gem;
         state.print( );
     }
 
-    CellPosition position = state.board( ).cell_position( m_to_coordinates.x, m_to_coordinates.y );
-    Cell& cell = board[ position.col ][ position.row ];
+    GemPosition position = state.board( ).position_of_gem( m_to_coordinates.x, m_to_coordinates.y );
+    Gem& gem = board[ position.col ][ position.row ];
 
-    if ( cell.y < m_previous_cell.y )
+    if ( gem.y < m_previous_gem.y )
     {
-        cell.y += ( m_previous_cell.y - cell.y ) > DELTA ? DELTA : ( m_previous_cell.y - cell.y );
+        gem.y += ( m_previous_gem.y - gem.y ) > DELTA ? DELTA : ( m_previous_gem.y - gem.y );
     }
-    else if ( cell.y > m_previous_cell.y )
+    else if ( gem.y > m_previous_gem.y )
     {
-        cell.y -= ( cell.y - m_previous_cell.y ) > DELTA ? DELTA : ( cell.y - m_previous_cell.y );
+        gem.y -= ( gem.y - m_previous_gem.y ) > DELTA ? DELTA : ( gem.y - m_previous_gem.y );
     }
 
-    if ( cell.x < m_previous_cell.x )
+    if ( gem.x < m_previous_gem.x )
     {
-        cell.x += ( m_previous_cell.x - cell.x ) > DELTA ? DELTA : ( m_previous_cell.x - cell.x );
+        gem.x += ( m_previous_gem.x - gem.x ) > DELTA ? DELTA : ( m_previous_gem.x - gem.x );
     }
-    else if ( cell.x > m_previous_cell.x )
+    else if ( gem.x > m_previous_gem.x )
     {
-        cell.x -= ( cell.x - m_previous_cell.x ) > DELTA ? DELTA : ( cell.x - m_previous_cell.x );
+        gem.x -= ( gem.x - m_previous_gem.x ) > DELTA ? DELTA : ( gem.x - m_previous_gem.x );
     }
 };
 

@@ -13,7 +13,7 @@ namespace Game
 bool
 GenerateGemsCommand::is_valid( const GameState& state ) const
 {
-    // Always executable
+    // Always applicable
     return true;
 };
 
@@ -53,29 +53,28 @@ GenerateGemsCommand::apply( GameState& state )
 
         for ( size_t col = 0; col < board.size( ); ++col )
         {
-            // Find last broken cell in colum
-            if ( has_broken_cell( board[ col ] ) )
+            // Find last broken gem in colum
+            if ( has_broken_gem( board[ col ] ) )
             {
                 // If found create move commands
                 Colum column( board[ col ].size( ) );
                 std::copy( board[ col ].begin( ), board[ col ].end( ), column.begin( ) );
 
                 auto bound = std::stable_partition(
-                    column.begin( ), column.end( ), []( const Cell& cell ) {
-                        return cell.texture == King::Engine::TEXTURE_BROKEN;
-                    } );
+                    column.begin( ), column.end( ),
+                    []( const Gem& gem ) { return gem.texture == King::Engine::TEXTURE_BROKEN; } );
 
                 state.print( );
 
                 for ( size_t row = 0; row < column.size( ); ++row )
                 {
-                    Cell cell = ( column[ row ].texture == King::Engine::TEXTURE_BROKEN )
-                                    ? Cell::create_random( 40.0f * row, column[ row ].x )
-                                    : column[ row ];
+                    Gem gem = ( column[ row ].texture == King::Engine::TEXTURE_BROKEN )
+                                  ? Gem::create_random( 40.0f * row, column[ row ].x )
+                                  : column[ row ];
 
-                    const Cell& cell_to_be_replaced = board[ col ][ row ];
+                    const Gem& gem_to_be_replaced = board[ col ][ row ];
                     m_falling_gems.push_back( std::make_shared< MoveCommand >(
-                        cell, Coordinates( {cell_to_be_replaced.x, cell_to_be_replaced.y} ) ) );
+                        gem, Coordinates( {gem_to_be_replaced.x, gem_to_be_replaced.y} ) ) );
                 }
             }
         }
@@ -96,10 +95,10 @@ GenerateGemsCommand::undo( GameState& state )
 }
 
 bool
-GenerateGemsCommand::has_broken_cell( const Colum& colum )
+GenerateGemsCommand::has_broken_gem( const Colum& colum )
 {
-    auto it = std::find_if( colum.rbegin( ), colum.rend( ), []( const Cell& cell ) {
-        return cell.texture == King::Engine::TEXTURE_BROKEN;
+    auto it = std::find_if( colum.rbegin( ), colum.rend( ), []( const Gem& gem ) {
+        return gem.texture == King::Engine::TEXTURE_BROKEN;
     } );
 
     return it != colum.rend( );

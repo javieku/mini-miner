@@ -9,7 +9,7 @@ namespace Game
 class MoveCommand : public CommandInterface
 {
 public:
-    MoveCommand( const Cell& cell, const Coordinates& to );
+    MoveCommand( const Gem& gem, const Coordinates& to );
     ~MoveCommand( ) = default;
 
     bool is_valid( const GameState& state ) const override;
@@ -18,11 +18,11 @@ public:
     void undo( GameState& state ) override;
 
 private:
-    Cell m_cell;
+    Gem m_gem;
     Coordinates m_to_coordinates;
 
     // Undo
-    Cell m_previous_cell;
+    Gem m_previous_gem;
     bool m_store_for_undo;
 };
 

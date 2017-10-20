@@ -4,8 +4,8 @@
 #include <algorithm>
 #include <iostream>
 #include <iterator>
-#include <string>
 #include <set>
+#include <string>
 
 namespace Game
 {
@@ -60,30 +60,30 @@ Board::print( ) const
     std::cout << "---------------------" << std::endl;
 }
 
-const Cell&
-Board::cell( int32_t row, int32_t col ) const
+const Gem&
+Board::gem( int32_t row, int32_t col ) const
 {
     return m_tiles[ col ][ row ];
 };
 
-const Cell&
-Board::cell( float x, float y ) const
+const Gem&
+Board::gem( float x, float y ) const
 {
-    const auto& pos = cell_position( x, y );
+    const auto& pos = position_of_gem( x, y );
 
     return m_tiles[ pos.col ][ pos.row ];
 }
 
-Cell
-Board::copy_cell( float x, float y )
+Gem
+Board::copy_gem( float x, float y )
 {
-    const auto& pos = cell_position( x, y );
+    const auto& pos = position_of_gem( x, y );
 
     return m_tiles[ pos.col ][ pos.row ];
 }
 
-const CellPosition&
-Board::cell_position( float x, float y ) const
+const GemPosition&
+Board::position_of_gem( float x, float y ) const
 {
     float tile_width = BOARD_WIDTH / NCOL;
     int col = ( x - this->x ) / tile_width;
@@ -109,34 +109,34 @@ Board::tiles( )
 King::Engine::Texture
 Board::generate_texture_type( int col, int row )
 {
-    std::set< King::Engine::Texture > black_listed_cell_types;
+    std::set< King::Engine::Texture > black_listed_gem_types;
     if ( row > 0 )
     {
-        black_listed_cell_types.insert( m_tiles[ col ][ row - 1 ].texture );
+        black_listed_gem_types.insert( m_tiles[ col ][ row - 1 ].texture );
     }
 
     if ( row + 1 < NROW )
     {
-        black_listed_cell_types.insert( m_tiles[ col ][ row + 1 ].texture );
+        black_listed_gem_types.insert( m_tiles[ col ][ row + 1 ].texture );
     }
 
     if ( col > 0 )
     {
-        black_listed_cell_types.insert( m_tiles[ col - 1 ][ row ].texture );
+        black_listed_gem_types.insert( m_tiles[ col - 1 ][ row ].texture );
     }
 
     if ( col + 1 < NCOL )
     {
-        black_listed_cell_types.insert( m_tiles[ col + 1 ][ row ].texture );
+        black_listed_gem_types.insert( m_tiles[ col + 1 ][ row ].texture );
     }
 
-    std::set< King::Engine::Texture > supported_cell_types
+    std::set< King::Engine::Texture > supported_gem_types
         = {King::Engine::TEXTURE_BLUE, King::Engine::TEXTURE_YELLOW, King::Engine::TEXTURE_RED,
            King::Engine::TEXTURE_GREEN, King::Engine::TEXTURE_PURPLE};
 
     std::vector< King::Engine::Texture > diff;
-    std::set_difference( supported_cell_types.begin( ), supported_cell_types.end( ),
-                         black_listed_cell_types.begin( ), black_listed_cell_types.end( ),
+    std::set_difference( supported_gem_types.begin( ), supported_gem_types.end( ),
+                         black_listed_gem_types.begin( ), black_listed_gem_types.end( ),
                          std::inserter( diff, diff.begin( ) ) );
 
     return diff[ std::rand( ) % diff.size( ) ];
@@ -156,11 +156,11 @@ Board::init_board( float width, float height )
 
         for ( int32_t row = 0; row < NROW; ++row )
         {
-            Cell& cell = m_tiles[ col ][ row ];
-            cell.texture = King::Engine::TEXTURE_MAX;
+            Gem& gem = m_tiles[ col ][ row ];
+            gem.texture = King::Engine::TEXTURE_MAX;
 
-            cell.x = this->x + base_col * col + ( base_col / 4 );
-            cell.y = this->y + base_row * row + ( base_row / 4 );
+            gem.x = this->x + base_col * col + ( base_col / 4 );
+            gem.y = this->y + base_row * row + ( base_row / 4 );
         }
     }
 
@@ -168,8 +168,8 @@ Board::init_board( float width, float height )
     {
         for ( int32_t row = 0; row < NROW; ++row )
         {
-            Cell& cell = m_tiles[ col ][ row ];
-            cell.texture = generate_texture_type( col, row );
+            Gem& gem = m_tiles[ col ][ row ];
+            gem.texture = generate_texture_type( col, row );
         }
     }
 }
