@@ -13,9 +13,9 @@ public:
     SwapCommand( const Coordinates& one, const Coordinates& other );
     ~SwapCommand( );
 
-    bool is_valid( Gameplay& gameplay ) const override;
+    bool is_valid( const Gameplay& gameplay ) const override;
 
-    bool is_finished( Gameplay& gameplay ) const override;
+    bool is_finished( const Gameplay& gameplay ) const override;
 
     bool apply( Gameplay& gameplay ) override;
 

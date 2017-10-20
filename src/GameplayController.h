@@ -36,13 +36,13 @@ public:
     ~UserSwapCommandList( ){};
 
     bool
-    is_valid( Gameplay& gameplay ) const override
+    is_valid( const Gameplay & gameplay ) const override
     {
         return true;
     };
 
     bool
-    is_finished( Gameplay& gameplay ) const override
+    is_finished( const Gameplay & gameplay ) const override
     {
         return m_swap_command->is_finished( gameplay )
                && m_collapse_command->is_finished( gameplay );

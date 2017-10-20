@@ -16,7 +16,7 @@ MoveCommand::MoveCommand( const Cell& cell, const CellPosition& to )
 }
 
 bool
-MoveCommand::is_valid( Gameplay& gameplay ) const
+MoveCommand::is_valid( const Gameplay& gameplay ) const
 {
     if ( !m_to.is_valid( ) )
     {
@@ -27,14 +27,14 @@ MoveCommand::is_valid( Gameplay& gameplay ) const
 };
 
 bool
-MoveCommand::is_finished( Gameplay& gameplay ) const
+MoveCommand::is_finished( const Gameplay& gameplay ) const
 {
     if ( !is_valid( gameplay ) )
     {
         return true;
     }
-    Board& board = gameplay.board( );
-    Cell& cell = board[ m_to.col ][ m_to.row ];
+    const Board& board = gameplay.board( );
+    const Cell& cell = board[ m_to.col ][ m_to.row ];
     std::cout << "std::abs( m_previous_cell.x - cell.x ) " << std::abs( m_previous_cell.x - cell.x )
               << std::endl;
     std::cout << "std::abs( m_previous_cell.y - cell.y ) " << std::abs( m_previous_cell.y - cell.y )

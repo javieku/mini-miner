@@ -23,7 +23,7 @@ SwapCommand::~SwapCommand( )
 }
 
 bool
-SwapCommand::is_valid( Gameplay& gameplay ) const
+SwapCommand::is_valid( const Gameplay& gameplay ) const
 {
     const auto& one = gameplay.cell_position( m_one_coordinate.x, m_one_coordinate.y );
     const auto& other = gameplay.cell_position( m_other_coordinate.x, m_other_coordinate.y );
@@ -38,15 +38,17 @@ SwapCommand::is_valid( Gameplay& gameplay ) const
 }
 
 bool
-SwapCommand::is_finished( Gameplay& gameplay ) const
+SwapCommand::is_finished( const Gameplay& gameplay ) const
 {
     if ( !is_valid( gameplay ) )
     {
         return true;
     }
 
-    Cell& one_cell = gameplay.cell( m_one_coordinate.x, m_one_coordinate.y );
-    Cell& other_cell = gameplay.cell( m_other_coordinate.x, m_other_coordinate.y );
+    gameplay.print( );
+
+    const Cell& one_cell = gameplay.cell( m_one_coordinate.x, m_one_coordinate.y );
+    const Cell& other_cell = gameplay.cell( m_other_coordinate.x, m_other_coordinate.y );
 
     std::cout << "std::abs( m_previous_cell_one.x - one_cell.x ) "
               << std::abs( m_previous_cell_one.x - one_cell.x ) << std::endl;
@@ -139,7 +141,7 @@ SwapCommand::apply( Gameplay& gameplay )
         board[ m_one_position.col ][ m_one_position.row ]
             = board[ m_another_position.col ][ m_another_position.row ];
         board[ m_another_position.col ][ m_another_position.row ] = aux;
-        gameplay.print();
+        gameplay.print( );
         first_time = false;
     }
 

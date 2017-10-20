@@ -12,9 +12,9 @@ RemoveGemsCommand::RemoveGemsCommand( )
 }
 
 bool
-RemoveGemsCommand::is_valid( Gameplay& gameplay ) const
+RemoveGemsCommand::is_valid( const Gameplay& gameplay ) const
 {
-    Board& board = gameplay.board( );
+    const Board& board = gameplay.board( );
     std::cout << "RemoveCommand" << std::endl;
     gameplay.print( );
     bool removable = false;
@@ -124,7 +124,7 @@ RemoveGemsCommand::apply( Gameplay& gameplay )
 }
 
 bool
-RemoveGemsCommand::is_finished( Gameplay& gameplay ) const
+RemoveGemsCommand::is_finished( const Gameplay& gameplay ) const
 {
     return m_done;
 };

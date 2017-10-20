@@ -9,15 +9,15 @@
 namespace Game
 {
 bool
-GenerateGemsCommand::is_valid( Gameplay& gameplay ) const
+GenerateGemsCommand::is_valid( const Gameplay& gameplay ) const
 {
     return true;
 };
 
 bool
-GenerateGemsCommand::is_finished( Gameplay& gameplay ) const
+GenerateGemsCommand::is_finished( const Gameplay& gameplay ) const
 {
-    Board& board = gameplay.board( );
+    const Board& board = gameplay.board( );
     bool is_finished = true;
     for ( auto col = 0; col < board.size( ); ++col )
     {
@@ -53,6 +53,8 @@ GenerateGemsCommand::apply( Gameplay& gameplay )
             std::stable_partition(
                 board[ col ].begin( ), board[ col ].end( ),
                 []( const Cell& cell ) { return cell.texture == King::Engine::TEXTURE_BROKEN; } );
+
+            gameplay.print( );
 
             for ( auto row = 0; row < board[ col ].size( ); ++row )
             {

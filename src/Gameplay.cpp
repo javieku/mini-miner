@@ -121,8 +121,8 @@ Gameplay::cell( int32_t row, int32_t col ) const
     return m_board[ col ][ row ];
 };
 
-Cell&
-Gameplay::cell( float x, float y )
+const Cell&
+Gameplay::cell( float x, float y ) const
 {
     const auto& pos = cell_position( x, y );
 
@@ -198,7 +198,7 @@ to_string( const King::Engine::Texture& texture )
 }
 
 void
-Gameplay::print( )
+Gameplay::print( ) const
 {
     for ( int col = 0; col < m_board.size( ); ++col )
     {

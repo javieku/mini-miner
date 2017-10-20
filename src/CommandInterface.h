@@ -12,9 +12,9 @@ public:
     CommandInterface( ) = default;
     virtual ~CommandInterface( ) = default;
 
-    virtual bool is_valid( Gameplay& gameplay ) const = 0;
+    virtual bool is_valid( const Gameplay& gameplay ) const = 0;
 
-    virtual bool is_finished( Gameplay& gameplay ) const = 0;
+    virtual bool is_finished( const Gameplay& gameplay ) const = 0;
 
     virtual bool apply( Gameplay& gameplay ) = 0;
 

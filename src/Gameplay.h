@@ -75,15 +75,16 @@ public:
     Board& board( );
 
     const Cell& cell( int32_t row, int32_t col ) const;
-    Cell& cell( float x, float y );
+    const Cell& cell( float x, float y ) const;
     Cell copy_cell( float x, float y );
     const CellPosition& cell_position( float x, float y ) const;
 
     bool is_finished( ) const;
 
-    void print( );
-
     void increase_score( );
+
+    // Debug
+    void print( ) const;
 
 private:
     void init_board( float width, float height );
