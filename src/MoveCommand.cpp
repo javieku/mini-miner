@@ -6,7 +6,7 @@ namespace Game
 {
 namespace
 {
-const int32_t DELTA = 5;
+const int32_t DELTA = 1;
 }
 
 MoveCommand::MoveCommand( const Cell& cell, const Coordinates& to )

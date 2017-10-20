@@ -51,72 +51,79 @@ RemoveGemsCommand::is_valid( const Gameplay& gameplay ) const
 bool
 RemoveGemsCommand::apply( Gameplay& gameplay )
 {
+    if ( !is_valid( gameplay ) )
+    {
+        m_done = true;
+        return false;
+    }
+
     auto& board = gameplay.board_tiles( );
     std::cout << "RemoveCommand" << std::endl;
     gameplay.print( );
+
+    bool has_removed_cell = false;
     for ( size_t col = 0; col < board.size( ); ++col )
     {
         for ( size_t row = 0; row < board[ col ].size( ); ++row )
         {
-            bool removable = false;
-
             if ( row > 1 )
             {
-                removable = board[ col ][ row - 1 ].texture == board[ col ][ row - 2 ].texture
+                bool down = board[ col ][ row - 1 ].texture == board[ col ][ row - 2 ].texture
                             && board[ col ][ row - 1 ].texture == board[ col ][ row ].texture;
-                if ( removable )
+                if ( down )
                 {
                     board[ col ][ row - 1 ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row - 2 ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     gameplay.increase_score( );
-                    m_done = true;
+                    has_removed_cell = true;
                 }
             }
 
             if ( row + 2 < NROW )
             {
-                removable = board[ col ][ row + 1 ].texture == board[ col ][ row + 2 ].texture
-                            && board[ col ][ row + 1 ].texture == board[ col ][ row ].texture;
-                if ( removable )
+                bool up = board[ col ][ row + 1 ].texture == board[ col ][ row + 2 ].texture
+                          && board[ col ][ row + 1 ].texture == board[ col ][ row ].texture;
+                if ( up )
                 {
                     board[ col ][ row + 1 ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row + 2 ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     gameplay.increase_score( );
-                    m_done = true;
+                    has_removed_cell = true;
                 }
             }
 
             if ( col > 1 )
             {
-                removable = board[ col - 1 ][ row ].texture == board[ col - 2 ][ row ].texture
+                bool left = board[ col - 1 ][ row ].texture == board[ col - 2 ][ row ].texture
                             && board[ col - 1 ][ row ].texture == board[ col ][ row ].texture;
-                if ( removable )
+                if ( left )
                 {
                     board[ col - 1 ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col - 2 ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     gameplay.increase_score( );
-                    m_done = true;
+                    has_removed_cell = true;
                 }
             }
 
             if ( col + 2 < NCOL )
             {
-                removable = board[ col + 1 ][ row ].texture == board[ col + 2 ][ row ].texture
-                            && board[ col + 1 ][ row ].texture == board[ col ][ row ].texture;
-                if ( removable )
+                bool right = board[ col + 1 ][ row ].texture == board[ col + 2 ][ row ].texture
+                             && board[ col + 1 ][ row ].texture == board[ col ][ row ].texture;
+                if ( right )
                 {
                     board[ col + 1 ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col + 2 ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     board[ col ][ row ].texture = King::Engine::TEXTURE_BROKEN;
                     gameplay.increase_score( );
-                    m_done = true;
+                    has_removed_cell = true;
                 }
             }
         }
-    };
+    }
+    m_done = has_removed_cell;
     gameplay.print( );
     return true;
 }

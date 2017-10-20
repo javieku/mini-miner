@@ -1,6 +1,7 @@
 #include "InputHandler.h"
 
-// Input handler
+// Game
+#include "CollapseCommand.h"
 #include "GenerateGemsCommand.h"
 #include "RemoveGemsCommand.h"
 #include "SwapCommand.h"
@@ -47,7 +48,7 @@ InputHandler::handle_event( )
         actions.push_back( std::make_shared< SwapCommand >( Coordinates( {m_start_x, m_start_y} ),
                                                             Coordinates( {m_end_x, m_end_y} ) ) );
         actions.push_back( std::make_shared< RemoveGemsCommand >( ) );
-        actions.push_back( std::make_shared< GenerateGemsCommand >( ) );
+        actions.push_back( std::make_shared< CollapseCommand >( ) );
     }
 
     return actions;
