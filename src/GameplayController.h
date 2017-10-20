@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Gameplay.h"
+#include "GameState.h"
 #include "InputHandler.h"
 
 #include "CommandInterface.h"
+#include "GenerateGemsCommand.h"
 #include "RemoveGemsCommand.h"
 #include "SwapCommand.h"
-#include "GenerateGemsCommand.h"
 
 #include <deque>
 
@@ -18,7 +18,7 @@ public:
     GameplayController( InputHandler& input_handler );
     ~GameplayController( );
 
-    void update( Gameplay& gameplay );
+    void update( GameState& gameplay );
 
 private:
     InputHandler& m_input_handler;
@@ -37,20 +37,20 @@ public:
     ~UserSwapCommandList( ){};
 
     bool
-    is_valid( const Gameplay& gameplay ) const override
+    is_valid( const GameState& gameplay ) const override
     {
         return true;
     };
 
     bool
-    is_finished( const Gameplay& gameplay ) const override
+    is_finished( const GameState& gameplay ) const override
     {
         return m_swap_command->is_finished( gameplay )
                && m_collapse_command->is_finished( gameplay );
     };
 
     bool
-    apply( Gameplay& gameplay ) override
+    apply( GameState& gameplay ) override
     {
         m_swap_command->apply( gameplay );
 
@@ -68,7 +68,7 @@ public:
     }
 
     bool
-    undo( Gameplay& gameplay ) override
+    undo( GameState& gameplay ) override
     {
         m_swap_command->undo( gameplay );
         m_collapse_command->undo( gameplay );

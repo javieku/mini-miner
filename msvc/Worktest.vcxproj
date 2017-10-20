@@ -84,7 +84,7 @@
     <ClCompile Include="..\src\Board.cpp" />
     <ClCompile Include="..\src\CollapseCommand.cpp" />
     <ClCompile Include="..\src\RemoveGemsCommand.cpp" />
-    <ClCompile Include="..\src\Gameplay.cpp" />
+    <ClCompile Include="..\src\GameState.cpp" />
     <ClCompile Include="..\src\GameplayController.cpp" />
     <ClCompile Include="..\src\GameplayView.cpp" />
     <ClCompile Include="..\src\GenerateGemsCommand.cpp" />
@@ -106,7 +106,7 @@
     <ClInclude Include="..\src\Entity.h" />
     <ClInclude Include="..\src\RemoveGemsCommand.h" />
     <ClInclude Include="..\src\CommandInterface.h" />
-    <ClInclude Include="..\src\Gameplay.h" />
+    <ClInclude Include="..\src\GameState.h" />
     <ClInclude Include="..\src\GameplayController.h" />
     <ClInclude Include="..\src\GameplayView.h" />
     <ClInclude Include="..\src\GenerateGemsCommand.h" />

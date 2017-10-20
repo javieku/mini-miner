@@ -12,7 +12,7 @@ RemoveGemsCommand::RemoveGemsCommand( )
 }
 
 bool
-RemoveGemsCommand::is_valid( const Gameplay& gameplay ) const
+RemoveGemsCommand::is_valid( const GameState& gameplay ) const
 {
     const auto& board = gameplay.board_tiles( );
     bool removable = false;
@@ -49,7 +49,7 @@ RemoveGemsCommand::is_valid( const Gameplay& gameplay ) const
 };
 
 bool
-RemoveGemsCommand::apply( Gameplay& gameplay )
+RemoveGemsCommand::apply( GameState& gameplay )
 {
     if ( !is_valid( gameplay ) )
     {
@@ -129,13 +129,13 @@ RemoveGemsCommand::apply( Gameplay& gameplay )
 }
 
 bool
-RemoveGemsCommand::is_finished( const Gameplay& gameplay ) const
+RemoveGemsCommand::is_finished( const GameState& gameplay ) const
 {
     return m_done;
 };
 
 bool
-RemoveGemsCommand::undo( Gameplay& gameplay )
+RemoveGemsCommand::undo( GameState& gameplay )
 {
     return false;
 }

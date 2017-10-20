@@ -1,8 +1,8 @@
-#include "Gameplay.h"
+#include "GameState.h"
 
 // Standard
 #include <algorithm>
-#include <cstdlib>  // std::rand
+#include <cstdlib>
 #include <iostream>
 #include <iterator>
 #include <set>
@@ -11,69 +11,69 @@
 
 namespace Game
 {
-Gameplay::Gameplay( )
+GameState::GameState( )
 {
 }
 
-Gameplay::~Gameplay( )
+GameState::~GameState( )
 {
 }
 
 const Entity&
-Gameplay::background( ) const
+GameState::background( ) const
 {
     return {0.0f, 0.0f, King::Engine::TEXTURE_BACKGROUND};
 }
 
 const Score&
-Gameplay::score( ) const
+GameState::score( ) const
 {
     return m_score;
 }
 
 const Timer&
-Gameplay::timer( ) const
+GameState::timer( ) const
 {
     return m_timer;
 }
 
 const Board&
-Gameplay::board( ) const
+GameState::board( ) const
 {
     return m_board;
 }
 
 Board&
-Gameplay::board( )
+GameState::board( )
 {
     return m_board;
 }
 
 Tiles&
-Gameplay::board_tiles( )
+GameState::board_tiles( )
 {
     return m_board.tiles( );
 }
 
 const Tiles&
-Gameplay::board_tiles( ) const
+GameState::board_tiles( ) const
 {
     return m_board.tiles( );
 }
 void
-Gameplay::print( ) const
+GameState::print( ) const
 {
     m_board.print( );
 }
 
 bool
-Gameplay::is_finished( ) const
+GameState::is_finished( ) const
 {
     return m_timer.countdown( ) == 0;
 }
 
 void
-Gameplay::increase_score( )
+GameState::increase_score( )
 {
     m_score.score += 50;
 }

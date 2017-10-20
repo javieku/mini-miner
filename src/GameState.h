@@ -21,11 +21,11 @@ struct Coordinates
     float y;
 };
 
-class Gameplay
+class GameState
 {
 public:
-    Gameplay( );
-    ~Gameplay( );
+    GameState( );
+    ~GameState( );
 
     // Models
     const Entity& background( ) const;

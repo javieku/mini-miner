@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Gameplay.h"
+// Game
+#include "GameState.h"
 
+// Engine
 #include <king/Engine.h>
 
 namespace King
@@ -18,7 +20,7 @@ public:
     explicit GameplayView( King::Engine& engine );
     ~GameplayView( );
 
-    void render( const Gameplay& model );
+    void render( const GameState& model );
 
 private:
     King::Engine& m_engine;

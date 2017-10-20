@@ -17,19 +17,19 @@ public:
     ~CollapseCommand( ) = default;
 
     bool
-    is_valid( const Gameplay& gameplay ) const override
+    is_valid( const GameState& gameplay ) const override
     {
         return generate_comand->is_valid( gameplay ) && remove_comand->is_valid( gameplay );
     }
 
     bool
-    is_finished( const Gameplay& gameplay ) const override
+    is_finished( const GameState& gameplay ) const override
     {
         return generate_comand->is_finished( gameplay ) && remove_comand->is_finished( gameplay );
     }
 
     bool
-    apply( Gameplay& gameplay ) override
+    apply( GameState& gameplay ) override
     {
         if ( generate_comand->is_finished( gameplay ) )
         {
@@ -44,7 +44,7 @@ public:
         return true;
     }
     bool
-    undo( Gameplay& gameplay ) override
+    undo( GameState& gameplay ) override
     {
         generate_comand->undo( gameplay );
         remove_comand->undo( gameplay );

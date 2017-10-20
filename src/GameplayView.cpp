@@ -14,7 +14,7 @@ GameplayView::~GameplayView( )
 }
 
 void
-GameplayView::render( const Gameplay& gameplay )
+GameplayView::render( const GameState& gameplay )
 {
     m_engine.Render( gameplay.background( ).texture, 0, 0 );
 

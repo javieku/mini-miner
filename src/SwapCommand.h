@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CommandInterface.h"
-#include "Gameplay.h"
+#include "GameState.h"
 
 namespace Game
 {
@@ -13,16 +13,16 @@ public:
     SwapCommand( const Coordinates& one, const Coordinates& other );
     ~SwapCommand( );
 
-    bool is_valid( const Gameplay& gameplay ) const override;
+    bool is_valid( const GameState& gameplay ) const override;
 
-    bool is_finished( const Gameplay& gameplay ) const override;
+    bool is_finished( const GameState& gameplay ) const override;
 
-    bool apply( Gameplay& gameplay ) override;
+    bool apply( GameState& gameplay ) override;
 
-    bool undo( Gameplay& gameplay ) override;
+    bool undo( GameState& gameplay ) override;
 
 private:
-    void move( Gameplay& gameplay,
+    void move( GameState& gameplay,
                const CellPosition& one_position,
                const CellPosition& another_position );
 

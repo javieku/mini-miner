@@ -10,10 +10,10 @@ public:
     RemoveGemsCommand( );
     ~RemoveGemsCommand( ) = default;
 
-    bool is_valid( const Gameplay& gameplay ) const override;
-    bool is_finished( const Gameplay& gameplay ) const override;
-    bool apply( Gameplay& gameplay ) override;
-    bool undo( Gameplay& gameplay ) override;
+    bool is_valid( const GameState& gameplay ) const override;
+    bool is_finished( const GameState& gameplay ) const override;
+    bool apply( GameState& gameplay ) override;
+    bool undo( GameState& gameplay ) override;
 
 private:
     bool m_done;

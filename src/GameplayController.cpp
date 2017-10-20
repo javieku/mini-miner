@@ -12,7 +12,7 @@ GameplayController::~GameplayController( )
 }
 
 void
-GameplayController::update( Gameplay& gameplay )
+GameplayController::update( GameState& gameplay )
 {
     if ( !m_current_action )
     {

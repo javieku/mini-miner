@@ -1,7 +1,9 @@
 #include "GenerateGemsCommand.h"
 
-#include "Gameplay.h"
+// Game
+#include "GameState.h"
 
+// Standard
 #include <algorithm>
 #include <iostream>
 #include <memory>
@@ -9,13 +11,14 @@
 namespace Game
 {
 bool
-GenerateGemsCommand::is_valid( const Gameplay& gameplay ) const
+GenerateGemsCommand::is_valid( const GameState& gameplay ) const
 {
+    // Always executable
     return true;
 };
 
 bool
-GenerateGemsCommand::is_finished( const Gameplay& gameplay ) const
+GenerateGemsCommand::is_finished( const GameState& gameplay ) const
 {
     const auto& board = gameplay.board_tiles( );
     bool is_finished = true;
@@ -39,7 +42,7 @@ GenerateGemsCommand::is_finished( const Gameplay& gameplay ) const
 };
 
 bool
-GenerateGemsCommand::apply( Gameplay& gameplay )
+GenerateGemsCommand::apply( GameState& gameplay )
 {
     auto& board = gameplay.board_tiles( );
 
@@ -89,7 +92,7 @@ GenerateGemsCommand::apply( Gameplay& gameplay )
 }
 
 bool
-GenerateGemsCommand::undo( Gameplay& gameplay )
+GenerateGemsCommand::undo( GameState& gameplay )
 {
     // TODO
     return true;

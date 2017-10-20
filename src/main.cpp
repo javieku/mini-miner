@@ -1,7 +1,7 @@
 #define GLM_FORCE_RADIANS
 
 // Game
-#include "Gameplay.h"
+#include "GameState.h"
 #include "GameplayController.h"
 #include "GameplayView.h"
 #include "InputHandler.h"
@@ -103,7 +103,7 @@ private:
     Game::InputHandler m_input;
 
     Game::GameplayController m_controller;
-    Game::Gameplay m_gameplay;
+    Game::GameState m_gameplay;
     Game::GameplayView m_view;
 };
 

@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Board.h"
 #include "CommandInterface.h"
-#include "Gameplay.h"
+#include "GameState.h"
 
 namespace Game
 {
@@ -11,10 +12,10 @@ public:
     MoveCommand( const Cell& cell, const Coordinates& to );
     ~MoveCommand( ) = default;
 
-    bool is_valid( const Gameplay& gameplay ) const override;
-    bool is_finished( const Gameplay& gameplay ) const override;
-    bool apply( Gameplay& gameplay ) override;
-    bool undo( Gameplay& gameplay ) override;
+    bool is_valid( const GameState& gameplay ) const override;
+    bool is_finished( const GameState& gameplay ) const override;
+    bool apply( GameState& gameplay ) override;
+    bool undo( GameState& gameplay ) override;
 
 private:
     Cell m_cell;
@@ -24,5 +25,6 @@ private:
     Cell m_previous_cell;
     bool m_store_for_undo;
 };
+
 using MoveCommandSharedPtr = std::shared_ptr< MoveCommand >;
 }

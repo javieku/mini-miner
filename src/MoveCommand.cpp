@@ -17,13 +17,13 @@ MoveCommand::MoveCommand( const Cell& cell, const Coordinates& to )
 }
 
 bool
-MoveCommand::is_valid( const Gameplay& gameplay ) const
+MoveCommand::is_valid( const GameState& gameplay ) const
 {
     return true;
 };
 
 bool
-MoveCommand::is_finished( const Gameplay& gameplay ) const
+MoveCommand::is_finished( const GameState& gameplay ) const
 {
     if ( !is_valid( gameplay ) )
     {
@@ -45,7 +45,7 @@ MoveCommand::is_finished( const Gameplay& gameplay ) const
 };
 
 bool
-MoveCommand::apply( Gameplay& gameplay )
+MoveCommand::apply( GameState& gameplay )
 {
     auto& board = gameplay.board_tiles( );
 
@@ -88,7 +88,7 @@ MoveCommand::apply( Gameplay& gameplay )
 };
 
 bool
-MoveCommand::undo( Gameplay& gameplay )
+MoveCommand::undo( GameState& gameplay )
 {
     return false;
 }

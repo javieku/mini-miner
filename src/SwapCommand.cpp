@@ -23,7 +23,7 @@ SwapCommand::~SwapCommand( )
 }
 
 bool
-SwapCommand::is_valid( const Gameplay& gameplay ) const
+SwapCommand::is_valid( const GameState& gameplay ) const
 {
     const auto& one = gameplay.board( ).cell_position( m_one_coordinate.x, m_one_coordinate.y );
     const auto& other
@@ -39,7 +39,7 @@ SwapCommand::is_valid( const Gameplay& gameplay ) const
 }
 
 bool
-SwapCommand::is_finished( const Gameplay& gameplay ) const
+SwapCommand::is_finished( const GameState& gameplay ) const
 {
     if ( !is_valid( gameplay ) )
     {
@@ -67,7 +67,7 @@ SwapCommand::is_finished( const Gameplay& gameplay ) const
 }
 
 void
-SwapCommand::move( Gameplay& gameplay,
+SwapCommand::move( GameState& gameplay,
                    const CellPosition& one_position,
                    const CellPosition& another_position )
 {
@@ -119,7 +119,7 @@ SwapCommand::move( Gameplay& gameplay,
 }
 
 bool
-SwapCommand::apply( Gameplay& gameplay )
+SwapCommand::apply( GameState& gameplay )
 {
     if ( !is_valid( gameplay ) )
     {
@@ -154,7 +154,7 @@ SwapCommand::apply( Gameplay& gameplay )
 }
 
 bool
-SwapCommand::undo( Gameplay& gameplay )
+SwapCommand::undo( GameState& gameplay )
 {
     Board& board = gameplay.board( );
 
