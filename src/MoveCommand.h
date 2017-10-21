@@ -2,6 +2,7 @@
 
 #include "Board.h"
 #include "CommandInterface.h"
+#include "Coordinates.h"
 #include "GameState.h"
 
 namespace Game

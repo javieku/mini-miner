@@ -1,5 +1,8 @@
 #include "MoveCommand.h"
 
+// Game
+#include "Utils.h"
+
 // Standard
 #include <iostream>
 
@@ -40,8 +43,8 @@ MoveCommand::is_finished( const GameState& state ) const
     std::cout << "std::abs( m_previous_gem.y - gem.y ) " << std::abs( m_previous_gem.y - gem.y )
               << std::endl;
 
-    return ( std::abs( m_previous_gem.x - gem.x ) <= 1 )
-           && ( std::abs( m_previous_gem.y - gem.y ) <= 1 );
+    return ( std::abs( m_previous_gem.x - gem.x ) <= 0.5 )
+           && ( std::abs( m_previous_gem.y - gem.y ) <= 0.5 );
 };
 
 void
@@ -55,10 +58,9 @@ MoveCommand::apply( GameState& state )
         m_store_for_undo = false;
 
         std::cout << "MoveCommand" << std::endl;
-        GemPosition position
-            = state.board( ).position_of_gem( m_to_coordinates.x, m_to_coordinates.y );
+        GemPosition pos = state.board( ).position_of_gem( m_to_coordinates.x, m_to_coordinates.y );
         state.print( );
-        board[ position.col ][ position.row ] = m_gem;
+        board[ pos.col ][ pos.row ] = m_gem;
         state.print( );
     }
 
@@ -87,5 +89,19 @@ MoveCommand::apply( GameState& state )
 void
 MoveCommand::undo( GameState& state )
 {
+    Board& board = state.board( );
+    Coordinates aux;
+
+    Coordinates cell_coordinate = Utils::to_cell_coordinates(
+        m_to_coordinates, Coordinates( {board.x, board.y} ), state.board( ).tile_dimension( ) );
+
+    aux.x = m_gem.x;
+    aux.y = m_gem.y;
+    m_gem.x = cell_coordinate.x;
+    m_gem.y = cell_coordinate.y;
+    m_to_coordinates.x = aux.x;
+    m_to_coordinates.y = aux.y;
+    m_store_for_undo = true;
+    apply( state );
 }
 }

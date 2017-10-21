@@ -173,4 +173,10 @@ Board::init_board( float width, float height )
         }
     }
 }
+
+Dimension
+Board::tile_dimension( ) const
+{
+    return Dimension( { BOARD_WIDTH / NROW, BOARD_HEIGHT / NCOL} );
+}
 }

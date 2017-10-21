@@ -137,4 +137,30 @@ void
 RemoveGemsCommand::undo( GameState& state )
 {
 }
+
+template < class ForwardIt, class Size, class BinaryPredicate >
+ForwardIt
+adjacent_find_n( ForwardIt first, ForwardIt last, Size n, BinaryPredicate p )
+{
+    if ( first == last )
+    {
+        return last;
+    }
+    ForwardIt next = first;
+    ++next;
+
+    Size counter = 0;
+    for ( ; next != last; ++next, ++first )
+    {
+        if ( p( *first, *next ) )
+        {
+            ++counter;
+        }
+        if ( counter >= n )
+        {
+            return first;
+        }
+    }
+    return last;
+}
 }

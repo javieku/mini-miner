@@ -1,6 +1,7 @@
 #pragma once
 
 // Game
+#include "Coordinates.h"
 #include "Entity.h"
 #include "Gem.h"
 
@@ -18,7 +19,7 @@ const unsigned int NCOL = 8;
 using Colum = std::vector< Gem >;
 using Tiles = std::vector< Colum >;
 
-class Board : Entity
+class Board : public Entity
 {
 public:
     Board( );
@@ -31,6 +32,8 @@ public:
 
     const Tiles& tiles( ) const;
     Tiles& tiles( );
+
+    Dimension tile_dimension( ) const;
 
     void print( ) const;
 

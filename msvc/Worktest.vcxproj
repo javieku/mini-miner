@@ -82,6 +82,7 @@
     <ClCompile Include="..\external\include\king\SdlSurface.cpp" />
     <ClCompile Include="..\external\include\king\SdlWindow.cpp" />
     <ClCompile Include="..\src\Board.cpp" />
+    <ClCompile Include="..\src\Utils.cpp" />
     <ClCompile Include="..\src\Gem.cpp" />
     <ClCompile Include="..\src\CollapseCommand.cpp" />
     <ClCompile Include="..\src\RemoveGemsCommand.cpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="..\external\include\king\SdlWindow.h" />
     <ClInclude Include="..\external\include\king\Updater.h" />
     <ClInclude Include="..\src\Board.h" />
+    <ClInclude Include="..\src\Coordinates.h" />
     <ClInclude Include="..\src\Gem.h" />
     <ClInclude Include="..\src\CollapseCommand.h" />
     <ClInclude Include="..\src\Entity.h" />
@@ -117,6 +119,7 @@
     <ClInclude Include="..\src\MoveCommand.h" />
     <ClInclude Include="..\src\SwapCommand.h" />
     <ClInclude Include="..\src\Timer.h" />
+    <ClInclude Include="..\src\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

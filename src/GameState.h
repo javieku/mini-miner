@@ -15,12 +15,6 @@
 
 namespace Game
 {
-struct Coordinates
-{
-    float x;
-    float y;
-};
-
 class GameState
 {
 public:

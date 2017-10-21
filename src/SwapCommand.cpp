@@ -1,16 +1,14 @@
 #include "SwapCommand.h"
 
+// Game
 #include "MoveCommand.h"
 
+// Standard
 #include <iostream>
+#include <memory>
 
 namespace Game
 {
-namespace
-{
-const int32_t DELTA = 5;
-}
-
 SwapCommand::SwapCommand( const Coordinates& one, const Coordinates& other )
     : m_one_coordinate( one )
     , m_other_coordinate( other )
@@ -45,77 +43,12 @@ SwapCommand::is_finished( const GameState& state ) const
     {
         return true;
     }
-
-    state.print( );
-
-    const Gem& one_gem = state.board( ).gem( m_one_coordinate.x, m_one_coordinate.y );
-    const Gem& other_gem = state.board( ).gem( m_other_coordinate.x, m_other_coordinate.y );
-
-    std::cout << "std::abs( m_previous_gem_one.x - one_gem.x ) "
-              << std::abs( m_previous_one_gem.x - one_gem.x ) << std::endl;
-    std::cout << "std::abs( m_previous_gem_one.y - one_gem.y ) "
-              << std::abs( m_previous_one_gem.y - one_gem.y ) << std::endl;
-    std::cout << "std::abs( m_previous_gem_other.x - other_gem.x ) "
-              << std::abs( m_previous_other_gem.x - other_gem.x ) << std::endl;
-    std::cout << "std::abs( m_previous_gem_other.y - other_gem.y  "
-              << std::abs( m_previous_other_gem.y - other_gem.y ) << std::endl;
-
-    return ( std::abs( m_previous_one_gem.x - one_gem.x ) <= 1 )
-           && ( std::abs( m_previous_one_gem.y - one_gem.y ) <= 1 )
-           && ( std::abs( m_previous_other_gem.x - other_gem.x ) <= 1 )
-           && ( std::abs( m_previous_other_gem.y - other_gem.y ) <= 1 );
-}
-
-void
-SwapCommand::move( GameState& state,
-                   const GemPosition& one_position,
-                   const GemPosition& another_position )
-{
-    auto& board = state.board_tiles( );
-
-    Gem& one_gem = board[ one_position.col ][ one_position.row ];
-    Gem& other_gem = board[ another_position.col ][ another_position.row ];
-
-    if ( one_position.col == another_position.col )
+    if ( !m_move1 || !m_move2 )
     {
-        if ( one_gem.y < m_previous_one_gem.y )
-        {
-            one_gem.y += DELTA;
-        }
-        else if ( one_gem.y > m_previous_one_gem.y )
-        {
-            one_gem.y -= DELTA;
-        }
-
-        if ( other_gem.y < m_previous_other_gem.y )
-        {
-            other_gem.y += DELTA;
-        }
-        else if ( other_gem.y > m_previous_other_gem.y )
-        {
-            other_gem.y -= DELTA;
-        }
+        return false;
     }
-    else if ( one_position.row == another_position.row )
-    {
-        if ( one_gem.x < m_previous_one_gem.x )
-        {
-            one_gem.x += DELTA;
-        }
-        else if ( one_gem.x > m_previous_one_gem.x )
-        {
-            one_gem.x -= DELTA;
-        }
 
-        if ( other_gem.x < m_previous_other_gem.x )
-        {
-            other_gem.x += DELTA;
-        }
-        else if ( other_gem.x > m_previous_other_gem.x )
-        {
-            other_gem.x -= DELTA;
-        }
-    }
+    return m_move1->is_finished( state ) && m_move2->is_finished( state );
 }
 
 void
@@ -126,41 +59,26 @@ SwapCommand::apply( GameState& state )
         return;
     }
 
-    auto& board = state.board_tiles( );
     if ( first_time )
     {
-        m_previous_one_gem = state.board( ).copy_gem( m_one_coordinate.x, m_one_coordinate.y );
-        m_previous_other_gem
-            = state.board( ).copy_gem( m_other_coordinate.x, m_other_coordinate.y );
+        Gem gem1 = state.board( ).copy_gem( m_one_coordinate.x, m_one_coordinate.y );
+        Gem gem2 = state.board( ).copy_gem( m_other_coordinate.x, m_other_coordinate.y );
 
-        m_one_position = state.board( ).position_of_gem( m_one_coordinate.x, m_one_coordinate.y );
-        m_another_position
-            = state.board( ).position_of_gem( m_other_coordinate.x, m_other_coordinate.y );
-
-        std::cout << "SwapCommand" << std::endl;
-        state.print( );
-
-        Gem aux = board[ m_one_position.col ][ m_one_position.row ];
-        board[ m_one_position.col ][ m_one_position.row ]
-            = board[ m_another_position.col ][ m_another_position.row ];
-        board[ m_another_position.col ][ m_another_position.row ] = aux;
-        state.print( );
+        m_move1 = std::make_shared< MoveCommand >( gem1, Coordinates( {gem2.x, gem2.y} ) );
+        m_move2 = std::make_shared< MoveCommand >( gem2, Coordinates( {gem1.x, gem1.y} ) );
         first_time = false;
     }
 
-    move( state, m_one_position, m_another_position );
+    m_move1->apply( state );
+    m_move2->apply( state );
 }
 
 void
 SwapCommand::undo( GameState& state )
 {
-    Board& board = state.board( );
-
-    first_time = true;
-    Coordinates aux = m_one_coordinate;
-    m_one_coordinate = m_other_coordinate;
-    m_other_coordinate = aux;
-
-    return apply( state );
+    if ( !m_move1 || !m_move2 )
+        return;
+    m_move1->undo( state );
+    m_move2->undo( state );
 }
 }
