@@ -17,7 +17,7 @@ public:
     void undo( GameState& state ) override;
 
 private:
-    std::vector< MoveCommandSharedPtr > m_tile_falling;
+    std::vector< MoveCommandSharedPtr > m_falling_tiles;
     bool first_time = true;
 };
 

@@ -12,14 +12,20 @@ namespace Game
 {
 namespace
 {
+const auto tile_is_broken
+    = []( const Gem& tile ) { return tile.texture == King::Engine::TEXTURE_BROKEN; };
+
+bool
+any_of_tiles_is_broken( const Colum& column )
+{
+    return std::any_of( column.begin( ), column.end( ), tile_is_broken );
+}
 bool
 none_of_tiles_is_broken( const Tiles& board )
 {
-    auto filter = []( const Gem& gem ) { return gem.texture == King::Engine::TEXTURE_BROKEN; };
-
-    for ( const Colum& colum : board )
+    for ( const Colum& column : board )
     {
-        if ( std::any_of( colum.begin( ), colum.end( ), filter ) )
+        if ( any_of_tiles_is_broken( column ) )
         {
             return false;
         }
@@ -27,13 +33,33 @@ none_of_tiles_is_broken( const Tiles& board )
 
     return true;
 }
-bool
-any_of_tiles_is_broken( const Colum& column )
-{
-    auto filter = []( const Gem& gem ) { return gem.texture == King::Engine::TEXTURE_BROKEN; };
 
-	return std::any_of(column.begin(), column.end(), filter);
+void
+stable_partition( Colum& column )
+{
+    std::stable_partition( column.begin( ), column.end( ), tile_is_broken );
 }
+
+std::vector< MoveCommandSharedPtr >
+create_falling_tiles( const Colum& original_column, const Colum& copied_column )
+{
+    std::vector< MoveCommandSharedPtr > result;
+
+    for ( size_t row = 0u; row < copied_column.size( ); ++row )
+    {
+        const auto& tile = copied_column[ row ];
+
+        Gem falling_tile
+            = ( tile_is_broken( tile ) ) ? Gem::create_random( 40.0f * row, tile.x ) : tile;
+
+        Coordinates to{original_column[ row ].x, original_column[ row ].y};
+
+        result.push_back( std::make_shared< MoveCommand >( falling_tile, to ) );
+    }
+
+    return result;
+}
+
 }  // anonymous namespace
 
 bool
@@ -48,7 +74,7 @@ GenerateGemsCommand::is_finished( const GameState& state ) const
 {
     return none_of_tiles_is_broken( state.board_tiles( ) )
            && std::all_of(
-                  m_tile_falling.cbegin( ), m_tile_falling.cend( ),
+                  m_falling_tiles.cbegin( ), m_falling_tiles.cend( ),
                   [&state]( const MoveCommandSharedPtr& c ) { return c->is_finished( state ); } );
 };
 
@@ -62,37 +88,23 @@ GenerateGemsCommand::apply( GameState& state )
         std::cout << "GenerateGemsCommand" << std::endl;
         state.print( );
 
-        for ( size_t col = 0; col < board.size( ); ++col )
+        for ( const auto& column : board )
         {
-            if ( any_of_tiles_is_broken( board[ col ] ) )
+            if ( any_of_tiles_is_broken( column ) )
             {
-                // If found create move commands
-                Colum column( board[ col ].size( ) );
-                std::copy( board[ col ].begin( ), board[ col ].end( ), column.begin( ) );
+                Colum column_copy = column;
 
-                auto bound = std::stable_partition(
-                    column.begin( ), column.end( ),
-                    []( const Gem& gem ) { return gem.texture == King::Engine::TEXTURE_BROKEN; } );
+                stable_partition( column_copy );
 
-                state.print( );
-
-                for ( size_t row = 0; row < column.size( ); ++row )
-                {
-                    Gem gem = ( column[ row ].texture == King::Engine::TEXTURE_BROKEN )
-                                  ? Gem::create_random( 40.0f * row, column[ row ].x )
-                                  : column[ row ];
-
-                    const Gem& gem_to_be_replaced = board[ col ][ row ];
-                    m_tile_falling.push_back( std::make_shared< MoveCommand >(
-                        gem, Coordinates( {gem_to_be_replaced.x, gem_to_be_replaced.y} ) ) );
-                }
+                auto& result = create_falling_tiles( column, column_copy );
+                m_falling_tiles.insert( m_falling_tiles.end( ), result.begin( ), result.end( ) );
             }
         }
         first_time = false;
         state.print( );
     }
 
-    for ( MoveCommandSharedPtr& c : m_tile_falling )
+    for ( MoveCommandSharedPtr& c : m_falling_tiles )
     {
         c->apply( state );
     }
@@ -101,6 +113,6 @@ GenerateGemsCommand::apply( GameState& state )
 void
 GenerateGemsCommand::undo( GameState& state )
 {
-    // TODO
+    // TODO: implement when needed
 }
 }
