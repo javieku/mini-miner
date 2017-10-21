@@ -82,6 +82,7 @@
     <ClCompile Include="..\external\include\king\SdlSurface.cpp" />
     <ClCompile Include="..\external\include\king\SdlWindow.cpp" />
     <ClCompile Include="..\src\Board.cpp" />
+    <ClCompile Include="..\src\CommandFactory.cpp" />
     <ClCompile Include="..\src\Utils.cpp" />
     <ClCompile Include="..\src\Gem.cpp" />
     <ClCompile Include="..\src\CollapseCommand.cpp" />
@@ -104,7 +105,9 @@
     <ClInclude Include="..\external\include\king\SdlWindow.h" />
     <ClInclude Include="..\external\include\king\Updater.h" />
     <ClInclude Include="..\src\Board.h" />
+    <ClInclude Include="..\src\CommandFactory.h" />
     <ClInclude Include="..\src\Coordinates.h" />
+    <ClInclude Include="..\src\Event.h" />
     <ClInclude Include="..\src\Gem.h" />
     <ClInclude Include="..\src\CollapseCommand.h" />
     <ClInclude Include="..\src\Entity.h" />

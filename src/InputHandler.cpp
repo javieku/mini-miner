@@ -1,11 +1,5 @@
 #include "InputHandler.h"
 
-// Game
-#include "CollapseCommand.h"
-#include "GenerateGemsCommand.h"
-#include "RemoveGemsCommand.h"
-#include "SwapCommand.h"
-
 // Engine
 #include <king/Engine.h>
 
@@ -17,14 +11,8 @@ namespace Game
 InputHandler::InputHandler( King::Engine& engine )
     : m_engine( engine )
     , m_drag_started( false )
-    , m_start_x( -1 )
-    , m_start_y( -1 )
-    , m_end_x( -1 )
-    , m_end_y( -1 )
-{
-}
-
-InputHandler::~InputHandler( )
+    , m_start( {-1, -1} )
+    , m_end( {-1, -1} )
 {
 }
 
@@ -35,20 +23,19 @@ InputHandler::handle_event( )
     if ( !m_drag_started && m_engine.GetMouseButtonDown( ) )
     {
         m_drag_started = true;
-        m_start_x = m_engine.GetMouseX( );
-        m_start_y = m_engine.GetMouseY( );
+        m_start.x = m_engine.GetMouseX( );
+        m_start.y = m_engine.GetMouseY( );
     }
 
     if ( m_drag_started && !m_engine.GetMouseButtonDown( ) )
     {
         m_drag_started = false;
-        m_end_x = m_engine.GetMouseX( );
-        m_end_y = m_engine.GetMouseY( );
+        m_end.x = m_engine.GetMouseX( );
+        m_end.y = m_engine.GetMouseY( );
 
-        actions.push_back( std::make_shared< SwapCommand >( Coordinates( {m_start_x, m_start_y} ),
-                                                            Coordinates( {m_end_x, m_end_y} ) ) );
-        actions.push_back( std::make_shared< RemoveGemsCommand >( ) );
-        actions.push_back( std::make_shared< CollapseCommand >( ) );
+        const auto event = std::make_shared< DragEvent >( m_start, m_end );
+
+        actions = m_factory.create_command_list( event );
     }
 
     return actions;

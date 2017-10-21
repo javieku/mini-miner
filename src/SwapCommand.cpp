@@ -23,9 +23,10 @@ SwapCommand::~SwapCommand( )
 bool
 SwapCommand::is_valid( const GameState& state ) const
 {
-    const auto& one = state.board( ).position_of_gem( m_one_coordinate.x, m_one_coordinate.y );
-    const auto& other
-        = state.board( ).position_of_gem( m_other_coordinate.x, m_other_coordinate.y );
+    const auto& board = state.board( );
+
+    const GemPosition& one = board.position_of_gem( m_one_coordinate.x, m_one_coordinate.y );
+    const GemPosition& other = board.position_of_gem( m_other_coordinate.x, m_other_coordinate.y );
 
     if ( !one.is_valid( ) || !other.is_valid( ) )
     {
@@ -76,7 +77,7 @@ SwapCommand::apply( GameState& state )
 void
 SwapCommand::undo( GameState& state )
 {
-    if ( !m_move1 || !m_move2 )
+    if ( !m_move1 || !m_move2 || !is_valid( state ) )
         return;
     m_move1->undo( state );
     m_move2->undo( state );

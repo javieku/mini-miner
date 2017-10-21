@@ -1,8 +1,8 @@
 #define GLM_FORCE_RADIANS
 
 // Game
-#include "GameState.h"
 #include "GameController.h"
+#include "GameState.h"
 #include "GameView.h"
 #include "InputHandler.h"
 
@@ -94,7 +94,7 @@ public:
 
         if ( m_controller.is_finished( m_game_state ) )
         {
-            m_engine.Quit( );
+            m_controller.end_game( m_game_state );
         }
     }
 

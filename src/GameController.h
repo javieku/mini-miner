@@ -20,6 +20,7 @@ public:
     void update( GameState& state );
 
     bool is_finished( const GameState& state ) const;
+    void end_game( GameState& state );
 
 private:
     InputHandler& m_input_handler;
