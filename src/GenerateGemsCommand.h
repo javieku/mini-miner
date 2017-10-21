@@ -17,10 +17,7 @@ public:
     void undo( GameState& state ) override;
 
 private:
-    bool has_broken_gem( const Colum& colum );
-
-private:
-    std::vector< MoveCommandSharedPtr > m_falling_gems;
+    std::vector< MoveCommandSharedPtr > m_tile_falling;
     bool first_time = true;
 };
 

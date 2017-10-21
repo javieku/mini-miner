@@ -14,9 +14,11 @@ class Timer : public Entity
 public:
     Timer( )
     {
-        // TODO Inject from Gamestate
+        // TODO Initialize it in Gamestate using constructor
         this->x = 75u;
         this->y = 175u;
+        text = "Time: ";
+        duration = 60;
     }
     ~Timer( ){};
 
@@ -26,23 +28,35 @@ public:
         t1 = Clock::now( );
     }
 
+    void
+    stop( )
+    {
+        t1 = Clock::now( );
+    }
+
     long long
-    elapsed( ) const
+    elapsed_seconds( ) const
     {
         auto t2 = Clock::now( );
         return std::chrono::duration_cast< std::chrono::seconds >( t2 - t1 ).count( );
     }
 
     long long
+    elapsed_milliseconds( ) const
+    {
+        auto t2 = Clock::now( );
+        return std::chrono::duration_cast< std::chrono::milliseconds >( t2 - t1 ).count( );
+    }
+
+    long long
     countdown( ) const
     {
-        return duration - elapsed( );
+        return duration - elapsed_seconds( );
     }
 
 public:
-    // TODO Inject from Gamestate
-    std::string text = "Time: ";
-    int duration = 60;
+    std::string text;
+    int duration;
 
 private:
     typedef std::chrono::high_resolution_clock Clock;

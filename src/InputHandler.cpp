@@ -1,5 +1,8 @@
 #include "InputHandler.h"
 
+// Game
+#include "Event.h"
+
 // Engine
 #include <king/Engine.h>
 
@@ -33,9 +36,7 @@ InputHandler::handle_event( )
         m_end.x = m_engine.GetMouseX( );
         m_end.y = m_engine.GetMouseY( );
 
-        const auto event = std::make_shared< DragEvent >( m_start, m_end );
-
-        actions = m_factory.create_command_list( event );
+        actions = m_factory.create_command_list( std::make_shared< DragEvent >( m_start, m_end ) );
     }
 
     return actions;

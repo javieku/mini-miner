@@ -8,6 +8,7 @@
 
 namespace Game
 {
+// TODO Move to engine logic
 struct Event
 {
     Event( ) = default;
@@ -29,4 +30,16 @@ struct DragEvent : public Event
 };
 
 using DragEventSharedPtr = std::shared_ptr< DragEvent >;
+
+struct ClickEvent : public Event
+{
+    Coordinates coordinates;
+
+    ClickEvent( const Coordinates& c )
+        : coordinates( c )
+    {
+    }
+};
+
+using ClickEventSharedPtr = std::shared_ptr< ClickEvent >;
 }

@@ -10,6 +10,32 @@
 
 namespace Game
 {
+namespace
+{
+bool
+none_of_tiles_is_broken( const Tiles& board )
+{
+    auto filter = []( const Gem& gem ) { return gem.texture == King::Engine::TEXTURE_BROKEN; };
+
+    for ( const Colum& colum : board )
+    {
+        if ( std::any_of( colum.begin( ), colum.end( ), filter ) )
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+bool
+any_of_tiles_is_broken( const Colum& column )
+{
+    auto filter = []( const Gem& gem ) { return gem.texture == King::Engine::TEXTURE_BROKEN; };
+
+	return std::any_of(column.begin(), column.end(), filter);
+}
+}  // anonymous namespace
+
 bool
 GenerateGemsCommand::is_valid( const GameState& state ) const
 {
@@ -20,25 +46,10 @@ GenerateGemsCommand::is_valid( const GameState& state ) const
 bool
 GenerateGemsCommand::is_finished( const GameState& state ) const
 {
-    const auto& board = state.board_tiles( );
-    bool is_finished = true;
-    for ( size_t col = 0; col < board.size( ); ++col )
-    {
-        for ( size_t row = 0; row < board[ col ].size( ); ++row )
-        {
-            if ( board[ col ][ row ].texture == King::Engine::TEXTURE_BROKEN )
-            {
-                return false;
-            }
-        }
-    }
-
-    for ( auto& move_command : m_falling_gems )
-    {
-        is_finished = is_finished && move_command->is_finished( state );
-    }
-
-    return is_finished;
+    return none_of_tiles_is_broken( state.board_tiles( ) )
+           && std::all_of(
+                  m_tile_falling.cbegin( ), m_tile_falling.cend( ),
+                  [&state]( const MoveCommandSharedPtr& c ) { return c->is_finished( state ); } );
 };
 
 void
@@ -53,8 +64,7 @@ GenerateGemsCommand::apply( GameState& state )
 
         for ( size_t col = 0; col < board.size( ); ++col )
         {
-            // Find last broken gem in colum
-            if ( has_broken_gem( board[ col ] ) )
+            if ( any_of_tiles_is_broken( board[ col ] ) )
             {
                 // If found create move commands
                 Colum column( board[ col ].size( ) );
@@ -73,7 +83,7 @@ GenerateGemsCommand::apply( GameState& state )
                                   : column[ row ];
 
                     const Gem& gem_to_be_replaced = board[ col ][ row ];
-                    m_falling_gems.push_back( std::make_shared< MoveCommand >(
+                    m_tile_falling.push_back( std::make_shared< MoveCommand >(
                         gem, Coordinates( {gem_to_be_replaced.x, gem_to_be_replaced.y} ) ) );
                 }
             }
@@ -82,9 +92,9 @@ GenerateGemsCommand::apply( GameState& state )
         state.print( );
     }
 
-    for ( auto& move_command : m_falling_gems )
+    for ( MoveCommandSharedPtr& c : m_tile_falling )
     {
-        move_command->apply( state );
+        c->apply( state );
     }
 }
 
@@ -92,15 +102,5 @@ void
 GenerateGemsCommand::undo( GameState& state )
 {
     // TODO
-}
-
-bool
-GenerateGemsCommand::has_broken_gem( const Colum& colum )
-{
-    auto it = std::find_if( colum.rbegin( ), colum.rend( ), []( const Gem& gem ) {
-        return gem.texture == King::Engine::TEXTURE_BROKEN;
-    } );
-
-    return it != colum.rend( );
 }
 }
