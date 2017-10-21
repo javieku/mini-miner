@@ -4,8 +4,8 @@ namespace Game
 {
 CollapseCommand::CollapseCommand( )
 {
-    remove_comand = std::make_shared< RemoveGemsCommand >( );
-    generate_comand = std::make_shared< GenerateGemsCommand >( );
+    remove_comand = std::make_shared< RemoveCommand >( );
+    generate_comand = std::make_shared< CreateAndMoveCommand >( );
 };
 
 bool
@@ -25,12 +25,12 @@ CollapseCommand::apply( GameState& state )
 {
     if ( generate_comand->is_finished( state ) )
     {
-        generate_comand = std::make_shared< GenerateGemsCommand >( );
+        generate_comand = std::make_shared< CreateAndMoveCommand >( );
         remove_comand->apply( state );
     }
     else
     {
-        remove_comand = std::make_shared< RemoveGemsCommand >( );
+        remove_comand = std::make_shared< RemoveCommand >( );
         generate_comand->apply( state );
     }
 }

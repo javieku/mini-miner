@@ -28,7 +28,7 @@ GameController::update( GameState& state )
         }
         else
         {
-			m_last_action = nullptr;
+            m_last_action = nullptr;
             m_actions = m_input_handler.handle_event( );
         }
     }
@@ -55,6 +55,5 @@ GameController::is_finished( const GameState& state ) const
 void
 GameController::end_game( GameState& state )
 {
-
 }
 }

@@ -2,8 +2,8 @@
 
 // Game
 #include "CommandInterface.h"
-#include "GenerateGemsCommand.h"
-#include "RemoveGemsCommand.h"
+#include "GenerateCommand.h"
+#include "RemoveCommand.h"
 
 namespace Game
 {
@@ -21,8 +21,8 @@ public:
     void undo( GameState& state ) override;
 
 private:
-    CreateGemsCommandSharedPtr generate_comand;
-    RemoveGemsCommandSharedPtr remove_comand;
+    CreateAndMoveCommandSharedPtr generate_comand;
+    RemoveCommandSharedPtr remove_comand;
 };
 using CollapseCommandSharedPtr = std::shared_ptr< CollapseCommand >;
 }

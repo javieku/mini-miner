@@ -29,11 +29,6 @@ MoveCommand::is_valid( const GameState& state ) const
 bool
 MoveCommand::is_finished( const GameState& state ) const
 {
-    if ( !is_valid( state ) )
-    {
-        return true;
-    }
-
     const auto& board = state.board_tiles( );
     GemPosition position = state.board( ).position_of_gem( m_to_coordinates.x, m_to_coordinates.y );
     const Gem& gem = board[ position.col ][ position.row ];

@@ -5,11 +5,11 @@
 
 namespace Game
 {
-class GenerateGemsCommand : public CommandInterface
+class CreateAndMoveCommand : public CommandInterface
 {
 public:
-    GenerateGemsCommand( ) = default;
-    ~GenerateGemsCommand( ) = default;
+    CreateAndMoveCommand( ) = default;
+    ~CreateAndMoveCommand( ) = default;
 
     bool is_valid( const GameState& state ) const override;
     bool is_finished( const GameState& state ) const override;
@@ -18,8 +18,7 @@ public:
 
 private:
     std::vector< MoveCommandSharedPtr > m_falling_tiles;
-    bool first_time = true;
 };
 
-using CreateGemsCommandSharedPtr = std::shared_ptr< GenerateGemsCommand >;
+using CreateAndMoveCommandSharedPtr = std::shared_ptr< CreateAndMoveCommand >;
 }

@@ -1,4 +1,4 @@
-#include "GenerateGemsCommand.h"
+#include "GenerateCommand.h"
 
 // Game
 #include "GameState.h"
@@ -63,14 +63,14 @@ create_falling_tiles( const Colum& original_column, const Colum& copied_column )
 }  // anonymous namespace
 
 bool
-GenerateGemsCommand::is_valid( const GameState& state ) const
+CreateAndMoveCommand::is_valid( const GameState& state ) const
 {
     // Always applicable
     return true;
 };
 
 bool
-GenerateGemsCommand::is_finished( const GameState& state ) const
+CreateAndMoveCommand::is_finished( const GameState& state ) const
 {
     return none_of_tiles_is_broken( state.board_tiles( ) )
            && std::all_of(
@@ -79,15 +79,13 @@ GenerateGemsCommand::is_finished( const GameState& state ) const
 };
 
 void
-GenerateGemsCommand::apply( GameState& state )
+CreateAndMoveCommand::apply( GameState& state )
 {
-    auto& board = state.board_tiles( );
-
-    if ( first_time )
+    if ( m_falling_tiles.empty( ) )
     {
         std::cout << "GenerateGemsCommand" << std::endl;
         state.print( );
-
+        auto& board = state.board_tiles( );
         for ( const auto& column : board )
         {
             if ( any_of_tiles_is_broken( column ) )
@@ -100,7 +98,6 @@ GenerateGemsCommand::apply( GameState& state )
                 m_falling_tiles.insert( m_falling_tiles.end( ), result.begin( ), result.end( ) );
             }
         }
-        first_time = false;
         state.print( );
     }
 
@@ -111,8 +108,8 @@ GenerateGemsCommand::apply( GameState& state )
 }
 
 void
-GenerateGemsCommand::undo( GameState& state )
+CreateAndMoveCommand::undo( GameState& state )
 {
-    // TODO: implement when needed
+    // TODO: implement if needed
 }
 }

@@ -4,7 +4,7 @@
 #include "CollapseCommand.h"
 #include "CommandInterface.h"
 #include "InputHandler.h"
-#include "RemoveGemsCommand.h"
+#include "RemoveCommand.h"
 #include "SwapCommand.h"
 
 // Standard
@@ -20,7 +20,7 @@ CommandFactory::create_command_list( const EventSharedPtr& e )
     if ( d != nullptr )
     {
         actions.push_back( std::make_shared< SwapCommand >( d->start, d->end ) );
-        actions.push_back( std::make_shared< RemoveGemsCommand >( ) );
+        actions.push_back( std::make_shared< RemoveCommand >( ) );
         actions.push_back( std::make_shared< CollapseCommand >( ) );
     }
     return actions;

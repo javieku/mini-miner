@@ -1,4 +1,4 @@
-#include "RemoveGemsCommand.h"
+#include "RemoveCommand.h"
 
 #include "GameState.h"
 #include "Utils.h"
@@ -23,7 +23,7 @@ auto is_removable = []( const Gem& gem1, const Gem& gem2 ) {
 };
 }
 
-RemoveGemsCommand::RemoveGemsCommand( )
+RemoveCommand::RemoveCommand( )
     : m_done( false )
 {
 }
@@ -75,7 +75,7 @@ remove_gems( Colum& column )
 }
 
 bool
-RemoveGemsCommand::is_valid( const GameState& state ) const
+RemoveCommand::is_valid( const GameState& state ) const
 {
     const auto& board = state.board_tiles( );
     bool valid = false;
@@ -102,7 +102,7 @@ RemoveGemsCommand::is_valid( const GameState& state ) const
 };
 
 void
-RemoveGemsCommand::apply( GameState& state )
+RemoveCommand::apply( GameState& state )
 {
     if ( !is_valid( state ) )
     {
@@ -161,13 +161,13 @@ RemoveGemsCommand::apply( GameState& state )
 }
 
 bool
-RemoveGemsCommand::is_finished( const GameState& state ) const
+RemoveCommand::is_finished( const GameState& state ) const
 {
     return m_done;
 };
 
 void
-RemoveGemsCommand::undo( GameState& state )
+RemoveCommand::undo( GameState& state )
 {
     // TODO: Implement when needed
 }
