@@ -38,10 +38,8 @@ MoveCommand::is_finished( const GameState& state ) const
     GemPosition position = state.board( ).position_of_gem( m_to_coordinates.x, m_to_coordinates.y );
     const Gem& gem = board[ position.col ][ position.row ];
 
-    std::cout << "std::abs( m_previous_gem.x - gem.x ) " << std::abs( m_previous_gem.x - gem.x )
-              << std::endl;
-    std::cout << "std::abs( m_previous_gem.y - gem.y ) " << std::abs( m_previous_gem.y - gem.y )
-              << std::endl;
+    std::cout << " Distance to x:" << std::abs( m_previous_gem.x - gem.x )
+              << "y : " << std::abs( m_previous_gem.y - gem.y ) << std::endl;
 
     return ( std::abs( m_previous_gem.x - gem.x ) <= 0.5 )
            && ( std::abs( m_previous_gem.y - gem.y ) <= 0.5 );
@@ -54,13 +52,15 @@ MoveCommand::apply( GameState& state )
 
     if ( m_store_for_undo )
     {
+        std::cout << "Applying MoveCommand" << std::endl;
+        state.print( );
+
         m_previous_gem = state.board( ).copy_gem( m_to_coordinates.x, m_to_coordinates.y );
         m_store_for_undo = false;
 
-        std::cout << "MoveCommand" << std::endl;
         GemPosition pos = state.board( ).position_of_gem( m_to_coordinates.x, m_to_coordinates.y );
-        state.print( );
         board[ pos.col ][ pos.row ] = m_gem;
+
         state.print( );
     }
 

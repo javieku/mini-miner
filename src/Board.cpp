@@ -18,6 +18,7 @@ const int32_t BOARD_HEIGHT = 400;
 
 Board::Board( )
 {
+    // TODO GameState should give these
     x = 300;
     y = 80;
     init_board( BOARD_WIDTH, BOARD_HEIGHT );
@@ -177,6 +178,6 @@ Board::init_board( float width, float height )
 Dimension
 Board::tile_dimension( ) const
 {
-    return Dimension( { BOARD_WIDTH / NROW, BOARD_HEIGHT / NCOL} );
+    return Dimension( {BOARD_WIDTH / NROW, BOARD_HEIGHT / NCOL} );
 }
 }
