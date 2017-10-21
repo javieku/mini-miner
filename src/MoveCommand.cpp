@@ -92,7 +92,7 @@ MoveCommand::undo( GameState& state )
     Board& board = state.board( );
     Coordinates aux;
 
-    Coordinates cell_coordinate = Utils::to_cell_coordinates(
+    Coordinates cell_coordinate = Utils::to_tile_coordinates(
         m_to_coordinates, Coordinates( {board.x, board.y} ), state.board( ).tile_dimension( ) );
 
     aux.x = m_gem.x;

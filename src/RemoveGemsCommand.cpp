@@ -1,6 +1,7 @@
 #include "RemoveGemsCommand.h"
 
 #include "GameState.h"
+#include "Utils.h"
 
 #include <iostream>
 
@@ -17,50 +18,14 @@ RemoveGemsCommand::RemoveGemsCommand( )
 {
 }
 
-// Generalization of adjacent_find to check n consecutive elements
-template < class ForwardIt, class Size, class BinaryPredicate >
-ForwardIt
-adjacent_find_n( ForwardIt first, ForwardIt last, Size n, BinaryPredicate p )
-{
-    if ( first == last )
-    {
-        return last;
-    }
-    ForwardIt next = first;
-    ++next;
-
-    Size counter = 0;
-    ForwardIt first_range;
-    for ( ; next != last; ++next, ++first )
-    {
-        if ( p( *first, *next ) )
-        {
-            if ( counter == 0 )
-            {
-                first_range = first;
-            }
-            ++counter;
-        }
-        else
-        {
-            counter = 0;
-        }
-        if ( counter >= n )
-        {
-            return first_range;
-        }
-    }
-    return last;
-}
-
 bool
 can_remove( const Colum& column )
 {
-    auto first = adjacent_find_n(
+    auto first = Utils::adjacent_find_n(
         column.begin( ), column.end( ), COLLAPSE_THRESHOLD - 1,
         []( const Gem& gem1, const Gem& gem2 ) { return gem1.texture == gem2.texture; } );
 
-    auto rfirst = adjacent_find_n(
+    auto rfirst = Utils::adjacent_find_n(
         column.rbegin( ), column.rend( ), COLLAPSE_THRESHOLD - 1,
         []( const Gem& gem1, const Gem& gem2 ) { return gem1.texture == gem2.texture; } );
 
@@ -70,16 +35,16 @@ can_remove( const Colum& column )
 bool
 remove_gems( Colum& column )
 {
-    auto first = adjacent_find_n( column.begin( ), column.end( ), COLLAPSE_THRESHOLD - 1,
-                                  []( const Gem& gem1, const Gem& gem2 ) {
-                                      if ( gem1.texture == King::Engine::TEXTURE_BROKEN
-                                           || gem2.texture == King::Engine::TEXTURE_BROKEN )
-                                      {
-                                          return false;
-                                      }
+    auto first = Utils::adjacent_find_n( column.begin( ), column.end( ), COLLAPSE_THRESHOLD - 1,
+                                         []( const Gem& gem1, const Gem& gem2 ) {
+                                             if ( gem1.texture == King::Engine::TEXTURE_BROKEN
+                                                  || gem2.texture == King::Engine::TEXTURE_BROKEN )
+                                             {
+                                                 return false;
+                                             }
 
-                                      return gem1.texture == gem2.texture;
-                                  } );
+                                             return gem1.texture == gem2.texture;
+                                         } );
 
     if ( first != column.end( ) )
     {
@@ -92,7 +57,7 @@ remove_gems( Colum& column )
         }
     }
 
-    auto rfirst = adjacent_find_n(
+    auto rfirst = Utils::adjacent_find_n(
         column.rbegin( ), column.rend( ), COLLAPSE_THRESHOLD - 1,
         []( const Gem& gem1, const Gem& gem2 ) { return gem1.texture == gem2.texture; } );
 
@@ -110,29 +75,6 @@ remove_gems( Colum& column )
     return first != column.end( );
 }
 
-std::string
-to_strings( const King::Engine::Texture& texture )
-{
-    switch ( texture )
-
-    {
-    case King::Engine::TEXTURE_BLUE:
-        return "B";
-    case King::Engine::TEXTURE_GREEN:
-        return "G";
-    case King::Engine::TEXTURE_PURPLE:
-        return "P";
-    case King::Engine::TEXTURE_RED:
-        return "R";
-    case King::Engine::TEXTURE_YELLOW:
-        return "Y";
-    case King::Engine::TEXTURE_BROKEN:
-        return "X";
-    case King::Engine::TEXTURE_MAX:
-        return "?";
-    }
-}
-
 bool
 RemoveGemsCommand::is_valid( const GameState& state ) const
 {
@@ -143,21 +85,13 @@ RemoveGemsCommand::is_valid( const GameState& state ) const
 
     // Strategy for row
     // Transposition of the board
-    std::vector< Colum > rows;
-    for ( size_t col = 0; col < board.size( ); ++col )
-    {
-        Colum items_row;
-        for ( size_t row = 0; row < board[ col ].size( ); ++row )
-        {
-            items_row.push_back( board[ row ][ col ] );
-        }
-        rows.push_back( items_row );
-    }
+    Tiles transposed_tiles;
+    Utils::transposition( board, transposed_tiles );
 
     // Handle rows as column
-    for ( size_t row = 0; row < rows.size( ); ++row )
+    for ( size_t row = 0; row < transposed_tiles.size( ); ++row )
     {
-        valid = valid || can_remove( rows[ row ] );
+        valid = valid || can_remove( transposed_tiles[ row ] );
     }
 
     // Strategy for colums
@@ -186,33 +120,13 @@ RemoveGemsCommand::apply( GameState& state )
     // transposition the board so that we can handle rows as columns
 
     std::cout << "Strategy for rows" << std::endl;
-    std::vector< Colum > rows;
-    for ( size_t col = 0; col < board.size( ); ++col )
-    {
-        Colum items_row;
-        for ( size_t row = 0; row < board[ col ].size( ); ++row )
-        {
-            items_row.push_back( board[ row ][ col ] );
-        }
-        rows.push_back( items_row );
-    }
-
-    std::cout << "Transposition of board" << std ::endl;
-
-    for ( size_t col = 0; col < rows.size( ); ++col )
-    {
-        for ( size_t row = 0; row < rows[ col ].size( ); ++row )
-        {
-            std::cout << to_strings( rows[ row ][ col ].texture ) << " ";
-        }
-        std::cout << std::endl;
-    }
-    std::cout << "---------------------" << std::endl;
+    std::vector< Colum > transposed_tiles;
+    Utils::transposition( board, transposed_tiles );
 
     // Apply colum strategy to rows
-    for ( size_t row = 0; row < rows.size( ); ++row )
+    for ( size_t row = 0; row < transposed_tiles.size( ); ++row )
     {
-        bool success = remove_gems( rows[ row ] );
+        bool success = remove_gems( transposed_tiles[ row ] );
         if ( success )
             state.increase_score( );
         has_removed_gem = has_removed_gem || success;
@@ -223,7 +137,7 @@ RemoveGemsCommand::apply( GameState& state )
     {
         for ( size_t row = 0; row < board[ col ].size( ); ++row )
         {
-            board[ col ][ row ] = rows[ row ][ col ];
+            board[ col ][ row ] = transposed_tiles[ row ][ col ];
         }
     }
     state.print( );
