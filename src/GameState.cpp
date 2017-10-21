@@ -12,6 +12,7 @@
 namespace Game
 {
 GameState::GameState( )
+    : m_background( {0.0f, 0.0f, King::Engine::TEXTURE_BACKGROUND} )
 {
 }
 
@@ -22,7 +23,7 @@ GameState::~GameState( )
 const Entity&
 GameState::background( ) const
 {
-    return {0.0f, 0.0f, King::Engine::TEXTURE_BACKGROUND};
+    return m_background;
 }
 
 const Score&
@@ -73,8 +74,8 @@ GameState::is_finished( ) const
 }
 
 void
-GameState::increase_score( )
+GameState::increase_score( const int32_t factor /*=1*/ )
 {
-    m_score.score += 50;
+    m_score.score += factor * 50;
 }
 }

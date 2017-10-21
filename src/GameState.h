@@ -34,12 +34,13 @@ public:
 
     // Helpers
     bool is_finished( ) const;
-    void increase_score( );
+    void increase_score( const int32_t factor = 1 );
 
     // Debug
     void print( ) const;
 
 private:
+    Entity m_background;
     Board m_board;
     Score m_score;
     Timer m_timer;

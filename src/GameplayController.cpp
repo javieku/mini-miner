@@ -1,13 +1,12 @@
 #include "GameController.h"
 
+// Game
+#include "InputHandler.h"
+
 namespace Game
 {
 GameController::GameController( InputHandler& input_handler )
     : m_input_handler( input_handler )
-{
-}
-
-GameController::~GameController( )
 {
 }
 

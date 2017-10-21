@@ -20,7 +20,7 @@ public:
 
     static void transposition( const Tiles& tiles, Tiles& transposed_tiles );
 
-    // Generalization of adjacent_find to check n consecutive elements
+    // Generalization of std::adjacent_find to check n consecutive elements
     template < class ForwardIt, class Size, class BinaryPredicate >
     static ForwardIt
     adjacent_find_n( ForwardIt first, ForwardIt last, Size n, BinaryPredicate p )

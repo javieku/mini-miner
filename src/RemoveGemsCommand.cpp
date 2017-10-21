@@ -11,6 +11,16 @@ namespace
 {
 // At least 3 items have to be the same in a row/colum
 const int32_t COLLAPSE_THRESHOLD = 3;
+
+auto is_removable = []( const Gem& gem1, const Gem& gem2 ) {
+    if ( gem1.texture == King::Engine::TEXTURE_BROKEN
+         || gem2.texture == King::Engine::TEXTURE_BROKEN )
+    {
+        return false;
+    }
+
+    return gem1.texture == gem2.texture;
+};
 }
 
 RemoveGemsCommand::RemoveGemsCommand( )
@@ -21,13 +31,11 @@ RemoveGemsCommand::RemoveGemsCommand( )
 bool
 can_remove( const Colum& column )
 {
-    auto first = Utils::adjacent_find_n(
-        column.begin( ), column.end( ), COLLAPSE_THRESHOLD - 1,
-        []( const Gem& gem1, const Gem& gem2 ) { return gem1.texture == gem2.texture; } );
+    auto first = Utils::adjacent_find_n( column.begin( ), column.end( ), COLLAPSE_THRESHOLD - 1,
+                                         is_removable );
 
-    auto rfirst = Utils::adjacent_find_n(
-        column.rbegin( ), column.rend( ), COLLAPSE_THRESHOLD - 1,
-        []( const Gem& gem1, const Gem& gem2 ) { return gem1.texture == gem2.texture; } );
+    auto rfirst = Utils::adjacent_find_n( column.rbegin( ), column.rend( ), COLLAPSE_THRESHOLD - 1,
+                                          is_removable );
 
     return ( first != column.end( ) ) || rfirst != column.rend( );
 }
@@ -36,15 +44,7 @@ bool
 remove_gems( Colum& column )
 {
     auto first = Utils::adjacent_find_n( column.begin( ), column.end( ), COLLAPSE_THRESHOLD - 1,
-                                         []( const Gem& gem1, const Gem& gem2 ) {
-                                             if ( gem1.texture == King::Engine::TEXTURE_BROKEN
-                                                  || gem2.texture == King::Engine::TEXTURE_BROKEN )
-                                             {
-                                                 return false;
-                                             }
-
-                                             return gem1.texture == gem2.texture;
-                                         } );
+                                         is_removable );
 
     if ( first != column.end( ) )
     {
@@ -57,9 +57,8 @@ remove_gems( Colum& column )
         }
     }
 
-    auto rfirst = Utils::adjacent_find_n(
-        column.rbegin( ), column.rend( ), COLLAPSE_THRESHOLD - 1,
-        []( const Gem& gem1, const Gem& gem2 ) { return gem1.texture == gem2.texture; } );
+    auto rfirst = Utils::adjacent_find_n( column.rbegin( ), column.rend( ), COLLAPSE_THRESHOLD - 1,
+                                          is_removable );
 
     if ( rfirst != column.rend( ) )
     {
@@ -72,7 +71,7 @@ remove_gems( Colum& column )
         }
     }
 
-    return first != column.end( );
+    return first != column.end( ) || rfirst != column.rend( );
 }
 
 bool
@@ -117,13 +116,15 @@ RemoveGemsCommand::apply( GameState& state )
 
     bool has_removed_gem = false;
     // Strategy for rows
-    // transposition the board so that we can handle rows as columns
-
+    // 1 - Board tiles transposition
+    // 2 - Apply colum strategy to rows
+    // 3 - Apply result to the original board
     std::cout << "Strategy for rows" << std::endl;
+    // 1
     std::vector< Colum > transposed_tiles;
     Utils::transposition( board, transposed_tiles );
 
-    // Apply colum strategy to rows
+    // 2
     for ( size_t row = 0; row < transposed_tiles.size( ); ++row )
     {
         bool success = remove_gems( transposed_tiles[ row ] );
@@ -132,7 +133,7 @@ RemoveGemsCommand::apply( GameState& state )
         has_removed_gem = has_removed_gem || success;
     }
 
-    // Apply result to the original board
+    // 3
     for ( size_t col = 0; col < board.size( ); ++col )
     {
         for ( size_t row = 0; row < board[ col ].size( ); ++row )
@@ -156,7 +157,7 @@ RemoveGemsCommand::apply( GameState& state )
 
     m_done = has_removed_gem;
 
-    std::cout << "Done? " << m_done << std::endl;
+    std::cout << "Done? " << m_done << " has_removed_gem? " << has_removed_gem << std::endl;
 }
 
 bool

@@ -10,7 +10,7 @@ namespace Game
 {
 namespace
 {
-const int32_t DELTA = 1;
+const int32_t DELTA = 4;
 }
 
 MoveCommand::MoveCommand( const Gem& gem, const Coordinates& to )
