@@ -33,10 +33,12 @@ using DragEventSharedPtr = std::shared_ptr< DragEvent >;
 
 struct ClickEvent : public Event
 {
-    Coordinates coordinates;
+    Coordinates start;
+    Coordinates end;
 
-    ClickEvent( const Coordinates& c )
-        : coordinates( c )
+    ClickEvent( const Coordinates& s, const Coordinates& e )
+        : start( s )
+        , end( e )
     {
     }
 };

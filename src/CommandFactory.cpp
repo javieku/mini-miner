@@ -23,6 +23,14 @@ CommandFactory::create_command_list( const EventSharedPtr& e )
         actions.push_back( std::make_shared< RemoveCommand >( ) );
         actions.push_back( std::make_shared< CollapseCommand >( ) );
     }
+    ClickEventSharedPtr c = std::dynamic_pointer_cast< ClickEvent >( e );
+    if ( c != nullptr )
+    {
+        actions.push_back( std::make_shared< SwapCommand >( c->start, c->end ) );
+        actions.push_back( std::make_shared< RemoveCommand >( ) );
+        actions.push_back( std::make_shared< CollapseCommand >( ) );
+    }
+
     return actions;
 }
 }
