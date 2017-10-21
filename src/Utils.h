@@ -1,11 +1,14 @@
 #pragma once
+
+// Game
 #include "Board.h"
 #include "Coordinates.h"
-#include "Gem.h"
+#include "Tile.h"
+
 namespace Game
 {
 class Coordinates;
-class GemPosition;
+class TilePosition;
 
 class Utils
 {
@@ -14,13 +17,13 @@ public:
                                             const Coordinates& board_offset,
                                             const Dimension& tile );
 
-    static GemPosition to_position_of_tile( const Coordinates& coordinate,
+    static TilePosition to_position_of_tile( const Coordinates& coordinate,
                                             const Coordinates& board_offset,
                                             const Dimension& dimension );
 
     static void transposition( const Tiles& tiles, Tiles& transposed_tiles );
 
-    // Generalization of std::adjacent_find to check n consecutive elements
+    // Generalization of std::adjacent_find taken from standard to check n consecutive elements
     template < class ForwardIt, class Size, class BinaryPredicate >
     static ForwardIt
     adjacent_find_n( ForwardIt first, ForwardIt last, Size n, BinaryPredicate p )

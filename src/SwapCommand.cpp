@@ -25,8 +25,9 @@ SwapCommand::is_valid( const GameState& state ) const
 {
     const auto& board = state.board( );
 
-    const GemPosition& one = board.position_of_gem( m_one_coordinate.x, m_one_coordinate.y );
-    const GemPosition& other = board.position_of_gem( m_other_coordinate.x, m_other_coordinate.y );
+    const TilePosition& one = board.position_of_tile( m_one_coordinate.x, m_one_coordinate.y );
+    const TilePosition& other
+        = board.position_of_tile( m_other_coordinate.x, m_other_coordinate.y );
 
     if ( !one.is_valid( ) || !other.is_valid( ) )
     {
@@ -62,11 +63,12 @@ SwapCommand::apply( GameState& state )
 
     if ( first_time )
     {
-        Gem gem1 = state.board( ).copy_gem( m_one_coordinate.x, m_one_coordinate.y );
-        Gem gem2 = state.board( ).copy_gem( m_other_coordinate.x, m_other_coordinate.y );
+        Tile other_tile = state.board( ).copy_tile( m_one_coordinate.x, m_one_coordinate.y );
+        Tile tile = state.board( ).copy_tile( m_other_coordinate.x, m_other_coordinate.y );
 
-        m_move1 = std::make_shared< MoveCommand >( gem1, Coordinates( {gem2.x, gem2.y} ) );
-        m_move2 = std::make_shared< MoveCommand >( gem2, Coordinates( {gem1.x, gem1.y} ) );
+        m_move1 = std::make_shared< MoveCommand >( other_tile, Coordinates( {tile.x, tile.y} ) );
+        m_move2
+            = std::make_shared< MoveCommand >( tile, Coordinates( {other_tile.x, other_tile.y} ) );
         first_time = false;
     }
 

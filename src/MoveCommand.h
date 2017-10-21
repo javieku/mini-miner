@@ -10,7 +10,7 @@ namespace Game
 class MoveCommand : public CommandInterface
 {
 public:
-    MoveCommand( const Gem& gem, const Coordinates& to );
+    MoveCommand( const Tile& tile, const Coordinates& to );
     ~MoveCommand( ) = default;
 
     bool is_valid( const GameState& state ) const override;
@@ -19,11 +19,11 @@ public:
     void undo( GameState& state ) override;
 
 private:
-    Gem m_gem;
+    Tile m_tile;
     Coordinates m_to_coordinates;
 
     // Undo
-    Gem m_previous_gem;
+    Tile m_previous_tile;
     bool m_store_for_undo;
 };
 

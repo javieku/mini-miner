@@ -12,14 +12,14 @@ namespace
 // At least 3 items have to be the same in a row/colum
 const int32_t COLLAPSE_THRESHOLD = 3;
 
-auto is_removable = []( const Gem& gem1, const Gem& gem2 ) {
-    if ( gem1.texture == King::Engine::TEXTURE_BROKEN
-         || gem2.texture == King::Engine::TEXTURE_BROKEN )
+auto is_removable = []( const Tile& one_tile, const Tile& other_tile ) {
+    if ( one_tile.texture == King::Engine::TEXTURE_BROKEN
+         || other_tile.texture == King::Engine::TEXTURE_BROKEN )
     {
         return false;
     }
 
-    return gem1.texture == gem2.texture;
+    return one_tile.texture == other_tile.texture;
 };
 }
 
@@ -41,7 +41,7 @@ can_remove( const Colum& column )
 }
 
 bool
-remove_gems( Colum& column )
+remove_tiles( Colum& column )
 {
     auto first = Utils::adjacent_find_n( column.begin( ), column.end( ), COLLAPSE_THRESHOLD - 1,
                                          is_removable );
@@ -114,26 +114,24 @@ RemoveCommand::apply( GameState& state )
     std::cout << "RemoveCommand" << std::endl;
     state.print( );
 
-    bool has_removed_gem = false;
+    bool has_removed_tile = false;
     // Strategy for rows
     // 1 - Board tiles transposition
     // 2 - Apply colum strategy to rows
     // 3 - Apply result to the original board
     std::cout << "Strategy for rows" << std::endl;
-    // 1
+
     std::vector< Colum > transposed_tiles;
     Utils::transposition( board, transposed_tiles );
 
-    // 2
     for ( size_t row = 0; row < transposed_tiles.size( ); ++row )
     {
-        bool success = remove_gems( transposed_tiles[ row ] );
+        bool success = remove_tiles( transposed_tiles[ row ] );
         if ( success )
             state.increase_score( );
-        has_removed_gem = has_removed_gem || success;
+        has_removed_tile = has_removed_tile || success;
     }
 
-    // 3
     for ( size_t col = 0; col < board.size( ); ++col )
     {
         for ( size_t row = 0; row < board[ col ].size( ); ++row )
@@ -148,16 +146,16 @@ RemoveCommand::apply( GameState& state )
     // Strategy for colums
     for ( size_t col = 0; col < board.size( ); ++col )
     {
-        bool success = remove_gems( board[ col ] );
+        bool success = remove_tiles( board[ col ] );
         if ( success )
             state.increase_score( );
-        has_removed_gem = has_removed_gem || success;
+        has_removed_tile = has_removed_tile || success;
     }
     state.print( );
 
-    m_done = has_removed_gem;
+    m_done = has_removed_tile;
 
-    std::cout << "Done? " << m_done << " has_removed_gem? " << has_removed_gem << std::endl;
+    std::cout << "Done? " << m_done << " has_removed_tile? " << has_removed_tile << std::endl;
 }
 
 bool

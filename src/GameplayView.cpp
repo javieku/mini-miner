@@ -20,9 +20,9 @@ GameView::render( const GameState& state )
 
     for ( const Colum& col : state.board( ).tiles( ) )
     {
-        for ( const Gem& gem : col )
+        for ( const Tile& tile : col )
         {
-            m_engine.Render( gem.texture, gem.x, gem.y );
+            m_engine.Render( tile.texture, tile.x, tile.y );
         }
     }
 

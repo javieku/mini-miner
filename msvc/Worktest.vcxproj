@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A355810E-BD4D-42D6-A615-209F44E8FB2F}</ProjectGuid>
     <RootNamespace>Worktest</RootNamespace>
+    <ProjectName>MiniMiner</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -84,7 +85,7 @@
     <ClCompile Include="..\src\Board.cpp" />
     <ClCompile Include="..\src\CommandFactory.cpp" />
     <ClCompile Include="..\src\Utils.cpp" />
-    <ClCompile Include="..\src\Gem.cpp" />
+    <ClCompile Include="..\src\Tile.cpp" />
     <ClCompile Include="..\src\CollapseCommand.cpp" />
     <ClCompile Include="..\src\RemoveCommand.cpp" />
     <ClCompile Include="..\src\GameState.cpp" />
@@ -108,7 +109,7 @@
     <ClInclude Include="..\src\CommandFactory.h" />
     <ClInclude Include="..\src\Coordinates.h" />
     <ClInclude Include="..\src\Event.h" />
-    <ClInclude Include="..\src\Gem.h" />
+    <ClInclude Include="..\src\Tile.h" />
     <ClInclude Include="..\src\CollapseCommand.h" />
     <ClInclude Include="..\src\Entity.h" />
     <ClInclude Include="..\src\RemoveCommand.h" />

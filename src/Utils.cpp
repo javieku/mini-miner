@@ -3,7 +3,7 @@
 // Game
 #include "Board.h"
 #include "Coordinates.h"
-#include "Gem.h"
+#include "Tile.h"
 
 namespace Game
 {
@@ -12,7 +12,7 @@ Utils::to_tile_coordinates( const Coordinates& coordinate_to_adjust,
                             const Coordinates& board_offset,
                             const Dimension& tile )
 {
-    GemPosition pos = Utils::to_position_of_tile( coordinate_to_adjust, board_offset, tile );
+    TilePosition pos = Utils::to_position_of_tile( coordinate_to_adjust, board_offset, tile );
 
     Coordinates c;
     c.x = board_offset.x + tile.height * pos.col + ( tile.height / 4 );
@@ -21,7 +21,7 @@ Utils::to_tile_coordinates( const Coordinates& coordinate_to_adjust,
     return c;
 }
 
-GemPosition
+TilePosition
 Utils::to_position_of_tile( const Coordinates& coordinate,
                             const Coordinates& board_offset,
                             const Dimension& tile_dim )

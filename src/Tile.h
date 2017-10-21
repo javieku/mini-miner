@@ -5,17 +5,17 @@
 
 namespace Game
 {
-enum class GemState
+enum class TileState
 {
     RED,
     GREEN,
     YELLOW,
-    BlUE,
+    BLUE,
     BROKEN,
     SELECTED
 };
 
-struct GemPosition
+struct TilePosition
 {
     int row;
     int col;
@@ -27,11 +27,11 @@ struct GemPosition
     }
 };
 
-class Gem : public Entity
+class Tile : public Entity
 {
 public:
-    GemState type;
+    TileState type;
 
-    static Gem create_random( float x, float y );
+    static Tile create_random( float x, float y );
 };
 }

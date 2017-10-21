@@ -13,7 +13,7 @@ namespace Game
 namespace
 {
 const auto tile_is_broken
-    = []( const Gem& tile ) { return tile.texture == King::Engine::TEXTURE_BROKEN; };
+    = []( const Tile& tile ) { return tile.texture == King::Engine::TEXTURE_BROKEN; };
 
 bool
 any_of_tiles_is_broken( const Colum& column )
@@ -49,8 +49,8 @@ create_falling_tiles( const Colum& original_column, const Colum& copied_column )
     {
         const auto& tile = copied_column[ row ];
 
-        Gem falling_tile
-            = ( tile_is_broken( tile ) ) ? Gem::create_random( 40.0f * row, tile.x ) : tile;
+        Tile falling_tile
+            = ( tile_is_broken( tile ) ) ? Tile::create_random( 40.0f * row, tile.x ) : tile;
 
         Coordinates to{original_column[ row ].x, original_column[ row ].y};
 
@@ -83,7 +83,7 @@ CreateAndMoveCommand::apply( GameState& state )
 {
     if ( m_falling_tiles.empty( ) )
     {
-        std::cout << "GenerateGemsCommand" << std::endl;
+        std::cout << "CreateAndMoveCommand" << std::endl;
         state.print( );
         auto& board = state.board_tiles( );
         for ( const auto& column : board )
