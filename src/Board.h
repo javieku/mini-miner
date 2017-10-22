@@ -26,9 +26,9 @@ public:
     ~Board( ) = default;
 
     const Tile& tile( int32_t row, int32_t col ) const;
-    const Tile& tile( float x, float y ) const;
-    Tile copy_tile( float x, float y );
-    const TilePosition& position_of_tile( float x, float y ) const
+    const Tile& tile( const Coordinates& c ) const;
+    Tile copy_tile( const Coordinates& c );
+    const TilePosition& position_of_tile( const Coordinates& c ) const;
 
     const Tiles& tiles( ) const;
     Tiles& tiles( );

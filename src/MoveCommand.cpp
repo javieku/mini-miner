@@ -78,7 +78,7 @@ MoveCommand::apply( GameState& state )
         state.print( );
         m_store_for_undo = false;
 
-        m_pos = state.board( ).position_of_tile( m_to.x, m_to.y );
+        m_pos = state.board( ).position_of_tile( m_to );
         board[ m_pos.col ][ m_pos.row ] = m_previous_tile;
 
         state.print( );

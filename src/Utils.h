@@ -17,7 +17,7 @@ public:
                                             const Coordinates& board_offset,
                                             const Dimension& tile );
 
-    static TilePosition to_position_of_tile( const Coordinates& coordinate,
+    static TilePosition position_of_tile( const Coordinates& coordinate,
                                             const Coordinates& board_offset,
                                             const Dimension& dimension );
 

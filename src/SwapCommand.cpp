@@ -25,9 +25,8 @@ SwapCommand::is_valid( const GameState& state ) const
 {
     const auto& board = state.board( );
 
-    const TilePosition& one = board.position_of_tile( m_one_coordinate.x, m_one_coordinate.y );
-    const TilePosition& other
-        = board.position_of_tile( m_other_coordinate.x, m_other_coordinate.y );
+    const TilePosition& one = board.position_of_tile( m_one_coordinate );
+    const TilePosition& other = board.position_of_tile( m_other_coordinate );
 
     if ( !one.is_valid( ) || !other.is_valid( ) )
     {
@@ -63,8 +62,8 @@ SwapCommand::apply( GameState& state )
 
     if ( !m_move1 || !m_move2 )
     {
-        Tile other_tile = state.board( ).copy_tile( m_one_coordinate.x, m_one_coordinate.y );
-        Tile tile = state.board( ).copy_tile( m_other_coordinate.x, m_other_coordinate.y );
+        Tile other_tile = state.board( ).copy_tile( m_one_coordinate );
+        Tile tile = state.board( ).copy_tile( m_other_coordinate );
 
         m_move1 = std::make_shared< MoveCommand >( other_tile, Coordinates( {tile.x, tile.y} ) );
         m_move2

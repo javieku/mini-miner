@@ -12,7 +12,7 @@ Utils::to_tile_coordinates( const Coordinates& coordinate_to_adjust,
                             const Coordinates& board_offset,
                             const Dimension& tile )
 {
-    TilePosition pos = Utils::to_position_of_tile( coordinate_to_adjust, board_offset, tile );
+    TilePosition pos = Utils::position_of_tile( coordinate_to_adjust, board_offset, tile );
 
     Coordinates c;
     c.x = board_offset.x + tile.height * pos.col + ( tile.height / 4 );
@@ -22,7 +22,7 @@ Utils::to_tile_coordinates( const Coordinates& coordinate_to_adjust,
 }
 
 TilePosition
-Utils::to_position_of_tile( const Coordinates& coordinate,
+Utils::position_of_tile( const Coordinates& coordinate,
                             const Coordinates& board_offset,
                             const Dimension& tile_dim )
 {

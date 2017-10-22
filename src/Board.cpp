@@ -1,5 +1,8 @@
 #include "Board.h"
 
+// Game
+#include "Utils.h"
+
 // Standard
 #include <algorithm>
 #include <iostream>
@@ -67,31 +70,26 @@ Board::tile( int32_t row, int32_t col ) const
 };
 
 const Tile&
-Board::tile( float x, float y ) const
+Board::tile( const Coordinates& event_coordinates ) const
 {
-    const auto& pos = position_of_tile( x, y );
+    const auto& pos = position_of_tile( event_coordinates );
 
     return m_tiles[ pos.col ][ pos.row ];
 }
 
 Tile
-Board::copy_tile( float x, float y )
+Board::copy_tile( const Coordinates& event_coordinates )
 {
-    const auto& pos = position_of_tile( x, y );
+    const auto& pos = position_of_tile( event_coordinates );
 
     return m_tiles[ pos.col ][ pos.row ];
 }
 
 const TilePosition&
-Board::position_of_tile( float x, float y ) const
+Board::position_of_tile( const Coordinates& event_coordinates ) const
 {
-    float tile_width = BOARD_WIDTH / NCOL;
-    int col = ( x - this->x ) / tile_width;
-
-    float tile_height = BOARD_HEIGHT / NROW;
-    int row = ( y - this->y ) / tile_height;
-
-    return {row, col};
+    return Utils::position_of_tile( event_coordinates, Coordinates( {this->x, this->y} ),
+                                    tile_dimension( ) );
 }
 
 const Tiles&
