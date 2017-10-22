@@ -30,8 +30,12 @@ struct TilePosition
 class Tile : public Entity
 {
 public:
-    TileState type;
+    Tile( const Coordinates& c );
+    Tile( const Coordinates& c, King::Engine::Texture texture );
 
     static Tile create_random( float x, float y );
+
+public:
+    TileState type;
 };
 }

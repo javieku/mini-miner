@@ -28,7 +28,7 @@ public:
     const Tile& tile( int32_t row, int32_t col ) const;
     const Tile& tile( float x, float y ) const;
     Tile copy_tile( float x, float y );
-    const TilePosition& position_of_tile( float x, float y ) const;
+    const TilePosition& position_of_tile( float x, float y ) const
 
     const Tiles& tiles( ) const;
     Tiles& tiles( );

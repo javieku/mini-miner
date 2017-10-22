@@ -12,7 +12,7 @@
 namespace Game
 {
 GameState::GameState( )
-    : m_background( {0.0f, 0.0f, King::Engine::TEXTURE_BACKGROUND} )
+    : m_background( {0.0f, 0.0f}, King::Engine::TEXTURE_BACKGROUND )
 {
 }
 

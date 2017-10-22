@@ -12,9 +12,8 @@ class Score : public Entity
 {
 public:
     Score( )
+        : Entity( {75u, 225u} )
     {
-        this->x = 75u;
-        this->y = 225u;
         this->text = "Score: ";
         this->score = 0u;
     };

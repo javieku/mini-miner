@@ -8,6 +8,16 @@
 
 namespace Game
 {
+Tile::Tile( const Coordinates& c )
+    : Entity( c )
+{
+}
+
+Tile::Tile( const Coordinates& c, King::Engine::Texture texture )
+    : Entity( c, texture )
+{
+}
+
 Tile
 Tile::create_random( float x, float y )
 {
@@ -15,10 +25,8 @@ Tile::create_random( float x, float y )
         = {King::Engine::TEXTURE_BLUE, King::Engine::TEXTURE_YELLOW, King::Engine::TEXTURE_RED,
            King::Engine::TEXTURE_GREEN, King::Engine::TEXTURE_PURPLE};
 
-    Tile tile;
-    tile.texture = supported_tile_types[ std::rand( ) % supported_tile_types.size( ) ];
-    tile.y = x;
-    tile.x = y;
-    return tile;
+    auto texture = supported_tile_types[ std::rand( ) % supported_tile_types.size( ) ];
+
+    return Tile( {x, y}, texture );
 }
 }

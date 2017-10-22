@@ -13,12 +13,11 @@ class Timer : public Entity
 {
 public:
     Timer( )
+        : Entity( {75u, 175u} )
     {
         // TODO Initialize it in Gamestate using constructor
-        this->x = 75u;
-        this->y = 175u;
         text = "Time: ";
-        duration = 60;
+        duration = 60u;
     }
     ~Timer( ){};
 

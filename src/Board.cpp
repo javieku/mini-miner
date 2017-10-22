@@ -17,10 +17,9 @@ const float BOARD_HEIGHT = 400.0f;
 }  // anonymous namespace
 
 Board::Board( )
+    : Entity( {300u, 80u} )
 {
     // TODO GameState should give these
-    x = 300;
-    y = 80;
     init_board( BOARD_WIDTH, BOARD_HEIGHT );
 }
 
@@ -153,15 +152,12 @@ Board::init_board( float width, float height )
 
     for ( int32_t col = 0; col < NCOL; ++col )
     {
-        m_tiles[ col ].resize( NCOL );
-
         for ( int32_t row = 0; row < NROW; ++row )
         {
-            Tile& tile = m_tiles[ col ][ row ];
-            tile.texture = King::Engine::TEXTURE_MAX;
-
-            tile.x = this->x + base_col * col + ( base_col / 4 );
-            tile.y = this->y + base_row * row + ( base_row / 4 );
+            Coordinates c;
+            c.x = this->x + base_col * col + ( base_col / 4 );
+            c.y = this->y + base_row * row + ( base_row / 4 );
+            m_tiles[ col ].push_back( Tile( {c} ) );
         }
     }
 

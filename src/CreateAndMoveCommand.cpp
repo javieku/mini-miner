@@ -50,7 +50,7 @@ create_falling_tiles( const Column& original_column, const Column& copied_column
         const auto& tile = copied_column[ row ];
 
         Tile falling_tile
-            = ( tile_is_broken( tile ) ) ? Tile::create_random( 40.0f * row, tile.x ) : tile;
+            = ( tile_is_broken( tile ) ) ? Tile::create_random( tile.x, 40.0f * row ) : tile;
 
         Coordinates to{original_column[ row ].x, original_column[ row ].y};
 
