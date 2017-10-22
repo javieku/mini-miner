@@ -50,10 +50,10 @@ InputHandler::handle_click( const Coordinates& first_click, const Coordinates& s
     return event;
 }
 
-std::deque< CommandInterfaceSharedPtr >
+EventSharedPtr
 InputHandler::handle_event( )
 {
-    std::deque< CommandInterfaceSharedPtr > actions;
+    EventSharedPtr event = std::make_shared< Event >( );
     if ( !m_drag_started && m_engine.GetMouseButtonDown( ) )
     {
         m_drag_started = true;
@@ -66,7 +66,6 @@ InputHandler::handle_event( )
         m_drag_started = false;
         Coordinates end_drag{m_engine.GetMouseX( ), m_engine.GetMouseY( )};
 
-        EventSharedPtr event;
         if ( is_click( m_start_drag, end_drag ) )
         {
             event = handle_click( m_first_click_position, end_drag );
@@ -75,10 +74,8 @@ InputHandler::handle_event( )
         {
             event = std::make_shared< DragEvent >( m_start_drag, end_drag );
         }
-
-        actions = m_factory.create_command_list( event );
     }
 
-    return actions;
+    return event;
 }
 }

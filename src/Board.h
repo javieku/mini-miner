@@ -16,8 +16,8 @@ namespace Game
 const unsigned int NROW = 8;
 const unsigned int NCOL = 8;
 
-using Colum = std::vector< Tile >;
-using Tiles = std::vector< Colum >;
+using Column = std::vector< Tile >;
+using Tiles = std::vector< Column >;
 
 class Board : public Entity
 {

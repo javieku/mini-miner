@@ -21,15 +21,9 @@ auto is_removable = []( const Tile& one_tile, const Tile& other_tile ) {
 
     return one_tile.texture == other_tile.texture;
 };
-}
-
-RemoveCommand::RemoveCommand( )
-    : m_done( false )
-{
-}
 
 bool
-can_remove( const Colum& column )
+can_remove( const Column& column )
 {
     auto first = Utils::adjacent_find_n( column.begin( ), column.end( ), COLLAPSE_THRESHOLD - 1,
                                          is_removable );
@@ -41,7 +35,7 @@ can_remove( const Colum& column )
 }
 
 bool
-remove_tiles( Colum& column )
+remove_tiles( Column& column )
 {
     auto first = Utils::adjacent_find_n( column.begin( ), column.end( ), COLLAPSE_THRESHOLD - 1,
                                          is_removable );
@@ -74,6 +68,24 @@ remove_tiles( Colum& column )
     return first != column.end( ) || rfirst != column.rend( );
 }
 
+int32_t
+remove_tiles( Tiles& board )
+{
+    int counter = 0u;
+    for ( Column& column : board )
+    {
+        bool success = remove_tiles( column );
+        if ( success )
+            ++counter;
+    }
+    return counter;
+}
+}
+RemoveCommand::RemoveCommand( )
+    : m_done( false )
+{
+}
+
 bool
 RemoveCommand::is_valid( const GameState& state ) const
 {
@@ -82,21 +94,21 @@ RemoveCommand::is_valid( const GameState& state ) const
 
     state.print( );
 
-    // Strategy for row
+    // Strategy for rows
     // Transposition of the board
     Tiles transposed_tiles;
     Utils::transposition( board, transposed_tiles );
 
     // Handle rows as column
-    for ( size_t row = 0; row < transposed_tiles.size( ); ++row )
+    for ( const Column& column : transposed_tiles )
     {
-        valid = valid || can_remove( transposed_tiles[ row ] );
+        valid = valid || can_remove( column );
     }
 
     // Strategy for colums
-    for ( size_t col = 0; col < board.size( ); ++col )
+    for ( const Column& column : board )
     {
-        valid = valid || can_remove( board[ col ] );
+        valid = valid || can_remove( column );
     }
     return valid;
 };
@@ -115,22 +127,20 @@ RemoveCommand::apply( GameState& state )
     state.print( );
 
     bool has_removed_tile = false;
+
     // Strategy for rows
+    // Since the board is represented as std::vector of std::vector
+    // To apply easily standard algorithm adjacent first it is required
+    // to transpose the board
     // 1 - Board tiles transposition
-    // 2 - Apply colum strategy to rows
+    // 2 - Apply column strategy to rows
     // 3 - Apply result to the original board
     std::cout << "Strategy for rows" << std::endl;
 
-    std::vector< Colum > transposed_tiles;
+    std::vector< Column > transposed_tiles;
     Utils::transposition( board, transposed_tiles );
 
-    for ( size_t row = 0; row < transposed_tiles.size( ); ++row )
-    {
-        bool success = remove_tiles( transposed_tiles[ row ] );
-        if ( success )
-            state.increase_score( );
-        has_removed_tile = has_removed_tile || success;
-    }
+    int32_t removed_tile_count = remove_tiles( transposed_tiles );
 
     for ( size_t col = 0; col < board.size( ); ++col )
     {
@@ -144,18 +154,15 @@ RemoveCommand::apply( GameState& state )
     std::cout << "Strategy for columns" << std::endl;
 
     // Strategy for colums
-    for ( size_t col = 0; col < board.size( ); ++col )
-    {
-        bool success = remove_tiles( board[ col ] );
-        if ( success )
-            state.increase_score( );
-        has_removed_tile = has_removed_tile || success;
-    }
+    removed_tile_count += remove_tiles( board );
+
     state.print( );
 
-    m_done = has_removed_tile;
+    m_done = removed_tile_count > 0;
+    state.score( ).increase( removed_tile_count );
 
-    std::cout << "Done? " << m_done << " has_removed_tile? " << has_removed_tile << std::endl;
+    std::cout << "Done? " << m_done << " has_removed_tile? " << ( removed_tile_count > 0 )
+              << std::endl;
 }
 
 bool

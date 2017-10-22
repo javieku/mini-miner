@@ -34,8 +34,8 @@ MoveCommand::is_finished( const GameState& state ) const
         = state.board( ).position_of_tile( m_to_coordinates.x, m_to_coordinates.y );
     const Tile& tile = board[ position.col ][ position.row ];
 
-    std::cout << " Distance to x:" << std::abs( m_previous_tile.x - tile.x )
-              << "y : " << std::abs( m_previous_tile.y - tile.y ) << std::endl;
+    std::cout << " Distance to x: " << std::abs( m_previous_tile.x - tile.x )
+              << " y: " << std::abs( m_previous_tile.y - tile.y ) << std::endl;
 
     return ( std::abs( m_previous_tile.x - tile.x ) <= 0.5 )
            && ( std::abs( m_previous_tile.y - tile.y ) <= 0.5 );

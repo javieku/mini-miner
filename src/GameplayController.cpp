@@ -29,7 +29,8 @@ GameController::update( GameState& state )
         else
         {
             m_last_action = nullptr;
-            m_actions = m_input_handler.handle_event( );
+            EventSharedPtr event = m_input_handler.handle_event( );
+            m_actions = m_factory.create_command_list( event );
         }
     }
     else

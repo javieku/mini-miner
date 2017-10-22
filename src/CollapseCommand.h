@@ -2,7 +2,7 @@
 
 // Game
 #include "CommandInterface.h"
-#include "GenerateCommand.h"
+#include "CreateAndMoveCommandCommand.h"
 #include "RemoveCommand.h"
 
 namespace Game

@@ -32,6 +32,12 @@ GameState::score( ) const
     return m_score;
 }
 
+Score&
+GameState::score( )
+{
+    return m_score;
+}
+
 const Timer&
 GameState::timer( ) const
 {
@@ -71,11 +77,5 @@ bool
 GameState::is_finished( ) const
 {
     return m_timer.countdown( ) == 0;
-}
-
-void
-GameState::increase_score( const int32_t factor /*=1*/ )
-{
-    m_score.score += factor * 50;
 }
 }

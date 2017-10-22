@@ -24,6 +24,7 @@ public:
     // Models
     const Entity& background( ) const;
     const Score& score( ) const;
+    Score& score( );
     const Timer& timer( ) const;
     const Board& board( ) const;
     Board& board( );
@@ -34,7 +35,6 @@ public:
 
     // Helpers
     bool is_finished( ) const;
-    void increase_score( const int32_t factor = 1 );
 
     // Debug
     void print( ) const;

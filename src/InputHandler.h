@@ -1,9 +1,7 @@
 #pragma once
 
 // Game
-#include "CommandFactory.h"
-#include "CommandInterface.h"
-#include "Coordinates.h"
+#include "Event.h"
 
 // Standard
 #include <deque>
@@ -22,7 +20,7 @@ public:
     InputHandler( King::Engine& engine );
     ~InputHandler( ) = default;
 
-    std::deque< CommandInterfaceSharedPtr > handle_event( );
+    EventSharedPtr handle_event( );
 
 private:
     EventSharedPtr handle_click( const Coordinates& first_click, const Coordinates& second_click );
@@ -37,8 +35,5 @@ private:
 	// Click related members
     bool m_is_first_click;
     Coordinates m_first_click_position;
-
-	// Create game actions
-    CommandFactory m_factory;
 };
 }

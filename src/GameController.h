@@ -1,6 +1,7 @@
 #pragma once
 
 // Game
+#include "CommandFactory.h"
 #include "CommandInterface.h"
 #include "GameState.h"
 
@@ -28,5 +29,7 @@ private:
     Game::CommandInterfaceSharedPtr m_current_action;
     Game::CommandInterfaceSharedPtr m_last_action;
     std::deque< Game::CommandInterfaceSharedPtr > m_actions;
+
+	CommandFactory m_factory;
 };
 }

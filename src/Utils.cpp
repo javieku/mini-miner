@@ -37,7 +37,7 @@ Utils::transposition( const Tiles& tiles, Tiles& transposed_tiles )
 {
     for ( size_t col = 0; col < tiles.size( ); ++col )
     {
-        Colum items_row;
+        Column items_row;
         for ( size_t row = 0; row < tiles[ col ].size( ); ++row )
         {
             items_row.push_back( tiles[ row ][ col ] );

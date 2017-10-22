@@ -18,7 +18,7 @@ GameView::render( const GameState& state )
 {
     m_engine.Render( state.background( ).texture, 0, 0 );
 
-    for ( const Colum& col : state.board( ).tiles( ) )
+    for ( const Column& col : state.board( ).tiles( ) )
     {
         for ( const Tile& tile : col )
         {

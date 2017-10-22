@@ -75,10 +75,10 @@
     <ClCompile Include="..\src\RemoveCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\GenerateCommand.cpp">
+    <ClCompile Include="..\src\Tile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Tile.cpp">
+    <ClCompile Include="..\src\CreateAndMoveCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -155,10 +155,10 @@
     <ClInclude Include="..\src\RemoveCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\GenerateCommand.h">
+    <ClInclude Include="..\src\Tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Tile.h">
+    <ClInclude Include="..\src\CreateAndMoveCommandCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

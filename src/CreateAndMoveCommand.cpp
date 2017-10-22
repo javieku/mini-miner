@@ -1,4 +1,4 @@
-#include "GenerateCommand.h"
+#include "CreateAndMoveCommandCommand.h"
 
 // Game
 #include "GameState.h"
@@ -16,14 +16,14 @@ const auto tile_is_broken
     = []( const Tile& tile ) { return tile.texture == King::Engine::TEXTURE_BROKEN; };
 
 bool
-any_of_tiles_is_broken( const Colum& column )
+any_of_tiles_is_broken( const Column& column )
 {
     return std::any_of( column.begin( ), column.end( ), tile_is_broken );
 }
 bool
 none_of_tiles_is_broken( const Tiles& board )
 {
-    for ( const Colum& column : board )
+    for ( const Column& column : board )
     {
         if ( any_of_tiles_is_broken( column ) )
         {
@@ -35,13 +35,13 @@ none_of_tiles_is_broken( const Tiles& board )
 }
 
 void
-stable_partition( Colum& column )
+stable_partition( Column& column )
 {
     std::stable_partition( column.begin( ), column.end( ), tile_is_broken );
 }
 
 std::vector< MoveCommandSharedPtr >
-create_falling_tiles( const Colum& original_column, const Colum& copied_column )
+create_falling_tiles( const Column& original_column, const Column& copied_column )
 {
     std::vector< MoveCommandSharedPtr > result;
 
@@ -90,7 +90,7 @@ CreateAndMoveCommand::apply( GameState& state )
         {
             if ( any_of_tiles_is_broken( column ) )
             {
-                Colum column_copy = column;
+                Column column_copy = column;
 
                 stable_partition( column_copy );
 
