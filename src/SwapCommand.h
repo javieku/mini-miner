@@ -1,11 +1,12 @@
 #pragma once
 
 #include "CommandInterface.h"
-#include "GameState.h"
 #include "MoveCommand.h"
 
 namespace Game
 {
+class GameState;
+
 class SwapCommand : public CommandInterface
 {
 public:
@@ -23,7 +24,6 @@ public:
 private:
     Coordinates m_one_coordinate;
     Coordinates m_other_coordinate;
-    bool first_time;
 
     MoveCommandSharedPtr m_move1;
     MoveCommandSharedPtr m_move2;

@@ -2,6 +2,7 @@
 
 // Game
 #include "MoveCommand.h"
+#include "Tile.h"
 
 // Standard
 #include <iostream>
@@ -12,7 +13,6 @@ namespace Game
 SwapCommand::SwapCommand( const Coordinates& one, const Coordinates& other )
     : m_one_coordinate( one )
     , m_other_coordinate( other )
-    , first_time( true )
 {
 }
 
@@ -61,7 +61,7 @@ SwapCommand::apply( GameState& state )
         return;
     }
 
-    if ( first_time )
+    if ( !m_move1 || !m_move2 )
     {
         Tile other_tile = state.board( ).copy_tile( m_one_coordinate.x, m_one_coordinate.y );
         Tile tile = state.board( ).copy_tile( m_other_coordinate.x, m_other_coordinate.y );
@@ -69,11 +69,12 @@ SwapCommand::apply( GameState& state )
         m_move1 = std::make_shared< MoveCommand >( other_tile, Coordinates( {tile.x, tile.y} ) );
         m_move2
             = std::make_shared< MoveCommand >( tile, Coordinates( {other_tile.x, other_tile.y} ) );
-        first_time = false;
     }
-
-    m_move1->apply( state );
-    m_move2->apply( state );
+    else
+    {
+        m_move1->apply( state );
+        m_move2->apply( state );
+    }
 }
 
 void

@@ -14,32 +14,58 @@ const int32_t DELTA = 4;
 }
 
 MoveCommand::MoveCommand( const Tile& tile, const Coordinates& to )
-    : m_tile( tile )
-    , m_to_coordinates( to )
+    : m_previous_tile( tile )
+    , m_to( to )
     , m_store_for_undo( true )
+    , m_pos( {-1, -1} )
 {
 }
 
 bool
 MoveCommand::is_valid( const GameState& state ) const
 {
+    // Allow move to anywhere in the view
     return true;
 };
 
 bool
 MoveCommand::is_finished( const GameState& state ) const
 {
-    const auto& board = state.board_tiles( );
-    TilePosition position
-        = state.board( ).position_of_tile( m_to_coordinates.x, m_to_coordinates.y );
-    const Tile& tile = board[ position.col ][ position.row ];
+    if ( !m_pos.is_valid( ) )
+    {
+        return false;
+    }
 
-    std::cout << " Distance to x: " << std::abs( m_previous_tile.x - tile.x )
-              << " y: " << std::abs( m_previous_tile.y - tile.y ) << std::endl;
+    const Tile& tile = state.board_tiles( )[ m_pos.col ][ m_pos.row ];
+    Coordinates to = {m_to.x, m_to.y};
 
-    return ( std::abs( m_previous_tile.x - tile.x ) <= 0.5 )
-           && ( std::abs( m_previous_tile.y - tile.y ) <= 0.5 );
+    std::cout << " Distance to destination x: " << std::abs( to.x - tile.x )
+              << " y: " << std::abs( to.y - tile.y ) << std::endl;
+
+    return ( std::abs( to.x - tile.x ) <= 0.5 ) && ( std::abs( to.y - tile.y ) <= 0.5 );
 };
+
+void
+MoveCommand::move( Tile& tile, const Coordinates& to )
+{
+    if ( tile.y < to.y )
+    {
+        tile.y += ( to.y - tile.y ) > DELTA ? DELTA : ( to.y - tile.y );
+    }
+    else if ( tile.y > to.y )
+    {
+        tile.y -= ( tile.y - to.y ) > DELTA ? DELTA : ( tile.y - to.y );
+    }
+
+    if ( tile.x < to.x )
+    {
+        tile.x += ( to.x - tile.x ) > DELTA ? DELTA : ( to.x - tile.x );
+    }
+    else if ( tile.x > to.x )
+    {
+        tile.x -= ( tile.x - to.x ) > DELTA ? DELTA : ( tile.x - to.x );
+    }
+}
 
 void
 MoveCommand::apply( GameState& state )
@@ -50,38 +76,14 @@ MoveCommand::apply( GameState& state )
     {
         std::cout << "Applying MoveCommand" << std::endl;
         state.print( );
-
-        m_previous_tile = state.board( ).copy_tile( m_to_coordinates.x, m_to_coordinates.y );
         m_store_for_undo = false;
 
-        TilePosition pos
-            = state.board( ).position_of_tile( m_to_coordinates.x, m_to_coordinates.y );
-        board[ pos.col ][ pos.row ] = m_tile;
+        m_pos = state.board( ).position_of_tile( m_to.x, m_to.y );
+        board[ m_pos.col ][ m_pos.row ] = m_previous_tile;
 
         state.print( );
     }
-
-    TilePosition position
-        = state.board( ).position_of_tile( m_to_coordinates.x, m_to_coordinates.y );
-    Tile& tile = board[ position.col ][ position.row ];
-
-    if ( tile.y < m_previous_tile.y )
-    {
-        tile.y += ( m_previous_tile.y - tile.y ) > DELTA ? DELTA : ( m_previous_tile.y - tile.y );
-    }
-    else if ( tile.y > m_previous_tile.y )
-    {
-        tile.y -= ( tile.y - m_previous_tile.y ) > DELTA ? DELTA : ( tile.y - m_previous_tile.y );
-    }
-
-    if ( tile.x < m_previous_tile.x )
-    {
-        tile.x += ( m_previous_tile.x - tile.x ) > DELTA ? DELTA : ( m_previous_tile.x - tile.x );
-    }
-    else if ( tile.x > m_previous_tile.x )
-    {
-        tile.x -= ( tile.x - m_previous_tile.x ) > DELTA ? DELTA : ( tile.x - m_previous_tile.x );
-    }
+    move( board[ m_pos.col ][ m_pos.row ], m_to );
 };
 
 void
@@ -91,14 +93,14 @@ MoveCommand::undo( GameState& state )
     Coordinates aux;
 
     Coordinates tile_coordinate = Utils::to_tile_coordinates(
-        m_to_coordinates, Coordinates( {board.x, board.y} ), state.board( ).tile_dimension( ) );
+        m_to, Coordinates( {board.x, board.y} ), state.board( ).tile_dimension( ) );
 
-    aux.x = m_tile.x;
-    aux.y = m_tile.y;
-    m_tile.x = tile_coordinate.x;
-    m_tile.y = tile_coordinate.y;
-    m_to_coordinates.x = aux.x;
-    m_to_coordinates.y = aux.y;
+    aux.x = m_previous_tile.x;
+    aux.y = m_previous_tile.y;
+    m_previous_tile.x = tile_coordinate.x;
+    m_previous_tile.y = tile_coordinate.y;
+    m_to.x = aux.x;
+    m_to.y = aux.y;
     m_store_for_undo = true;
     apply( state );
 }

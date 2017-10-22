@@ -19,8 +19,11 @@ public:
     void undo( GameState& state ) override;
 
 private:
-    Tile m_tile;
-    Coordinates m_to_coordinates;
+    void move( Tile& tile, const Coordinates& to );
+
+private:
+    Coordinates m_to;
+    TilePosition m_pos;
 
     // Undo
     Tile m_previous_tile;
