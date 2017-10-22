@@ -1,4 +1,4 @@
-#include "CreateAndMoveCommandCommand.h"
+#include "CreateAndMoveCommand.h"
 
 // Game
 #include "GameState.h"
