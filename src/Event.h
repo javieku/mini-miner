@@ -44,4 +44,10 @@ struct ClickEvent : public Event
 };
 
 using ClickEventSharedPtr = std::shared_ptr< ClickEvent >;
+
+struct GameOverEvent : public Event
+{
+};
+
+using GameOverEventSharedPtr = std::shared_ptr< GameOverEvent >;
 }

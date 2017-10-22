@@ -4,6 +4,7 @@
 #include "Board.h"
 #include "Entity.h"
 #include "Score.h"
+#include "Text.h"
 #include "Timer.h"
 
 // Standard
@@ -26,8 +27,11 @@ public:
     const Score& score( ) const;
     Score& score( );
     const Timer& timer( ) const;
+    Timer& timer( );
     const Board& board( ) const;
     Board& board( );
+    const Text& end_game_msg( ) const;
+    Text& end_game_msg( );
 
     // Wrappers (law of Demeter)
     Tiles& board_tiles( );
@@ -44,5 +48,6 @@ private:
     Board m_board;
     Score m_score;
     Timer m_timer;
+    Text m_end_game_msg;
 };
 }

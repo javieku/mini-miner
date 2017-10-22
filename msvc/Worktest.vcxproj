@@ -84,6 +84,7 @@
     <ClCompile Include="..\external\include\king\SdlWindow.cpp" />
     <ClCompile Include="..\src\Board.cpp" />
     <ClCompile Include="..\src\CommandFactory.cpp" />
+    <ClCompile Include="..\src\EndGameCommand.cpp" />
     <ClCompile Include="..\src\Utils.cpp" />
     <ClCompile Include="..\src\Tile.cpp" />
     <ClCompile Include="..\src\CollapseCommand.cpp" />
@@ -108,7 +109,9 @@
     <ClInclude Include="..\src\Board.h" />
     <ClInclude Include="..\src\CommandFactory.h" />
     <ClInclude Include="..\src\Coordinates.h" />
+    <ClInclude Include="..\src\EndGameCommand.h" />
     <ClInclude Include="..\src\Event.h" />
+    <ClInclude Include="..\src\Text.h" />
     <ClInclude Include="..\src\Tile.h" />
     <ClInclude Include="..\src\CollapseCommand.h" />
     <ClInclude Include="..\src\Entity.h" />
@@ -124,6 +127,7 @@
     <ClInclude Include="..\src\SwapCommand.h" />
     <ClInclude Include="..\src\Timer.h" />
     <ClInclude Include="..\src\Utils.h" />
+    <ClInclude Include="Header.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

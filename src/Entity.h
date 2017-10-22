@@ -12,6 +12,7 @@ struct Entity
     float x;
     float y;
     King::Engine::Texture texture;
+    bool visible;
 
     Entity( const Coordinates& c )
         : Entity( c, King::Engine::TEXTURE_MAX )
@@ -22,6 +23,7 @@ struct Entity
         : x( c.x )
         , y( c.y )
         , texture( texture )
+        , visible( true )
     {
     }
 };

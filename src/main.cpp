@@ -91,11 +91,6 @@ public:
         m_view.render( m_game_state );
 
         m_controller.update( m_game_state );
-
-        if ( m_controller.is_finished( m_game_state ) )
-        {
-            m_controller.end_game( m_game_state );
-        }
     }
 
 private:

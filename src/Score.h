@@ -1,20 +1,21 @@
 #pragma once
 
 // Game
-#include "Entity.h"
+#include "Text.h"
 
 // Standard
 #include <string>
 
 namespace Game
 {
-class Score : public Entity
+class Score : public Text
 {
 public:
     Score( const Coordinates c, const std::string& t )
-        : Entity( c )
-        , text( t )
-        , score( 0u ){};
+        : Text( c, t )
+        , score( 0u )
+    {
+    }
 
     inline void
     Score::increase( const int32_t factor = 1 )
@@ -23,7 +24,6 @@ public:
     }
 
 public:
-    std::string text;
     int score;
 };
 }

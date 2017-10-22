@@ -24,6 +24,7 @@ GameState::GameState( )
     , m_board( {300u, 80u}, {BOARD_WIDTH, BOARD_HEIGHT}, NCOL, NROW )
     , m_score( {75u, 225u}, "Score: " )
     , m_timer( {75u, 175u}, "Timer: ", 60u )
+    , m_end_game_msg( {0u, 175u}, "Game Over" )
 {
 }
 
@@ -55,6 +56,12 @@ GameState::timer( ) const
     return m_timer;
 }
 
+Timer&
+GameState::timer( )
+{
+    return m_timer;
+}
+
 const Board&
 GameState::board( ) const
 {
@@ -65,6 +72,18 @@ Board&
 GameState::board( )
 {
     return m_board;
+}
+
+const Text&
+GameState::end_game_msg( ) const
+{
+    return m_end_game_msg;
+}
+
+Text&
+GameState::end_game_msg( )
+{
+    return m_end_game_msg;
 }
 
 Tiles&
@@ -87,6 +106,6 @@ GameState::print( ) const
 bool
 GameState::is_finished( ) const
 {
-    return m_timer.countdown( ) == 0;
+    return m_timer.countdown( ) <= 0;
 }
 }

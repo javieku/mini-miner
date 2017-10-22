@@ -1,7 +1,7 @@
 #pragma once
 
 // Game
-#include "Entity.h"
+#include "Text.h"
 
 // Standard
 #include <chrono>
@@ -9,14 +9,14 @@
 
 namespace Game
 {
-class Timer : public Entity
+class Timer : public Text
 {
 public:
     Timer( const Coordinates& c, const std::string& t, int32_t d )
-        : Entity( c )
-        , text( t )
+        : Text( c, t )
         , duration( d )
     {
+        this->visible = true;
     }
 
     ~Timer( ) = default;
@@ -54,7 +54,6 @@ public:
     }
 
 public:
-    std::string text;
     int duration;
 
 private:

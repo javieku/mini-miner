@@ -21,7 +21,6 @@ public:
     void update( GameState& state );
 
     bool is_finished( const GameState& state ) const;
-    void end_game( GameState& state );
 
 private:
     CommandInterfaceSharedPtr next_command( GameState& state );
