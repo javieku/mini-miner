@@ -1,5 +1,8 @@
 #include "EndGameCommand.h"
 
+// Game
+#include "GameState.h"
+
 namespace Game
 {
 namespace

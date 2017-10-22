@@ -35,7 +35,7 @@ See Diagram below (Try to zoom out your editor in case it looked broken)
  |             |           Controller   | GameState            |                |  + Clear separation of responsabilities between the game logic and the rendering.        
  |     +-----------------+ updates the  | Board                |                |  + No complex logic in View and Model.                                                   
  |     | GameController  |    model     | Tile                 |                |                                                                                          
- |     | SwapCommand     |--------------| Score                |                |  Disadvantages/Mistakes:                                                                 
+ |     | SwapCommand     |--------------| Score                |                |  Disadvantages and improvements:                                                                 
  |     | RemoveCommand   |              | Timer                |                |  + By trying to use STL in order to achieve more readability some "performance penalty"  
  |     | CollapseCommand |              +----------------------+                |    such as extra copies were introduced in the algorithms.                               
  |     | MoveCommand     |                        |                             |  + Lack of use of interfaces in some modules such as InputHandler.                       
@@ -50,4 +50,11 @@ See Diagram below (Try to zoom out your editor in case it looked broken)
  |                                                                              |      +----------------------------------------+                                          
  |                                                                              |                                                                                          
  |                                                                              |                                                                                          
- +------------------------------------------------------------------------------+                                                                                                                                                                           
+ +------------------------------------------------------------------------------+                                                                                                                                               
+
+Main classes description
+GameController: Executes sequencually every command in a list created by CommandFactory. This comand that depends on the kind of input event (ClickEvent, DragEvent, GameOverEvent...)
+
+SwapCommand: Given two coordinates from an input event swaps two items on the board.
+
+MoveCommand: Given the coordinates from an input event and an item, moves the item to.

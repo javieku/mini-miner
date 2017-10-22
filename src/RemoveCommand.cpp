@@ -1,8 +1,11 @@
 #include "RemoveCommand.h"
 
+// Game
+#include "Board.h"
 #include "GameState.h"
 #include "Utils.h"
 
+// Standard
 #include <iostream>
 
 namespace Game
@@ -74,13 +77,13 @@ remove_tiles( Tiles& board )
     int32_t counter = 0u;
     for ( Column& column : board )
     {
-        bool success = remove_tiles( column );
-        if ( success )
+        if ( remove_tiles( column ) )
             ++counter;
     }
     return counter;
 }
 }
+
 RemoveCommand::RemoveCommand( )
     : m_done( false )
 {
@@ -123,46 +126,13 @@ RemoveCommand::apply( GameState& state )
     }
 
     auto& board = state.board_tiles( );
-    std::cout << "RemoveCommand" << std::endl;
-    state.print( );
+    int32_t removed_tile_count = strategy_for_row( state.board( ) );
 
-    bool has_removed_tile = false;
+    removed_tile_count += strategy_for_colum( state.board( ) );
 
-    // Strategy for rows
-    // Since the board is represented as std::vector of std::vector
-    // To apply easily standard algorithm adjacent first it is required
-    // to transpose the board
-    // 1 - Board tiles transposition
-    // 2 - Apply column strategy to rows
-    // 3 - Apply result to the original board
-    std::cout << "Strategy for rows" << std::endl;
+    m_done = ( removed_tile_count > 0 );
 
-    std::vector< Column > transposed_tiles;
-    Utils::transposition( board, transposed_tiles );
-
-    int32_t removed_tile_count = remove_tiles( transposed_tiles );
-
-    for ( size_t col = 0; col < board.size( ); ++col )
-    {
-        for ( size_t row = 0; row < board[ col ].size( ); ++row )
-        {
-            board[ col ][ row ] = transposed_tiles[ row ][ col ];
-        }
-    }
-    state.print( );
-
-    std::cout << "Strategy for columns" << std::endl;
-
-    // Strategy for colums
-    removed_tile_count += remove_tiles( board );
-
-    state.print( );
-
-    m_done = removed_tile_count > 0;
     state.score( ).increase( removed_tile_count );
-
-    std::cout << "Done? " << m_done << " has_removed_tile? " << ( removed_tile_count > 0 )
-              << std::endl;
 }
 
 bool
@@ -175,5 +145,40 @@ void
 RemoveCommand::undo( GameState& state )
 {
     // TODO: Implement when needed
+}
+
+int32_t
+RemoveCommand::strategy_for_row( Board& board )
+{
+    Tiles& tiles = board.tiles( );
+    // Since the board is represented as std::vector of std::vector
+    // To apply easily standard algorithm adjacent first it is required
+    // to transpose the board
+    // 1 - Board tiles transposition
+    // 2 - Apply column strategy to rows
+    // 3 - Apply result to the original board
+
+    std::vector< Column > transposed_tiles;
+    Utils::transposition( tiles, transposed_tiles );
+
+    int32_t removed_tile_count = remove_tiles( transposed_tiles );
+
+    for ( size_t col = 0; col < tiles.size( ); ++col )
+    {
+        for ( size_t row = 0; row < tiles[ col ].size( ); ++row )
+        {
+            tiles[ col ][ row ] = transposed_tiles[ row ][ col ];
+        }
+    }
+
+    return removed_tile_count;
+}
+
+int32_t
+RemoveCommand::strategy_for_colum( Board& board )
+{
+    // Simply apply the adjacent_n algorithm to every column
+
+    return remove_tiles( board.tiles( ) );
 }
 }

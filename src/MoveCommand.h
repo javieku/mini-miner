@@ -27,7 +27,7 @@ private:
 
     // Undo
     Tile m_previous_tile;
-    bool m_store_for_undo;
+    bool m_update_board;
 };
 
 using MoveCommandSharedPtr = std::shared_ptr< MoveCommand >;

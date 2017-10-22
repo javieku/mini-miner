@@ -39,21 +39,18 @@ GameView::render( const Timer& timer )
 }
 
 void
+GameView::render( const Score& score )
+{
+    std::string title = score.text + std::to_string( score.score );
+    m_engine.Write( title.c_str( ), score.x, score.y );
+}
+
+void
 GameView::render( const Text& text )
 {
     if ( !text.visible )
         return;
     m_engine.Write( text.text.c_str( ), text.x, text.y, text.rotation_factor * 2.5f );
-}
-
-void
-GameView::render( const Score& score )
-{
-    if ( !score.visible )
-        return;
-
-    std::string title = score.text + std::to_string( score.score );
-    m_engine.Write( title.c_str( ), score.x, score.y );
 }
 
 void
@@ -63,6 +60,6 @@ GameView::render( const GameState& state )
     render( state.board( ) );
     render( state.timer( ) );
     render( state.score( ) );
-    render( state.score( ) );
+    render( state.end_game_msg( ) );
 }
 }

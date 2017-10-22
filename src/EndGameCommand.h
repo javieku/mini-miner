@@ -2,7 +2,6 @@
 
 // Game
 #include "CommandInterface.h"
-#include "GameState.h"
 
 namespace Game
 {
