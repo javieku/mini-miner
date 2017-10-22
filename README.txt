@@ -9,15 +9,14 @@ Note that source code uses some C++17 features and hence a modern C++ compiler i
 
 It's a copy of Midas Miner without sounds.
 
-As specified:
 + Support drag and click events.
-+ Swap and collapse gem animations
++ Swap and collapse tile animations.
 + Last 60 seconds, 5 gem colors and score.
 + Some extra game over action was implemented as a side task.
 
 ------------------------------------------------------ Architecture description ---------------------------------------------------------------------------------
 
-To facilitate testing and to decouple different resposanbilities between classes in the system several design patterns have been applied. 
+To facilitate testing and to decouple different responsibilities between classes in the system several design patterns have been applied. 
 
 The overall game architecture uses classic MVC. Some event is created in the input handler module and then this is passed to the game controller that creates a 
 list of commands to apply different algorithms to the model. At the same time the view on every game loop iteration renders the model. 
@@ -35,7 +34,7 @@ See Diagram below (Try to zoom out your editor in case it looked broken)
  |             |Events                           Model                          |  Highlights:                                                                             
  |             |                        +----------------------+                |  + Easy to unit test algorithms in controller by mocking different GameStates.           
  |             |           Controller   | GameState            |                |  + Clear separation of responsabilities between the game logic and the rendering.        
- |     +-----------------+ updates the  | Board                |                |  + No complex logic in View and Model.                                                   
+ |     +-----------------+ updates the  | Board                |                |  + No complex logic in the View and Model.                                                   
  |     | GameController  |    model     | Tile                 |                |  + Usage of several stl algorithm such as std::stable_partition and std::adjacent_first  
  |     | SwapCommand     |--------------| Score                |                |    to implement the game logic.                                                          
  |     | RemoveCommand   |              | Timer                |                |                                                                                          
@@ -43,7 +42,7 @@ See Diagram below (Try to zoom out your editor in case it looked broken)
  |     | MoveCommand     |                        |                             |  + By trying to use STL in order to achieve more readability some "performance penalty"  
  |     | ...             |                        |                             |    such as extra copies were introduced in the algorithms (See RemoveCommand).           
  |     +-----------------+                        |                             |  + Lack of interfaces in some modules such as InputHandler.                              
- |          Controller                            |                             |  + Lack of unit/integration tests due to the nature of the task. This software is not    
+ |          Controller                            |                             |  + Lack of unit/integration tests due to the nature of the task. This program is not    
  |                                                |                             |    expected to have a long lifetime.                                                     
  |                                                |                             |  + Use Observer pattern in inputHandler to notify events.                                
  |                                                |                Renders the  |  + Some game logic could have been part of the engine.                                   
@@ -64,10 +63,10 @@ The view also would have been extended with several "Views" to render these new 
 
 >>>>>> Controller classes <<<<<<
 
-- GameController: Executes sequencually a list of commands created by CommandFactory. This command list depends on how the event(ClickEvent, DragEvent,
+- GameController: Executes sequentially a list of commands created by CommandFactory. This command list depends on how the event(ClickEvent, DragEvent,
  * GameOverEvent...) is expected to interact with the model.
 
-- RemoveCommand: Marks as broken 3 or more consecutive tiles with the same color. It is implemented using a generalization of std::adjacent_first.
+- RemoveCommand: Marks as broken three or more consecutive tiles with the same color. It is implemented using a generalization of std::adjacent_first.
 
 - CreateAndMoveCommandCommand: Given a board where some tiles has been already removed, it collapses the tiles above the ones removed and create new ones. It uses std::stable_partition
   to perform the collapse operation.
@@ -88,4 +87,4 @@ The view also would have been extended with several "Views" to render these new 
 
 ------------------------------------------------------ Final note ---------------------------------------------------------------------------
 
-For more information check header files documentation or feel free to send an email to fcojavierob@gmail.com
+For more information, please check documentation in header files, the source code or feel free to send an email to fcojavierob@gmail.com

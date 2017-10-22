@@ -2,14 +2,14 @@
 
 // Game
 #include "CommandInterface.h"
-#include "CreateAndMoveCommandCommand.h"
+#include "CreateAndMoveCommand.h"
 #include "RemoveCommand.h"
 
 namespace Game
 {
 /**
- *  Combines RemoveCommand and CreateAndMoveCommandCommand to implement 
- *  the logic of creating and removing tiles after an user action that 
+ *  Combines RemoveCommand and CreateAndMoveCommandCommand to implement
+ *  the logic of creating and removing tiles after an user action that
  *  collapsed some  of the items in the board.
  *
  * It is finished once removal can't not remove more tiles in the board.
