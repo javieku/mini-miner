@@ -7,8 +7,8 @@
 
 namespace Game
 {
-class Coordinates;
-class TilePosition;
+struct Coordinates;
+struct TilePosition;
 
 class Utils
 {

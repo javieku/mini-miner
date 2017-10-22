@@ -78,7 +78,7 @@ Board::copy_tile( const Coordinates& event_coordinates )
     return m_tiles[ pos.col ][ pos.row ];
 }
 
-const TilePosition&
+TilePosition
 Board::position_of_tile( const Coordinates& event_coordinates ) const
 {
     return Utils::position_of_tile( event_coordinates, Coordinates( {this->x, this->y} ),
@@ -101,22 +101,22 @@ King::Engine::Texture
 Board::generate_texture_type( int32_t col, int32_t row )
 {
     std::set< King::Engine::Texture > black_list;
-    if ( row > 0 )
+    if ( row > 0u )
     {
         black_list.insert( m_tiles[ col ][ row - 1 ].texture );
     }
 
-    if ( row + 1 < m_tiles[ col ].size( ) )
+    if ( row + 1u < m_tiles[ col ].size( ) )
     {
         black_list.insert( m_tiles[ col ][ row + 1 ].texture );
     }
 
-    if ( col > 0 )
+    if ( col > 0u )
     {
         black_list.insert( m_tiles[ col - 1 ][ row ].texture );
     }
 
-    if ( col + 1 < m_tiles.size( ) )
+    if ( col + 1u < m_tiles.size( ) )
     {
         black_list.insert( m_tiles[ col + 1 ][ row ].texture );
     }

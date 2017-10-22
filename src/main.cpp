@@ -107,7 +107,7 @@ private:
 int
 main( int argc, char* argv[] )
 {
-    std::srand( std::time( 0u ) );
+    std::srand( (unsigned int)std::time( 0u ) );
 
     MiniCrush game;
     game.Start( );

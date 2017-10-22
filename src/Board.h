@@ -25,7 +25,7 @@ public:
     const Tile& tile( const TilePosition& pos ) const;
     const Tile& tile( const Coordinates& c ) const;
     Tile copy_tile( const Coordinates& c );
-    const TilePosition& position_of_tile( const Coordinates& c ) const;
+    TilePosition position_of_tile( const Coordinates& c ) const;
 
     const Tiles& tiles( ) const;
     Tiles& tiles( );

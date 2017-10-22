@@ -92,7 +92,7 @@
     <ClCompile Include="..\src\RemoveCommand.cpp" />
     <ClCompile Include="..\src\GameState.cpp" />
     <ClCompile Include="..\src\GameplayController.cpp" />
-    <ClCompile Include="..\src\GameplayView.cpp" />
+    <ClCompile Include="..\src\GameView.cpp" />
     <ClCompile Include="..\src\CreateAndMoveCommand.cpp" />
     <ClCompile Include="..\src\InputHandler.cpp" />
     <ClCompile Include="..\src\main.cpp" />
@@ -110,6 +110,7 @@
     <ClInclude Include="..\src\Board.h" />
     <ClInclude Include="..\src\CommandFactory.h" />
     <ClInclude Include="..\src\Coordinates.h" />
+    <ClInclude Include="..\src\CreateAndMoveCommand.h" />
     <ClInclude Include="..\src\EndGameCommand.h" />
     <ClInclude Include="..\src\Event.h" />
     <ClInclude Include="..\src\Text.h" />
@@ -121,7 +122,6 @@
     <ClInclude Include="..\src\GameState.h" />
     <ClInclude Include="..\src\GameController.h" />
     <ClInclude Include="..\src\GameView.h" />
-    <ClInclude Include="..\src\CreateAndMoveCommandCommand.h" />
     <ClInclude Include="..\src\Score.h" />
     <ClInclude Include="..\src\InputHandler.h" />
     <ClInclude Include="..\src\MoveCommand.h" />

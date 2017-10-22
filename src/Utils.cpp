@@ -15,8 +15,8 @@ Utils::to_tile_coordinates( const Coordinates& coordinate_to_adjust,
     TilePosition pos = Utils::position_of_tile( coordinate_to_adjust, board_offset, tile );
 
     Coordinates c;
-    c.x = board_offset.x + tile.height * pos.col + ( tile.height / 4 );
-    c.y = board_offset.y + tile.width * pos.row + ( tile.width / 4 );
+    c.x = board_offset.x + tile.height * pos.col + ( tile.height / 4u );
+    c.y = board_offset.y + tile.width * pos.row + ( tile.width / 4u );
 
     return c;
 }
@@ -35,7 +35,7 @@ Utils::position_of_tile( const Coordinates& coordinate,
 void
 Utils::transposition( const Tiles& tiles, Tiles& transposed_tiles )
 {
-    for ( size_t col = 0; col < tiles.size( ); ++col )
+    for ( size_t col = 0u; col < tiles.size( ); ++col )
     {
         Column items_row;
         for ( size_t row = 0; row < tiles[ col ].size( ); ++row )
