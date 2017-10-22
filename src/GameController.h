@@ -24,12 +24,15 @@ public:
     void end_game( GameState& state );
 
 private:
+    CommandInterfaceSharedPtr next_command( GameState& state );
+
+private:
     InputHandler& m_input_handler;
 
-    Game::CommandInterfaceSharedPtr m_current_action;
-    Game::CommandInterfaceSharedPtr m_last_action;
+    Game::CommandInterfaceSharedPtr m_current_command;
+    Game::CommandInterfaceSharedPtr m_last_command;
     std::deque< Game::CommandInterfaceSharedPtr > m_actions;
 
-	CommandFactory m_factory;
+    CommandFactory m_factory;
 };
 }

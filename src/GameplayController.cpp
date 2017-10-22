@@ -10,40 +10,50 @@ GameController::GameController( InputHandler& input_handler )
 {
 }
 
+CommandInterfaceSharedPtr
+GameController::next_command( GameState& state )
+{
+    if ( m_actions.empty( ) )
+    {
+        EventSharedPtr event = m_input_handler.handle_event( );
+        m_actions = m_factory.create_command_list( event );
+        m_last_command = nullptr;
+    }
+
+    if ( m_actions.empty( ) )
+        return nullptr;
+
+    auto next_action = m_actions.front( );
+    m_actions.pop_front( );
+
+    if ( !next_action->is_valid( state ) && m_last_command )
+    {
+        m_last_command->undo( state );
+        next_action = m_last_command;
+        m_actions.clear( );
+    }
+
+    return next_action;
+}
+
 void
 GameController::update( GameState& state )
 {
-    if ( !m_current_action )
+    if ( m_current_command )
     {
-        if ( !m_actions.empty( ) )
+        if ( m_current_command->is_finished( state ) )
         {
-            m_current_action = m_actions.front( );
-            m_actions.pop_front( );
-            if ( !m_current_action->is_valid( state ) && m_last_action )
-            {
-                m_last_action->undo( state );
-                m_current_action = m_last_action;
-                m_actions.clear( );
-            }
+            m_last_command = m_current_command;
+            m_current_command = next_command( state );
         }
         else
         {
-            m_last_action = nullptr;
-            EventSharedPtr event = m_input_handler.handle_event( );
-            m_actions = m_factory.create_command_list( event );
+            m_current_command->apply( state );
         }
     }
     else
     {
-        if ( !m_current_action->is_finished( state ) )
-        {
-            m_current_action->apply( state );
-        }
-        else
-        {
-            m_last_action = m_current_action;
-            m_current_action = nullptr;
-        }
+        m_current_command = next_command( state );
     }
 }
 
