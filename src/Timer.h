@@ -9,52 +9,24 @@
 
 namespace Game
 {
+/**
+ * Simple model to show the game duration.
+ **/
 class Timer : public Text
 {
 public:
-    Timer( const Coordinates& c, const std::string& t, int32_t d )
-        : Text( c, t )
-        , duration( d )
-    {
-        this->visible = true;
-    }
-
+    Timer( const Coordinates& c, const std::string& t, int32_t d );
     ~Timer( ) = default;
 
-    void
-    start( )
-    {
-        t1 = Clock::now( );
-    }
+    void start( );
+    void stop( );
 
-    void
-    stop( )
-    {
-        t1 = Clock::now( );
-    }
-
-    long long
-    elapsed_seconds( ) const
-    {
-        auto t2 = Clock::now( );
-        return std::chrono::duration_cast< std::chrono::seconds >( t2 - t1 ).count( );
-    }
-
-    long long
-    elapsed_milliseconds( ) const
-    {
-        auto t2 = Clock::now( );
-        return std::chrono::duration_cast< std::chrono::milliseconds >( t2 - t1 ).count( );
-    }
-
-    long long
-    countdown( ) const
-    {
-        return duration - elapsed_seconds( );
-    }
+    long long elapsed_seconds( ) const;
+    long long elapsed_milliseconds( ) const;
+    long long countdown( ) const;
 
 public:
-    int duration;
+    int32_t duration;
 
 private:
     typedef std::chrono::high_resolution_clock Clock;

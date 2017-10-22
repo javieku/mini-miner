@@ -18,12 +18,13 @@ public:
                                             const Dimension& tile );
 
     static TilePosition position_of_tile( const Coordinates& coordinate,
-                                            const Coordinates& board_offset,
-                                            const Dimension& dimension );
+                                          const Coordinates& board_offset,
+                                          const Dimension& dimension );
 
     static void transposition( const Tiles& tiles, Tiles& transposed_tiles );
 
-    // Generalization of std::adjacent_find taken from standard to check n consecutive elements
+    // Implementation taken from the standard. This is generalization of std::adjacent_find
+    // to check n consecutive elements instead of 2
     template < class ForwardIt, class Size, class BinaryPredicate >
     static ForwardIt
     adjacent_find_n( ForwardIt first, ForwardIt last, Size n, BinaryPredicate p )

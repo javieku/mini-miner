@@ -11,7 +11,12 @@
 namespace Game
 {
 class InputHandler;
-
+/**
+ * Executes sequencually every command in a list created by CommandFactory.
+ *
+ * This command list depends on how the event(ClickEvent, DragEvent,
+ * GameOverEvent...) is expected to interact with the model.
+ **/
 class GameController
 {
 public:

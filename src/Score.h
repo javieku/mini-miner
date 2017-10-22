@@ -8,6 +8,9 @@
 
 namespace Game
 {
+/**
+ * Simple model to keep track of the user punctuation.
+ **/
 class Score : public Text
 {
 public:

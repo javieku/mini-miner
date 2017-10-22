@@ -7,6 +7,20 @@
 
 namespace Game
 {
+/**
+ * Given the coordinates from an input event and a tile,
+ * moves the latter to the former.
+ *
+ * It is finished when the tiles reaches the given
+ * coordinates.
+ *
+ * It is valid if the given coordinates are valid in 
+ * engine the window.
+ *
+ * Movement can be undone. This is useful to implement
+ * SwapCommand.
+ *
+ **/
 class MoveCommand : public CommandInterface
 {
 public:
@@ -25,7 +39,7 @@ private:
     Coordinates m_to;
     TilePosition m_pos;
 
-    // Undo
+    // For Undo
     Tile m_previous_tile;
     bool m_update_board;
 };

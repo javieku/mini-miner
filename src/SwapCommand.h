@@ -6,6 +6,7 @@
 namespace Game
 {
 class GameState;
+
 /**
  * Given two coordinates from an input event swaps
  * two items on the board.
@@ -16,10 +17,10 @@ class GameState;
  * non-consecutive tiles.
  *
  * The swap movement can be undone in case this operation
- * is considered illegal. This happens when once the tiles 
+ * is considered illegal. This happens when once the tiles
  * are swapped no tile can be collapsed.
  *
- */
+ **/
 class SwapCommand : public CommandInterface
 {
 public:

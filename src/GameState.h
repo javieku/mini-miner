@@ -16,6 +16,9 @@
 
 namespace Game
 {
+/**
+ * Simple model that gathers and instanciates all the models in the game.
+ **/
 class GameState
 {
 public:

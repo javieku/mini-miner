@@ -5,16 +5,6 @@
 
 namespace Game
 {
-enum class TileState
-{
-    RED,
-    GREEN,
-    YELLOW,
-    BLUE,
-    BROKEN,
-    SELECTED
-};
-
 struct TilePosition
 {
     int row;
@@ -26,7 +16,9 @@ struct TilePosition
         return row >= 0 && col >= 0;
     }
 };
-
+/**
+ * Simple model to represent one of the items in the board.
+ **/
 class Tile : public Entity
 {
 public:
@@ -34,8 +26,5 @@ public:
     Tile( const Coordinates& c, King::Engine::Texture texture );
 
     static Tile create_random( float x, float y );
-
-public:
-    TileState type;
 };
 }

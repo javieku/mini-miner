@@ -5,6 +5,32 @@
 
 namespace Game
 {
+/**
+ * Given a Board where some tiles has been already
+ * removed, it collapses the tiles above the ones removed
+ * and create new ones.
+ *
+ * It is finished when tile is in movement anymore and all the
+ * tiles in the board have some content
+ *
+ * It is valid always.
+ *
+ * ----Implementation comments----
+ * It uses std::stable_partition to move the broken tiles to the top of
+ * the column:
+ *
+ *  X = Broken
+ *
+ *     1 2 3 8 3        X 2 3 8 3
+ *     X 4 5 9 2        X 4 5 9 2
+ *     X 6 7 1 4  ----> X 6 7 1 4
+ *     X 2 3 4 1        1 2 3 4 1
+ *	   4 1 2 3 5        4 1 2 3 5
+ *
+ *  Once the board is updated it creates a MoveCommand for every tile that
+ *  either is new or has to be collapsed.
+ *
+ **/
 class CreateAndMoveCommand : public CommandInterface
 {
 public:

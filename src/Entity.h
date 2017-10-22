@@ -5,8 +5,14 @@
 
 // Engine
 #include <king/Engine.h>
+
 namespace Game
 {
+/**
+ * Abstraction that represents any element in the game.
+ *
+ * It could be also part of the Engine logic.
+ **/
 struct Entity
 {
     float x;

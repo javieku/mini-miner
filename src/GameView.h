@@ -12,7 +12,10 @@ class GameState;
 class Score;
 class Text;
 class Timer;
-
+/**
+ * Renders all the components by using King::Engine.
+ * Just access the model components with almost no logic.
+ **/
 class GameView
 {
 public:

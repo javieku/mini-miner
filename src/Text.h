@@ -8,6 +8,10 @@
 
 namespace Game
 {
+/**
+ * Simple model to represent a text on the screen. It should part of the engine
+ * API.
+ **/
 // TODO Part of this could be engine functionality (visible, rotation factor)
 class Text : public Entity
 {

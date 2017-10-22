@@ -8,6 +8,9 @@
 
 namespace Game
 {
+/**
+ * Data structures for different events supported in the game.
+ **/
 // TODO Move to engine logic
 struct Event
 {
