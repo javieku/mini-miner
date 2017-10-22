@@ -92,8 +92,6 @@ RemoveCommand::is_valid( const GameState& state ) const
     const auto& board = state.board_tiles( );
     bool valid = false;
 
-    state.print( );
-
     // Strategy for rows
     // Transposition of the board
     Tiles transposed_tiles;
