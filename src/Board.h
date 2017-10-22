@@ -13,19 +13,16 @@
 
 namespace Game
 {
-const unsigned int NROW = 8;
-const unsigned int NCOL = 8;
-
 using Column = std::vector< Tile >;
 using Tiles = std::vector< Column >;
 
 class Board : public Entity
 {
 public:
-    Board( );
+    Board( const Coordinates& c, const Dimension& dimensions, int32_t ncol, int32_t nrow );
     ~Board( ) = default;
 
-    const Tile& tile( int32_t row, int32_t col ) const;
+    const Tile& tile( const TilePosition& pos ) const;
     const Tile& tile( const Coordinates& c ) const;
     Tile copy_tile( const Coordinates& c );
     const TilePosition& position_of_tile( const Coordinates& c ) const;
@@ -38,10 +35,11 @@ public:
     void print( ) const;
 
 private:
-    void init_board( float width, float height );
-    King::Engine::Texture generate_texture_type( int row, int col );
+    void init_board( const Dimension& dimension, int32_t ncol, int32_t nrow );
+    King::Engine::Texture generate_texture_type( int32_t row, int32_t col );
 
 private:
     Tiles m_tiles;
+    Dimension m_dimension;
 };
 }

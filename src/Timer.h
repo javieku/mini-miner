@@ -12,14 +12,14 @@ namespace Game
 class Timer : public Entity
 {
 public:
-    Timer( )
-        : Entity( {75u, 175u} )
+    Timer( const Coordinates& c, const std::string& t, int32_t d )
+        : Entity( c )
+        , text( t )
+        , duration( d )
     {
-        // TODO Initialize it in Gamestate using constructor
-        text = "Time: ";
-        duration = 60u;
     }
-    ~Timer( ){};
+
+    ~Timer( ) = default;
 
     void
     start( )

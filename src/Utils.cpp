@@ -23,11 +23,11 @@ Utils::to_tile_coordinates( const Coordinates& coordinate_to_adjust,
 
 TilePosition
 Utils::position_of_tile( const Coordinates& coordinate,
-                            const Coordinates& board_offset,
-                            const Dimension& tile_dim )
+                         const Coordinates& board_offset,
+                         const Dimension& tile_dim )
 {
-    int col = ( coordinate.x - board_offset.x ) / tile_dim.width;
-    int row = ( coordinate.y - board_offset.y ) / tile_dim.height;
+    int32_t col = ( coordinate.x - board_offset.x ) / tile_dim.width;
+    int32_t row = ( coordinate.y - board_offset.y ) / tile_dim.height;
 
     return {row, col};
 }

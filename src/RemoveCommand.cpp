@@ -71,7 +71,7 @@ remove_tiles( Column& column )
 int32_t
 remove_tiles( Tiles& board )
 {
-    int counter = 0u;
+    int32_t counter = 0u;
     for ( Column& column : board )
     {
         bool success = remove_tiles( column );

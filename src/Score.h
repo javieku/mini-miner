@@ -11,12 +11,10 @@ namespace Game
 class Score : public Entity
 {
 public:
-    Score( )
-        : Entity( {75u, 225u} )
-    {
-        this->text = "Score: ";
-        this->score = 0u;
-    };
+    Score( const Coordinates c, const std::string& t )
+        : Entity( c )
+        , text( t )
+        , score( 0u ){};
 
     inline void
     Score::increase( const int32_t factor = 1 )
@@ -25,7 +23,7 @@ public:
     }
 
 public:
-    std::string text = "Score: ";
+    std::string text;
     int score;
 };
 }

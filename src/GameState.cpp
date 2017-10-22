@@ -9,10 +9,21 @@
 #include <sstream>
 #include <string>
 
+namespace
+{
+const float BOARD_WIDTH = 400.0f;
+const float BOARD_HEIGHT = 400.0f;
+const int32_t NROW = 8u;
+const int32_t NCOL = 8u;
+}  // anonymous namespace
+
 namespace Game
 {
 GameState::GameState( )
     : m_background( {0.0f, 0.0f}, King::Engine::TEXTURE_BACKGROUND )
+    , m_board( {300u, 80u}, {BOARD_WIDTH, BOARD_HEIGHT}, NCOL, NROW )
+    , m_score( {75u, 225u}, "Score: " )
+    , m_timer( {75u, 175u}, "Timer: ", 60u )
 {
 }
 
