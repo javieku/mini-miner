@@ -3,9 +3,6 @@
 // Game
 #include "Utils.h"
 
-// Standard
-#include <iostream>
-
 namespace Game
 {
 namespace
@@ -38,9 +35,6 @@ MoveCommand::is_finished( const GameState& state ) const
 
     const Tile& tile = state.board_tiles( )[ m_pos.col ][ m_pos.row ];
 
-    std::cout << " Distance to destination x: " << std::abs( m_to.x - tile.x )
-              << " y: " << std::abs( m_to.y - tile.y ) << std::endl;
-
     return ( std::abs( m_to.x - tile.x ) <= 0.5 ) && ( std::abs( m_to.y - tile.y ) <= 0.5 );
 };
 
@@ -51,15 +45,10 @@ MoveCommand::apply( GameState& state )
 
     if ( m_update_board )
     {
-        std::cout << "MoveCommand" << std::endl;
-        state.print( );
-
         m_update_board = false;
 
         m_pos = state.board( ).position_of_tile( m_to );
         board[ m_pos.col ][ m_pos.row ] = m_previous_tile;
-
-        state.print( );
     }
 
     Tile& current_tile = board[ m_pos.col ][ m_pos.row ];

@@ -5,9 +5,6 @@
 #include "GameState.h"
 #include "Utils.h"
 
-// Standard
-#include <iostream>
-
 namespace Game
 {
 namespace

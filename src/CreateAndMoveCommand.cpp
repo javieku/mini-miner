@@ -5,7 +5,6 @@
 
 // Standard
 #include <algorithm>
-#include <iostream>
 #include <memory>
 
 namespace Game
@@ -83,8 +82,6 @@ CreateAndMoveCommand::apply( GameState& state )
 {
     if ( m_falling_tiles.empty( ) )
     {
-        std::cout << "CreateAndMoveCommand" << std::endl;
-        state.print( );
         auto& board = state.board_tiles( );
         for ( const auto& column : board )
         {
@@ -98,7 +95,6 @@ CreateAndMoveCommand::apply( GameState& state )
                 m_falling_tiles.insert( m_falling_tiles.end( ), result.begin( ), result.end( ) );
             }
         }
-        state.print( );
     }
 
     for ( MoveCommandSharedPtr& c : m_falling_tiles )

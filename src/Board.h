@@ -31,7 +31,8 @@ public:
     Tiles& tiles( );
 
     Dimension tile_dimension( ) const;
-
+	
+	// Debugging
     void print( ) const;
 
 private:

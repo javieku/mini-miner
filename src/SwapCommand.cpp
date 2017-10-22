@@ -4,7 +4,6 @@
 #include "Tile.h"
 
 // Standard
-#include <iostream>
 #include <memory>
 
 namespace Game

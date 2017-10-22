@@ -3,7 +3,6 @@
 // Standard
 #include <algorithm>
 #include <cstdlib>
-#include <iostream>
 #include <iterator>
 #include <set>
 #include <sstream>
@@ -97,6 +96,7 @@ GameState::board_tiles( ) const
 {
     return m_board.tiles( );
 }
+
 void
 GameState::print( ) const
 {

@@ -7,7 +7,6 @@
 #include <king/Engine.h>
 
 // Standard
-#include <iostream>
 #include <memory>
 
 namespace Game
@@ -34,7 +33,6 @@ InputHandler::InputHandler( King::Engine& engine )
 EventSharedPtr
 InputHandler::handle_click( const Coordinates& first_click, const Coordinates& second_click )
 {
-    // Null object
     EventSharedPtr event = std::make_shared< Event >( );
     if ( !m_is_first_click )
     {
