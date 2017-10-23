@@ -113,6 +113,7 @@
     <ClInclude Include="..\src\CreateAndMoveCommand.h" />
     <ClInclude Include="..\src\EndGameCommand.h" />
     <ClInclude Include="..\src\Event.h" />
+    <ClInclude Include="..\src\MiniMiner.h" />
     <ClInclude Include="..\src\Text.h" />
     <ClInclude Include="..\src\Tile.h" />
     <ClInclude Include="..\src\CollapseCommand.h" />

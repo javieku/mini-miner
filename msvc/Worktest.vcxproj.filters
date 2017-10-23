@@ -191,5 +191,8 @@
     <ClInclude Include="..\src\CreateAndMoveCommand.h">
       <Filter>Header Files\Controller</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\MiniMiner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
