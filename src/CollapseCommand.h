@@ -8,11 +8,11 @@
 namespace Game
 {
 /**
- *  Combines RemoveCommand and CreateAndMoveCommandCommand to implement
- *  the logic of creating and removing tiles after an user action that
- *  collapsed some  of the items in the board.
+ * Combines RemoveCommand and CreateAndMoveCommandCommand to implement
+ * the logic of creating and removing tiles after an user action that
+ * collapsed some of the items in the board.
  *
- * It is finished once removal can't not remove more tiles in the board.
+ * It is finished once RemoveCommand can't remove more tiles in the board.
  *
  * It is valid when RemoveCommand and CreateAndMoveCommand are valid.
  *

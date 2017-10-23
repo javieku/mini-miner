@@ -13,12 +13,12 @@ class GameState;
  *
  * It is finished when both cells are exchanged.
  *
- * It is not valid when the given coordinates selected
- * non-consecutive tiles.
+ * It is not valid when the given coordinates are selecting
+ * non-consecutive tiles in the board.
  *
  * The swap movement can be undone in case this operation
- * is considered illegal. This happens when once the tiles
- * are swapped no tile can be collapsed.
+ * is considered illegal. This happens when the tiles
+ * are swapped and no tile can be collapsed.
  *
  **/
 class SwapCommand : public CommandInterface

@@ -13,7 +13,7 @@ class GameState;
  *
  * It is finished when the algorithm is applied once.
  *
- * It is not valid when no tile is removed. This is convenient to check
+ * It is not valid when no tile is removed. This command is convenient to check
  * if a SwapCommand has been successful or not.
  *
  * ----Implementation comments----
@@ -25,17 +25,17 @@ class GameState;
  *     A different approach had to be implemented.
  *	   
  * 2 - For rows:
- *		- Board transposition is applied.  		
+ *		- Transposition of the board.  		
  *        1 2 3       1 4 7
  *        4 5 6  ---> 2 5 8
  *        7 8 9       3 6 9
  *      - Then the same strategy as for colums.
- *      - Finally the changes are applied on the board
+ *      - Finally the changes are applied to the board
  *      
- *   Because it is good for readability to use std::adjacent_first and to use 
- *   the same strategy for both dimensions is simpler to understand I have implemented
- *   step 2 using this transposition despite generating an extra copy of the board. 
- *   
+ *   This distinction has been implemented despite generating an extra copy of the board because 
+ *   std::adjacent_first helps with readability. It is also possible to handcraft loops and make the step 
+ *   2 "in place".
+ *
  **/
 class RemoveCommand : public CommandInterface
 {

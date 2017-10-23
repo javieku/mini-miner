@@ -15,14 +15,16 @@ class Engine;
 namespace Game
 {
 /**
- * Observes changes in the mouse position from the engine and
- * creates different EventSharedPtr.
+ * Observes changes in the engine mouse position and
+ * creates different Event.
  *
  * These events will be used afterwards to create different
- * sequences of commands to make operations on the GameState.
+ * sequences of commands to apply algorithms to the GameState.
  *
  * Engine implementation could be improved by using a 1-1 observer pattern
- * to receive events generated in the engine.
+ * to receive events generated in the engine. In that way, the game 
+ * would have to pull the mouse position on every loop iteration.
+ * 
  **/
 class InputHandler
 {
