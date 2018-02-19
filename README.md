@@ -2,10 +2,10 @@
 
 It's a copy of [King's Midas Miner](http://www.royalgames.com/games/puzzle-games/midas-miner/?language=en_US). 
 
-⋅⋅* Support drag and click events.
-⋅⋅* Swap and collapse tiles animations.
-⋅⋅* Last 60 seconds, 5 gem colors and a score.
-⋅⋅* Short game over animation was implemented.
+- Support drag and click events.
+- Swap and collapse tiles animations.
+- Last 60 seconds, 5 gem colors and a score.
+- Short game over animation was implemented.
 
 # Architecture description 
 
