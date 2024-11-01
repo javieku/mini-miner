@@ -1,6 +1,6 @@
 # About the game 
 
-It's a copy of King.com [Midas Miner](http://www.royalgames.com/games/puzzle-games/midas-miner/?language=en_US). 
+It's a copy of King.com [Midas Miner](https://www.youtube.com/watch?v=qhKHjad0NLY). 
 
 - Support drag and click events.
 - Swap and collapse tiles animations.
